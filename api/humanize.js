@@ -1,69 +1,52 @@
-// /api/humanize.js
-
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
   try {
-    const { preset, text } = req.body || {};
+    const { preset, text } = req.body;
 
-    if (!text || typeof text !== "string") {
-      return res.status(400).json({ error: "Missing 'text'" });
+    if (!process.env.OPENAI_API_KEY) {
+      return res.status(500).json({ error: "Missing API key" });
     }
 
-    const prompts = {
-      simple: `
-Rewrite the text in simple, natural, clean human language.
-Keep all facts. No new ideas. No slang.
-      `,
-      exam: `
-Rewrite the text in exam-ready CBSE style.
-Short points, headings, bold keywords, clean answers.
-      `,
-      genz: `
-Rewrite the text casually, friendly, Gen-Z tone, light emojis.
-Keep facts. Do not remove definitions.
-      `,
-      teacher: `
-Rewrite the text in formal, school-teacher-safe English.
-No slang. No emojis. Structured, clean, accurate.
-      `,
+    if (!text || text.trim().length === 0) {
+      return res.status(400).json({ error: "No text provided" });
+    }
+
+    const presetPrompts = {
+      simple: "Rewrite the text in clean, natural, human language.",
+      exam: "Rewrite the text in CBSE exam-style proper answers.",
+      genz: "Rewrite the text in Gen-Z tone: fun but clear (not cringe).",
+      teacher: "Rewrite the text in formal, neat, teacher-safe language."
     };
 
-    const instructions = prompts[preset] || prompts.simple;
+    const systemPrompt = presetPrompts[preset] || presetPrompts.simple;
 
-    // --- OpenAI API call ---
-    const response = await fetch("https://api.openai.com/v1/responses", {
+    const aiRes = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
         "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
       },
       body: JSON.stringify({
         model: "gpt-4o-mini",
-        instructions,
-        input: text,
-        max_output_tokens: 500,
-      }),
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: text }
+        ],
+        temperature: 0.7
+      })
     });
 
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error("OpenAI failed:", errText);
-      return res.status(500).json({ error: "AI failed" });
+    const data = await aiRes.json();
+
+    if (!data.choices || !data.choices[0]) {
+      return res.status(500).json({ error: "AI returned no output" });
     }
 
-    const data = await response.json();
+    res.status(200).json({
+      text: data.choices[0].message.content.trim()
+    });
 
-    const output =
-      data.output?.[0]?.content?.[0]?.text ||
-      data.output?.[0]?.output_text ||
-      "Error: No output returned.";
-
-    return res.status(200).json({ text: output.trim() });
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ error: "Server error" });
+    res.status(500).json({ error: "Server error" });
   }
 }
