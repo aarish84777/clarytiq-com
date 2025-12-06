@@ -1,6 +1,10 @@
-// api/humanize.js
-
 import Groq from "groq-sdk";
+
+export const config = {
+  api: {
+    bodyParser: true,
+  },
+};
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -8,7 +12,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { preset, userText } = req.body;
+    const { preset, userText } = req.body || {};
+
+    console.log("BODY RECEIVED:", req.body);
 
     if (!userText || userText.trim() === "") {
       return res.status(400).json({ error: "Empty input" });
@@ -18,7 +24,6 @@ export default async function handler(req, res) {
       apiKey: process.env.GROQ_API_KEY,
     });
 
-    // Use a safe, currently supported model
     const model = "llama-3.3-70b-versatile";
 
     const completion = await client.chat.completions.create({
@@ -26,8 +31,7 @@ export default async function handler(req, res) {
       messages: [
         {
           role: "system",
-          content:
-            `You are a notes humanizer AI. Take raw, robotic text and convert it into clear, simple, exam-ready human language based on preset: ${preset}.`,
+          content: `Humanize text in preset: ${preset}.`,
         },
         {
           role: "user",
@@ -38,14 +42,10 @@ export default async function handler(req, res) {
     });
 
     const output = completion.choices[0].message.content;
-
     return res.status(200).json({ output });
 
   } catch (error) {
-    console.error("API ERROR:", error);
-    return res.status(500).json({
-      error: "Server error",
-      details: error.message,
-    });
+    console.error("SERVER ERROR:", error);
+    return res.status(500).json({ error: error.message });
   }
 }
