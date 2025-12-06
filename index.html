@@ -1,0 +1,1080 @@
+<!--
+HOW TO USE / DEPLOY
+
+Option 1: Easiest
+- Save this file as `index.html`
+- Double-click to open in your browser OR drop into Netlify/Vercel as a static site.
+
+Option 2: In a bigger project
+- Put this inside `index.html` of any simple HTML/CSS/JS setup.
+- No build tools required. No backend required.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Notes Humanizer PRO — Student Edition</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Clean sans-serif font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* ========== Base Reset & Body ========== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #0f172a;
+      background: radial-gradient(circle at top left, #e0f2fe 0, #f9fafb 45%, #eef2ff 100%);
+      min-height: 100%;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    /* ========== Layout Shell ========== */
+    .app-root {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 2.5rem;
+    }
+
+    /* ========== Top Nav ========== */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.25rem;
+      border-radius: 999px;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(135deg, rgba(255,255,255,0.88), rgba(248,250,252,0.92));
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.09);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      position: sticky;
+      top: 1rem;
+      z-index: 20;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .nav-logo-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #22c55e, #0ea5e9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f9fafb;
+      font-size: 0.85rem;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(56, 189, 248, 0.6);
+    }
+
+    .nav-title {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-title-main {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .nav-title-sub {
+      font-size: 0.75rem;
+      color: #64748b;
+    }
+
+    .nav-right button {
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.9);
+      padding: 0.45rem 0.95rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #0ea5e9, #22c55e);
+      color: #f9fafb;
+      box-shadow: 0 10px 20px rgba(14, 165, 233, 0.5);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        filter 0.12s ease;
+    }
+
+    .nav-right button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 14px 28px rgba(14, 165, 233, 0.7);
+    }
+
+    .nav-right button:active {
+      transform: translateY(0px) scale(0.98);
+      box-shadow: 0 8px 16px rgba(14, 165, 233, 0.4);
+    }
+
+    /* ========== Hero ========== */
+    .hero {
+      margin-top: 2.5rem;
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 4vw, 2.75rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      font-weight: 800;
+      color: #020617;
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-highlight {
+      background: linear-gradient(135deg, #0ea5e9, #22c55e);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 0.98rem;
+      max-width: 560px;
+      color: #64748b;
+    }
+
+    /* ========== Main Card Layout ========== */
+    .main-card {
+      margin-top: 1.5rem;
+      display: grid;
+      grid-template-columns: 1.02fr 1fr;
+      gap: 1.25rem;
+      background: radial-gradient(circle at top left, rgba(255,255,255,0.96), rgba(248,250,252,0.98));
+      border-radius: 1.5rem;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      box-shadow:
+        0 24px 50px rgba(15,23,42,0.12),
+        0 0 0 1px rgba(255,255,255,0.5) inset;
+      padding: 1.25rem;
+      backdrop-filter: blur(22px);
+    }
+
+    @media (max-width: 900px) {
+      .app-container {
+        padding: 1.25rem 1rem 2rem;
+      }
+
+      .nav {
+        border-radius: 1rem;
+        padding-inline: 0.9rem;
+      }
+
+      .main-card {
+        grid-template-columns: 1fr;
+        padding: 1.1rem;
+      }
+
+      .hero {
+        text-align: left;
+        margin-top: 1.75rem;
+      }
+    }
+
+    /* ========== Cards (Input / Output) ========== */
+    .panel {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      padding: 0.9rem 0.9rem 1rem;
+      border-radius: 1.15rem;
+      background: rgba(248, 250, 252, 0.9);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .panel-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .panel-hint {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+
+    /* ========== Input Area ========== */
+    .textarea {
+      width: 100%;
+      min-height: 190px;
+      max-height: 320px;
+      resize: vertical;
+      border-radius: 0.85rem;
+      padding: 0.8rem 0.9rem;
+      border: 1px solid rgba(203, 213, 225, 0.9);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      outline: none;
+      background: rgba(255,255,255,0.9);
+      color: #0f172a;
+      transition:
+        border-color 0.12s ease,
+        box-shadow 0.12s ease,
+        background 0.12s ease;
+    }
+
+    .textarea::placeholder {
+      color: #cbd5f5;
+    }
+
+    .textarea:focus {
+      border-color: #0ea5e9;
+      box-shadow: 0 0 0 1px rgba(14, 165, 233, 0.35);
+      background: #ffffff;
+    }
+
+    .input-footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.15rem;
+    }
+
+    .char-counter {
+      font-size: 0.78rem;
+      color: #94a3b8;
+    }
+
+    .char-counter-limit {
+      color: #f97316;
+      font-weight: 500;
+    }
+
+    .input-error {
+      font-size: 0.78rem;
+      color: #ef4444;
+      margin-top: 0.15rem;
+      min-height: 1em;
+    }
+
+    /* ========== Preset Buttons ========== */
+    .preset-section {
+      margin-top: 0.35rem;
+    }
+
+    .preset-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 0.35rem;
+    }
+
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.45rem;
+    }
+
+    @media (min-width: 1040px) {
+      .preset-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    .preset-btn {
+      border-radius: 999px;
+      border: 1px solid rgba(203, 213, 225, 0.95);
+      background: #ffffff;
+      padding: 0.45rem 0.6rem;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.35rem;
+      font-weight: 500;
+      color: #0f172a;
+      transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        border-color 0.12s ease,
+        background 0.12s ease;
+    }
+
+    .preset-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+      border-color: rgba(148, 163, 184, 0.9);
+    }
+
+    .preset-btn:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 3px 8px rgba(15, 23, 42, 0.05);
+    }
+
+    .preset-btn.selected {
+      background: radial-gradient(circle at top left, #0ea5e9, #22c55e);
+      color: #f9fafb;
+      border-color: transparent;
+      box-shadow: 0 10px 24px rgba(14, 165, 233, 0.65);
+    }
+
+    .preset-label-main {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.1rem;
+    }
+
+    .preset-name {
+      font-size: 0.8rem;
+    }
+
+    .preset-sub {
+      font-size: 0.7rem;
+      opacity: 0.8;
+    }
+
+    .preset-pro-pill {
+      font-size: 0.68rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      border: 1px solid rgba(250, 250, 250, 0.95);
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.95), rgba(245, 158, 11, 1));
+      color: #111827;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      box-shadow: 0 4px 8px rgba(251, 191, 36, 0.5);
+    }
+
+    .preset-btn:not(.selected) .preset-pro-pill {
+      background: rgba(248, 250, 252, 0.9);
+      border-color: rgba(226, 232, 240, 0.95);
+      color: #fbbf24;
+      box-shadow: none;
+    }
+
+    /* ========== Primary Action Button ========== */
+    .primary-btn {
+      margin-top: 0.8rem;
+      width: 100%;
+      border-radius: 999px;
+      padding: 0.7rem 1rem;
+      font-size: 0.92rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #0f766e, #0ea5e9);
+      color: #e5f3ff;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      box-shadow: 0 16px 40px rgba(8, 47, 73, 0.45);
+      transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        filter 0.12s ease,
+        opacity 0.12s ease;
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 22px 50px rgba(8, 47, 73, 0.6);
+    }
+
+    .primary-btn:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 10px 24px rgba(8, 47, 73, 0.4);
+    }
+
+    .primary-btn[disabled] {
+      opacity: 0.65;
+      cursor: default;
+      transform: none;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.15);
+    }
+
+    .primary-btn-icon {
+      font-size: 1.05rem;
+    }
+
+    .spinner-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      border: 2px solid rgba(226, 232, 240, 0.85);
+      border-top-color: #e5f3ff;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ========== Output Section ========== */
+    .output-box {
+      margin-top: 0.15rem;
+      border-radius: 0.85rem;
+      border: 1px solid rgba(203, 213, 225, 0.9);
+      background: #ffffff;
+      min-height: 190px;
+      max-height: 320px;
+      padding: 0.8rem 0.85rem;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      overflow-y: auto;
+      position: relative;
+      color: #0f172a;
+    }
+
+    .output-placeholder {
+      color: #cbd5e1;
+      font-size: 0.88rem;
+    }
+
+    .output-loading {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .skeleton-line {
+      height: 0.75rem;
+      border-radius: 999px;
+      background: linear-gradient(
+        90deg,
+        rgba(226, 232, 240, 0.7),
+        rgba(241, 245, 249, 1),
+        rgba(226, 232, 240, 0.7)
+      );
+      background-size: 200% 100%;
+      animation: shimmer 1.2s ease-in-out infinite;
+    }
+
+    .skeleton-line:nth-child(2) {
+      width: 92%;
+    }
+
+    .skeleton-line:nth-child(3) {
+      width: 88%;
+    }
+
+    .skeleton-line:nth-child(4) {
+      width: 65%;
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: 200% 0;
+      }
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    .output-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-top: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .secondary-btn-row {
+      display: flex;
+      gap: 0.55rem;
+      flex-wrap: wrap;
+    }
+
+    .secondary-btn {
+      font-size: 0.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(203, 213, 225, 0.9);
+      padding: 0.45rem 0.8rem;
+      background: #ffffff;
+      color: #0f172a;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-weight: 500;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06);
+      transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        background 0.12s ease;
+    }
+
+    .secondary-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 12px rgba(15, 23, 42, 0.1);
+      background: #f9fafb;
+    }
+
+    .secondary-btn:active {
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 3px 8px rgba(15, 23, 42, 0.08);
+    }
+
+    .secondary-btn-icon {
+      font-size: 0.9rem;
+    }
+
+    .mode-used-text {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      white-space: nowrap;
+    }
+
+    .mode-used-pill {
+      padding: 0.08rem 0.45rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      background: rgba(241, 245, 249, 0.9);
+      font-size: 0.72rem;
+      font-weight: 600;
+      margin-left: 0.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .output-error {
+      font-size: 0.78rem;
+      color: #ef4444;
+      margin-top: 0.1rem;
+      min-height: 1em;
+    }
+
+    /* ========== Toast ========== */
+    .toast {
+      position: fixed;
+      right: 1.5rem;
+      bottom: 1.5rem;
+      z-index: 50;
+      padding: 0.65rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(22, 163, 74, 0.98);
+      color: #ecfdf5;
+      font-size: 0.78rem;
+      font-weight: 500;
+      box-shadow: 0 18px 40px rgba(22, 163, 74, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition:
+        opacity 0.18s ease-out,
+        transform 0.18s ease-out;
+    }
+
+    .toast.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .toast-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 999px;
+      border: 2px solid #bbf7d0;
+      position: relative;
+    }
+
+    .toast-icon::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: inherit;
+      background: #bbf7d0;
+    }
+
+    @media (max-width: 640px) {
+      .toast {
+        left: 1rem;
+        right: 1rem;
+        justify-content: center;
+      }
+    }
+
+    /* ========== Footer ========== */
+    .footer {
+      margin-top: 2rem;
+      padding-top: 1.2rem;
+      padding-bottom: 0.8rem;
+      border-top: 1px dashed rgba(148, 163, 184, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      font-size: 0.8rem;
+      color: #64748b;
+      flex-wrap: wrap;
+    }
+
+    .footer-link {
+      font-weight: 600;
+      color: #0ea5e9;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .footer-link:hover {
+      text-decoration: underline;
+    }
+
+    .footer-link-arrow {
+      font-size: 0.9rem;
+      transform: translateY(1px);
+    }
+
+    @media (max-width: 640px) {
+      .footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-root">
+    <div class="app-container">
+      <!-- Nav -->
+      <header class="nav">
+        <div class="nav-left">
+          <div class="nav-logo-badge">NH</div>
+          <div class="nav-title">
+            <div class="nav-title-main">Notes Humanizer PRO</div>
+            <div class="nav-title-sub">Student Edition</div>
+          </div>
+        </div>
+        <div class="nav-right">
+          <button type="button">
+            <span>Get PRO</span>
+            <span aria-hidden="true">⚡</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Hero -->
+      <section class="hero">
+        <h1 class="hero-title">
+          Turn robotic notes into
+          <span class="hero-highlight">human text.</span>
+        </h1>
+        <p class="hero-subtitle">
+          Paste your text, choose a mode, and get human-sounding, exam-ready notes in seconds —
+          without rewriting everything by hand.
+        </p>
+      </section>
+
+      <!-- Main Card -->
+      <main class="main-card">
+        <!-- Left: Input & Controls -->
+        <section class="panel" aria-label="Input section">
+          <div class="panel-header">
+            <h2 class="panel-title">Paste your text</h2>
+            <p class="panel-hint">Works with AI notes, class notes, and slides.</p>
+          </div>
+
+          <textarea
+            id="inputText"
+            class="textarea"
+            placeholder="Paste your raw / AI-generated notes here…"
+            maxlength="2000"
+          ></textarea>
+
+          <div class="input-footer-row">
+            <div id="inputError" class="input-error"></div>
+            <div id="charCounter" class="char-counter">0 / 2000 characters</div>
+          </div>
+
+          <!-- Presets -->
+          <div class="preset-section">
+            <div class="preset-title">Choose mode</div>
+            <div class="preset-grid" role="radiogroup" aria-label="Humanizer preset">
+              <button
+                type="button"
+                class="preset-btn selected"
+                data-preset="simple"
+                aria-pressed="true"
+              >
+                <div class="preset-label-main">
+                  <span class="preset-name">Simple Humanizer (Free)</span>
+                  <span class="preset-sub">Clean & natural sentences.</span>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                class="preset-btn"
+                data-preset="exam"
+                aria-pressed="false"
+              >
+                <div class="preset-label-main">
+                  <span class="preset-name">Exam-Ready (PRO)</span>
+                  <span class="preset-sub">School-style answers.</span>
+                </div>
+                <span class="preset-pro-pill">PRO</span>
+              </button>
+
+              <button
+                type="button"
+                class="preset-btn"
+                data-preset="genz"
+                aria-pressed="false"
+              >
+                <div class="preset-label-main">
+                  <span class="preset-name">Gen-Z Friendly (PRO)</span>
+                  <span class="preset-sub">Light, fun, still clear.</span>
+                </div>
+                <span class="preset-pro-pill">PRO</span>
+              </button>
+
+              <button
+                type="button"
+                class="preset-btn"
+                data-preset="teacher"
+                aria-pressed="false"
+              >
+                <div class="preset-label-main">
+                  <span class="preset-name">Teacher-Safe (PRO)</span>
+                  <span class="preset-sub">Formal & neat language.</span>
+                </div>
+                <span class="preset-pro-pill">PRO</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Primary Action -->
+          <button id="humanizeBtn" type="button" class="primary-btn">
+            <span class="primary-btn-icon">✨</span>
+            <span id="humanizeBtnLabel">Humanize Notes</span>
+          </button>
+        </section>
+
+        <!-- Right: Output -->
+        <section class="panel" aria-label="Output section">
+          <div class="panel-header">
+            <h2 class="panel-title">Result</h2>
+            <p class="panel-hint">Preview your humanized notes here.</p>
+          </div>
+
+          <div id="outputBox" class="output-box">
+            <div class="output-placeholder">Your humanized notes will appear here…</div>
+          </div>
+
+          <div id="outputError" class="output-error"></div>
+
+          <div class="output-actions">
+            <div class="secondary-btn-row">
+              <button id="copyBtn" type="button" class="secondary-btn">
+                <span class="secondary-btn-icon" aria-hidden="true">📋</span>
+                <span>Copy Text</span>
+              </button>
+
+              <button id="downloadBtn" type="button" class="secondary-btn">
+                <span class="secondary-btn-icon" aria-hidden="true">⬇️</span>
+                <span>Download .txt</span>
+              </button>
+            </div>
+
+            <div class="mode-used-text">
+              Mode used:
+              <span id="modeUsed" class="mode-used-pill">Simple</span>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div>Made for students. Built by an Indian teen.</div>
+        <a class="footer-link" href="#" target="_blank" rel="noopener">
+          <span>Upgrade to PRO</span>
+          <span class="footer-link-arrow">→</span>
+        </a>
+      </footer>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast" role="status" aria-live="polite">
+      <div class="toast-icon" aria-hidden="true"></div>
+      <div id="toastMessage">Copied!</div>
+    </div>
+  </div>
+
+  <script>
+    // ===================== Mock AI Function =====================
+    /**
+     * Mock AI call.
+     * In production, replace this with a real API call (e.g. OpenAI/Claude).
+     *
+     * @param {string} preset - One of "simple", "exam", "genz", "teacher".
+     * @param {string} text   - Raw user input text.
+     * @returns {Promise<string>} - Humanized version of the text.
+     */
+    async function callAI(preset, text) {
+      const presetPrefixes = {
+        simple: "[Simple Humanized Version]\n\n",
+        exam: "[Exam-Ready Version]\n\n",
+        genz: "[Gen-Z Version]\n\n",
+        teacher: "[Teacher-Safe Version]\n\n"
+      };
+
+      const prefix = presetPrefixes[preset] || "[Humanized Version]\n\n";
+
+      // Simulate latency (800ms)
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(prefix + text);
+        }, 800);
+      });
+    }
+
+    // ===================== App Logic =====================
+    (function initNotesHumanizerApp() {
+      // DOM references
+      const inputTextEl = document.getElementById("inputText");
+      const charCounterEl = document.getElementById("charCounter");
+      const inputErrorEl = document.getElementById("inputError");
+      const humanizeBtnEl = document.getElementById("humanizeBtn");
+      const humanizeBtnLabelEl = document.getElementById("humanizeBtnLabel");
+      const outputBoxEl = document.getElementById("outputBox");
+      const outputErrorEl = document.getElementById("outputError");
+      const copyBtnEl = document.getElementById("copyBtn");
+      const downloadBtnEl = document.getElementById("downloadBtn");
+      const modeUsedEl = document.getElementById("modeUsed");
+      const toastEl = document.getElementById("toast");
+      const toastMessageEl = document.getElementById("toastMessage");
+      const presetButtons = Array.from(document.querySelectorAll(".preset-btn"));
+
+      // App state
+      let selectedPreset = "simple";
+      let isLoading = false;
+      let outputText = "";
+      let toastTimeoutId = null;
+
+      const presetDisplayNames = {
+        simple: "Simple",
+        exam: "Exam-Ready",
+        genz: "Gen-Z",
+        teacher: "Teacher-Safe"
+      };
+
+      // ========== Character Counter ==========
+      function updateCharCounter() {
+        const currentLength = inputTextEl.value.length;
+        const maxLength = inputTextEl.maxLength || 2000;
+        charCounterEl.textContent = currentLength + " / " + maxLength + " characters";
+        if (maxLength - currentLength <= 200) {
+          charCounterEl.classList.add("char-counter-limit");
+        } else {
+          charCounterEl.classList.remove("char-counter-limit");
+        }
+      }
+
+      inputTextEl.addEventListener("input", updateCharCounter);
+
+      // ========== Preset Selection ==========
+      function setPreset(presetKey) {
+        selectedPreset = presetKey;
+        presetButtons.forEach((btn) => {
+          const isCurrent = btn.dataset.preset === presetKey;
+          btn.classList.toggle("selected", isCurrent);
+          btn.setAttribute("aria-pressed", isCurrent ? "true" : "false");
+        });
+        modeUsedEl.textContent = presetDisplayNames[presetKey] || "Simple";
+      }
+
+      presetButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const presetKey = btn.dataset.preset;
+          if (!presetKey || isLoading) return;
+          setPreset(presetKey);
+        });
+      });
+
+      // ========== Toast Handling ==========
+      function showToast(message) {
+        toastMessageEl.textContent = message || "Done.";
+        toastEl.classList.add("show");
+        if (toastTimeoutId) clearTimeout(toastTimeoutId);
+        toastTimeoutId = setTimeout(() => {
+          toastEl.classList.remove("show");
+        }, 1800);
+      }
+
+      // ========== Output Helpers ==========
+      function setOutputPlaceholder() {
+        outputBoxEl.innerHTML =
+          '<div class="output-placeholder">Your humanized notes will appear here…</div>';
+      }
+
+      function setOutputLoading() {
+        outputBoxEl.innerHTML = `
+          <div class="output-loading" aria-hidden="true">
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+            <div class="skeleton-line"></div>
+          </div>
+        `;
+      }
+
+      function setOutputText(text) {
+        // Simple text rendering, escaping basic HTML entities
+        const safeText = text
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\n/g, "<br />");
+        outputBoxEl.innerHTML = safeText;
+      }
+
+      // ========== Main Action: Humanize ==========
+      async function handleHumanizeClick() {
+        if (isLoading) return;
+
+        const rawText = inputTextEl.value.trim();
+        inputErrorEl.textContent = "";
+        outputErrorEl.textContent = "";
+
+        if (!rawText) {
+          inputErrorEl.textContent = "Please paste some text before humanizing.";
+          inputTextEl.focus();
+          return;
+        }
+
+        try {
+          isLoading = true;
+          humanizeBtnEl.disabled = true;
+          humanizeBtnLabelEl.textContent = "Processing…";
+          humanizeBtnEl.innerHTML = `
+            <span class="spinner-dot" aria-hidden="true"></span>
+            <span id="humanizeBtnLabel">Processing…</span>
+          `;
+
+          setOutputLoading();
+
+          const result = await callAI(selectedPreset, rawText);
+          outputText = result || "";
+          if (outputText) {
+            setOutputText(outputText);
+          } else {
+            setOutputPlaceholder();
+          }
+        } catch (err) {
+          console.error("AI error:", err);
+          outputErrorEl.textContent = "Something went wrong. Please try again.";
+          setOutputPlaceholder();
+        } finally {
+          isLoading = false;
+          humanizeBtnEl.disabled = false;
+          humanizeBtnEl.innerHTML = `
+            <span class="primary-btn-icon">✨</span>
+            <span id="humanizeBtnLabel">Humanize Notes</span>
+          `;
+        }
+      }
+
+      humanizeBtnEl.addEventListener("click", handleHumanizeClick);
+
+      // ========== Copy Button ==========
+      async function handleCopyClick() {
+        if (!outputText) {
+          showToast("Nothing to copy yet.");
+          return;
+        }
+
+        try {
+          await navigator.clipboard.writeText(outputText);
+          showToast("Copied to clipboard!");
+        } catch (err) {
+          console.error("Clipboard error:", err);
+          showToast("Copy failed. Select & copy manually.");
+        }
+      }
+
+      copyBtnEl.addEventListener("click", handleCopyClick);
+
+      // ========== Download Button ==========
+      function handleDownloadClick() {
+        if (!outputText) {
+          showToast("Nothing to download yet.");
+          return;
+        }
+
+        const blob = new Blob([outputText], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        const presetName = (presetDisplayNames[selectedPreset] || "Simple")
+          .toLowerCase()
+          .replace(/\s+/g, "-");
+        a.href = url;
+        a.download = `notes-humanizer-${presetName}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+
+      downloadBtnEl.addEventListener("click", handleDownloadClick);
+
+      // ========== Init on Load ==========
+      updateCharCounter();
+      setPreset(selectedPreset);
+      setOutputPlaceholder();
+    })();
+  </script>
+</body>
+</html>
