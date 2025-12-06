@@ -1,38 +1,51 @@
+// api/humanize.js
+
 import Groq from "groq-sdk";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({ error: "Method Not Allowed" });
   }
 
   try {
-    const { preset, text } = req.body;
+    const { preset, userText } = req.body;
 
-    if (!text || text.trim() === "") {
-      return res.status(400).json({ error: "No input text provided" });
+    if (!userText || userText.trim() === "") {
+      return res.status(400).json({ error: "Empty input" });
     }
 
-    const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+    const client = new Groq({
+      apiKey: process.env.GROQ_API_KEY,
+    });
 
-    const prompt = `Rewrite the following text in the style: ${preset}.
-    Text: ${text}`;
+    // Use a safe, currently supported model
+    const model = "llama-3.3-70b-versatile";
 
     const completion = await client.chat.completions.create({
-  model: "llama-3.3-70b-versatile",
-  messages: [
-    { role: "system", content: systemPrompt },
-    { role: "user", content: userText },
-  ],
-  temperature: 0.7,
-});
+      model,
+      messages: [
+        {
+          role: "system",
+          content:
+            `You are a notes humanizer AI. Take raw, robotic text and convert it into clear, simple, exam-ready human language based on preset: ${preset}.`,
+        },
+        {
+          role: "user",
+          content: userText,
+        },
+      ],
+      temperature: 0.7,
+    });
 
-
-    const output = completion.choices[0].message.content.trim();
+    const output = completion.choices[0].message.content;
 
     return res.status(200).json({ output });
 
-  } catch (err) {
-    console.error("Server error:", err);
-    return res.status(500).json({ error: "Server crashed" });
+  } catch (error) {
+    console.error("API ERROR:", error);
+    return res.status(500).json({
+      error: "Server error",
+      details: error.message,
+    });
   }
 }
