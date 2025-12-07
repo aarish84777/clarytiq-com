@@ -885,9 +885,10 @@
         padding: 1.4rem;
         backdrop-filter: blur(20px);
       ">
-        <h3 style="font-size:1.1rem; margin-bottom:0.4rem;">6 Smart Modes</h3>
+        <h3 style="font-size:1.1rem; margin-bottom:0.4rem;">5 Smart Modes</h3>
         <p style="color:var(--text-soft); font-size:0.93rem;">
-          Simple, Exam, Gen Z, Teacher-safe, Cause→Effect, Simple Words.  
+        Simple Humanizer, Easier Language, Exam, Gen Z, Cause→Effect.
+  
           Pick your vibe.
         </p>
       </div>
@@ -918,7 +919,7 @@
       font-weight: 700;
       margin-bottom: 1.8rem;
       color: #0f172a;
-    ">Your 6 Rewrite Styles</h2>
+    ">Your Rewrite Styles</h2>
 
     <div style="
       display: grid;
@@ -926,8 +927,9 @@
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     ">
       <div style="background:var(--card-bg); border:1px solid var(--border-strong); border-radius:1rem; padding:1.2rem;">
-        <strong>Simple</strong>
-        <p style="color:var(--text-soft); font-size:0.9rem;">Clean + natural sentences. Free.</p>
+        <strong>Simple + Easy Words (Free)</strong>
+<p style="color:var(--text-soft); font-size:0.9rem;">Clean writing + explained like you're 10.</p>
+
       </div>
 
       <div style="background:var(--card-bg); border:1px solid var(--border-strong); border-radius:1rem; padding:1.2rem;">
@@ -940,20 +942,12 @@
         <p style="color:var(--text-soft); font-size:0.9rem;">Dark humour + emojis. Fun mode 😭🔥</p>
       </div>
 
-      <div style="background:var(--card-bg); border:1px solid var(--border-strong); border-radius:1rem; padding:1.2rem;">
-        <strong>Teacher-Safe</strong>
-        <p style="color:var(--text-soft); font-size:0.9rem;">Formal + neat. No trouble.</p>
-      </div>
 
       <div style="background:var(--card-bg); border:1px solid var(--border-strong); border-radius:1rem; padding:1.2rem;">
         <strong>Cause → Effect</strong>
         <p style="color:var(--text-soft); font-size:0.9rem;">Logic chains for History & Science.</p>
       </div>
 
-      <div style="background:var(--card-bg); border:1px solid var(--border-strong); border-radius:1rem; padding:1.2rem;">
-        <strong>Simple Words</strong>
-        <p style="color:var(--text-soft); font-size:0.9rem;">Explained like you're 10.</p>
-      </div>
     </div>
   </div>
 
@@ -1058,6 +1052,19 @@
               </button>
 
               <button
+  type="button"
+  class="preset-btn"
+  data-preset="simple_words"
+  aria-pressed="false"
+>
+  <div class="preset-label-main">
+    <span class="preset-name">Easy Words (Free)</span>
+    <span class="preset-sub">Explained like you're 10.</span>
+  </div>
+</button>
+
+
+              <button
                 type="button"
                 class="preset-btn"
                 data-preset="genz"
@@ -1071,17 +1078,18 @@
               </button>
 
               <button
-                type="button"
-                class="preset-btn"
-                data-preset="teacher"
-                aria-pressed="false"
-              >
-                <div class="preset-label-main">
-                  <span class="preset-name">Teacher-Safe (PRO)</span>
-                  <span class="preset-sub">Formal & neat language.</span>
-                </div>
-                <span class="preset-pro-pill">PRO</span>
-              </button>
+  type="button"
+  class="preset-btn"
+  data-preset="cause_effect"
+  aria-pressed="false"
+>
+  <div class="preset-label-main">
+    <span class="preset-name">Cause → Effect (PRO)</span>
+    <span class="preset-sub">Logic chain structure.</span>
+  </div>
+  <span class="preset-pro-pill">PRO</span>
+</button>
+
             </div>
           </div>
 

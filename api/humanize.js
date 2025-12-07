@@ -5,37 +5,54 @@ const TEMPLATES = {
 - Natural tone
 - Easy to read
 - Remove robotic phrasing
-- Keep meaning accurate`,
+- Keep meaning accurate
+- Write as if explaining to someone young
+- Use easy words
+- you may use inconsistent anguage and give occasional errors`,
+
+  simple_words: `Rewrite the text using extremely easy language.
+Rules:
+- Explain like to a 10-year-old
+- Short sentences
+- No academic vocabulary
+- Make it ultra-easy to understand`,
 
   exam: `Rewrite the text in a clean, formal, school-exam tone.
 - Structured
 - Factual
 - No slang
-- Teacher-acceptable answers`,
+- Teacher-acceptable answers
+- Write in bullet points
+- CBSE-style academic tone
+use bullet points as 1, 2, 3...`,
 
-  genz: `Rewrite the text in an unhinged Gen-Z and Gen-Alpha tone with MAX dark humour and playful roasts.
+  genz: `Rewrite the text in an unhinged Gen-Z + Gen-Alpha tone with MAX dark humour and playful roasts.
 Rules:
 - Sarcastic, chaotic inner-monologue energy 😭💀
-- Drop light, self-aware roasts about the topic, the situation, life, and the struggle
-- Use emojis sparingly but with purpose (😭🔥💀🤌🫠)
-- Dark humour allowed, but:
+- Light, self-aware roasts about the topic and life
+- Emojis sparingly but impactful (😭🔥💀🤌🫠)
+- Dark humour allowed but:
   * NO violence
-  * NO offensive groups
+  * NO targeting groups
   * NO illegal themes
-- Make the tone feel like a tired but genius teen explaining the topic at 3AM while questioning life
-- Maintain correct facts — chaos is in delivery, not content
+- Maintain factual accuracy
+- Chaos only in delivery, not content
 - No emoji spam
-- Roast the topic , like: "Plants out here running solar panels while I can't run my life." 
-- Roast yourself , like: "My brain is buffering but okay let's continue."
-- Overall vibe = Smart, chaotic, funny, depressed-but-functional Gen-Z narrator`,
+Vibe = Tired-but-genius teen explaining the topic at 3AM.`,
 
-  teacher: `Rewrite the text in a very clean, academic, teacher-safe tone.
-- Formal
-- Polite
-- Neat grammar
-- No humor
-- No slang
-Perfect for school submissions.`
+  cause_effect: `Rewrite the text using a clear CAUSE → EFFECT chain.
+Rules:
+- Break each idea into "Cause → Effect"
+- Explain WHY something happened
+- Then explain WHAT happened because of it
+- Step-by-step logic
+- Perfect for History, Civics, Biology, Science
+Format example:
+Cause →
+Effect →
+Repeat for all main ideas.
+write it simple language of a 9 year old's academic vocabulary
+logic in a way EVEN a half-slep child can understand.`  
 };
 
 export default async function handler(req, res) {
@@ -69,6 +86,9 @@ export default async function handler(req, res) {
     return res.status(200).json({ output });
   } catch (err) {
     console.error("HUMANIZE API ERROR:", err);
-    return res.status(500).json({ error: "Server error", details: err.message });
+    return res.status(500).json({
+      error: "Server error",
+      details: err.message
+    });
   }
 }
