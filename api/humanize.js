@@ -1,34 +1,40 @@
 import Groq from "groq-sdk";
 
 const TEMPLATES = {
-  simple: `Rewrite the text in clean, simple, everyday human language. 
-- Remove robotic tone
-- Shorten long sentences
-- Keep meaning accurate
-- Make it natural and easy to read.`,
+  simple: `Rewrite the text in clear, simple, everyday human language.
+- Natural tone
+- Easy to read
+- Remove robotic phrasing
+- Keep meaning accurate`,
 
-  exam: `Rewrite the text in a formal, school-exam tone. 
-- Clear
+  exam: `Rewrite the text in a clean, formal, school-exam tone.
 - Structured
+- Factual
 - No slang
-- Direct and factual
-Your job is to make it look like an answer a teacher would accept.`,
+- Teacher-acceptable answers`,
 
-  genz: `Rewrite the text in a light, Gen-Z friendly tone.
+  genz: `Rewrite the text in an unhinged Gen-Z and Gen-Alpha tone with MAX dark humour and playful roasts.
 Rules:
-- Fun but NOT cringe
-- Slight humor allowed
-- Keep clarity
-- No TikTok-core language
-- No excessive emojis
-Sound like a smart teen explaining something chill.`,
+- Sarcastic, chaotic inner-monologue energy 😭💀
+- Drop light, self-aware roasts about the topic, the situation, life, and the struggle
+- Use emojis sparingly but with purpose (😭🔥💀🤌🫠)
+- Dark humour allowed, but:
+  * NO violence
+  * NO offensive groups
+  * NO illegal themes
+- Make the tone feel like a tired but genius teen explaining the topic at 3AM while questioning life
+- Maintain correct facts — chaos is in delivery, not content
+- No emoji spam
+- Roast the topic , like: "Plants out here running solar panels while I can't run my life." 
+- Roast yourself , like: "My brain is buffering but okay let's continue."
+- Overall vibe = Smart, chaotic, funny, depressed-but-functional Gen-Z narrator`,
 
   teacher: `Rewrite the text in a very clean, academic, teacher-safe tone.
 - Formal
 - Polite
-- Textbook-like
-- Zero slang
-- Very clear sentence structure
+- Neat grammar
+- No humor
+- No slang
 Perfect for school submissions.`
 };
 
