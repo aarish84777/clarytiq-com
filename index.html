@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>ClaireText</title>
+  <title>Hello Aarish</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Clerk (single include, latest) -->
@@ -851,7 +851,7 @@
         <div class="nav-left">
           <div class="nav-logo-badge">NH</div>
           <div class="nav-title">
-            <div class="nav-title-main">Claire TExt</div>
+            <div class="nav-title-main">Hello Aarish</div>
             <div class="nav-title-sub">Student Edition</div>
           </div>
         </div>
@@ -1259,46 +1259,45 @@
 
     // CREDIT check
 // CREDIT check
+// CREDIT check
 if (!hasCredit(selectedPreset)) {
 
-    // Show PRO Example modal
+    if (!window.isUserLoggedIn) {
+        // BEFORE LOGIN → show Clerk sign-in
+        document.getElementById("sign-in").style.display = "block";
+        return;
+    }
+
+    // AFTER LOGIN → show PRO EXAMPLE modal
     const modal = document.getElementById("proExampleModal");
     modal.style.display = "flex";
 
-    // Load elements
     const exampleInput = document.getElementById("exampleInput");
     const exampleOutput = document.getElementById("exampleOutput");
 
-    // Set examples based on the mode clicked
     if (selectedPreset === "genz") {
-        exampleInput.textContent =
-          "The French Revolution changed France.";
+        exampleInput.textContent = "The French Revolution changed France.";
         exampleOutput.textContent =
           "Bruhh the whole country said 'nah fam' to the king 💀🔥... People were DONE.";
     }
-
     else if (selectedPreset === "cause_effect") {
-        exampleInput.textContent =
-          "Taxes increased in France.";
+        exampleInput.textContent = "Taxes increased in France.";
         exampleOutput.textContent =
           "Cause → Effect → Result:\n• High taxes → people angry → protests.\n• Food prices ↑ → riots.\n• Govt debt → collapse of monarchy.";
     }
-
     else if (selectedPreset === "exam") {
-        exampleInput.textContent =
-          "The French Revolution changed France.";
+        exampleInput.textContent = "The French Revolution changed France.";
         exampleOutput.textContent =
           "The revolution led to major social, political, and economic changes in France.";
     }
-
     else {
-        // Default example for free modes
         exampleInput.textContent = "Input text";
         exampleOutput.textContent = "Output text will appear here...";
     }
 
-    return; // Stop Humanize from running
+    return; // stop humanize
 }
+
 
 
     // USE a credit now
@@ -1355,6 +1354,13 @@ document.addEventListener("click", function (e) {
     exampleModal.style.display = "none";
   }
 });
+
+// BUY PRO button → go to Pricing Page
+document.getElementById("buyProBtn").onclick = () => {
+  window.location.href = "/pricing";  // ← change this to your pricing URL
+};
+
+
 
 /* Close button for PRO Example */
 const proExampleCloseBtn = document.getElementById("proExampleCloseBtn");
