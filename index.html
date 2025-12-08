@@ -1290,21 +1290,44 @@
 </script>
 
 <script>
-// Close overlay when clicking outside the sign-in box
+// Close overlays when clicking outside the boxes
 document.addEventListener("click", function (e) {
+  /* SIGN-IN OVERLAY */
   const overlay = document.getElementById("sign-in");
-  const box = document.getElementById("clerk-sign-in");
+  const signBox = document.getElementById("clerk-sign-in");
 
-  // If overlay is visible AND click is outside the Clerk box → close
   if (
     overlay.style.display === "block" &&
-    !box.contains(e.target) &&
+    !signBox.contains(e.target) &&
     e.target !== document.getElementById("openSignIn")
   ) {
     overlay.style.display = "none";
   }
+
+  /* PRO EXAMPLE MODAL */
+  const exampleModal = document.getElementById("proExampleModal");
+  const exampleBox = exampleModal ? exampleModal.querySelector(".pro-modal") : null;
+
+  if (
+    exampleModal &&
+    exampleModal.style.display === "flex" &&
+    exampleBox &&
+    !exampleBox.contains(e.target)
+  ) {
+    exampleModal.style.display = "none";
+  }
 });
+
+/* Close button for PRO Example */
+const proExampleCloseBtn = document.getElementById("proExampleCloseBtn");
+if (proExampleCloseBtn) {
+  proExampleCloseBtn.addEventListener("click", () => {
+    const modal = document.getElementById("proExampleModal");
+    if (modal) modal.style.display = "none";
+  });
+}
 </script>
+
 
 
 </body>
