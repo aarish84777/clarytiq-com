@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Clarytiq — Legal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    :root {
+      --bg-page: #0f172a;
+      --bg-card: #020617;
+      --border-subtle: rgba(148, 163, 184, 0.35);
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.12);
+      --text-main: #e5e7eb;
+      --text-muted: #9ca3af;
+      --text-soft: #6b7280;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1d2537 0, #020617 52%, #020617 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
+    .page-shell {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 3rem;
+    }
+
+    /* NAV / HEADER BAR */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      background: radial-gradient(circle at top left, #111827 0, #020617 65%);
+      backdrop-filter: blur(14px);
+      box-shadow:
+        0 18px 45px rgba(15, 23, 42, 0.65),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .brand-logo {
+      width: 26px;
+      height: 26px;
+      border-radius: 30%;
+      background: conic-gradient(
+        from 190deg,
+        #38bdf8,
+        #a855f7,
+        #22c55e,
+        #38bdf8
+      );
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.5);
+    }
+
+    .brand-text-main {
+      font-weight: 700;
+      font-size: 0.98rem;
+      letter-spacing: 0.03em;
+    }
+
+    .brand-text-sub {
+      font-size: 0.72rem;
+      color: var(--text-soft);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .top-pill {
+      font-size: 0.75rem;
+      padding: 0.38rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: var(--text-muted);
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    .back-link {
+      font-size: 0.78rem;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.55);
+      color: var(--accent);
+      background: rgba(15, 23, 42, 0.95);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease,
+        background 0.12s ease;
+    }
+
+    .back-link:hover {
+      transform: translateY(-1px);
+      background: rgba(15, 23, 42, 1);
+      box-shadow: 0 8px 20px rgba(56, 189, 248, 0.25);
+    }
+
+    /* MAIN CARD */
+    .legal-card {
+      background: radial-gradient(circle at top left, #020617 0, #020617 45%, #020617 100%);
+      border-radius: 1.5rem;
+      border: 1px solid var(--border-subtle);
+      padding: 1.75rem 1.5rem 2.1rem;
+      box-shadow:
+        0 26px 65px rgba(15, 23, 42, 0.9),
+        0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    @media (min-width: 768px) {
+      .legal-card {
+        padding: 2.2rem 2rem 2.6rem;
+      }
+    }
+
+    .legal-header-eyebrow {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
+
+    .legal-title {
+      font-size: clamp(1.6rem, 3vw, 2rem);
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+
+    .legal-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+
+    .legal-meta {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .legal-meta-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
+    }
+
+    .legal-section-divider {
+      border: none;
+      border-top: 1px solid rgba(31, 41, 55, 1);
+      margin: 1.75rem 0 1.5rem;
+    }
+
+    /* SECTIONS */
+    .legal-section {
+      margin-bottom: 1.6rem;
+      padding-bottom: 1.4rem;
+      border-bottom: 1px dashed rgba(55, 65, 81, 0.8);
+    }
+
+    .legal-section:last-of-type {
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-bottom: 0.6rem;
+    }
+
+    .legal-section h2 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+      color: #e5e7eb;
+    }
+
+    .legal-section p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      margin-bottom: 0.55rem;
+    }
+
+    .legal-section ul {
+      list-style: none;
+      margin: 0;
+      padding-left: 0;
+    }
+
+    .legal-section li {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      padding-left: 1.4rem;
+      position: relative;
+      margin-bottom: 0.4rem;
+    }
+
+    .legal-section li::before {
+      content: "•";
+      position: absolute;
+      left: 0.25rem;
+      top: 0.05rem;
+      font-size: 1.1rem;
+      color: var(--accent);
+    }
+
+    /* CONTACT BLOCK */
+    .contact-block {
+      margin-top: 1.4rem;
+      padding: 1rem 1rem;
+      border-radius: 0.95rem;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: radial-gradient(circle at top left, var(--accent-soft), #020617 60%);
+    }
+
+    .contact-block p {
+      margin-bottom: 0.45rem;
+    }
+
+    .contact-block a {
+      color: #7dd3fc;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .contact-block a:hover {
+      text-decoration: underline;
+    }
+
+    /* FOOTER MINI */
+    .legal-footer-mini {
+      margin-top: 1.6rem;
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      text-align: center;
+    }
+
+    .legal-footer-mini span {
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <!-- Top mini navbar -->
+    <header class="top-bar">
+      <div class="brand">
+        <div class="brand-logo"></div>
+        <div>
+          <div class="brand-text-main">Clarytiq</div>
+          <div class="brand-text-sub">Note clarity & rewrite engine</div>
+        </div>
+      </div>
+
+      <div class="top-actions">
+        <div class="top-pill">Legal & Policy</div>
+        <!-- Change href to your main app/landing page -->
+        <a href="/" class="back-link">
+          <span>← Back to app</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Main legal card -->
+    <main class="legal-card">
+      <div>
+        <div class="legal-header-eyebrow">Legal</div>
+        <h1 class="legal-title">Legal Information & Terms</h1>
+        <p class="legal-subtitle">
+          Clarytiq is a note-rewriting and clarity-enhancement tool designed for students.
+          By using our platform, you agree to the terms below.
+        </p>
+        <div class="legal-meta">
+          <span class="legal-meta-dot"></span>
+          <span>Last updated: December 2025</span>
+        </div>
+      </div>
+
+      <hr class="legal-section-divider" />
+
+      <!-- 1. Terms of Use -->
+      <section class="legal-section">
+        <h2>1. Terms of Use</h2>
+        <p>
+          By accessing or using Clarytiq, you agree that:
+        </p>
+        <ul>
+          <li>You will use the platform responsibly.</li>
+          <li>You will not abuse, spam, or overload the system.</li>
+          <li>You will not copy, resell, or redistribute the tool as your own.</li>
+          <li>You understand that AI outputs may not always be 100% accurate.</li>
+          <li>You are responsible for how you use the rewritten content.</li>
+        </ul>
+        <p>
+          If you break anything intentionally or try to exploit the system,
+          your access may be restricted.
+        </p>
+      </section>
+
+      <!-- 2. Privacy Policy -->
+      <section class="legal-section">
+        <h2>2. Privacy Policy</h2>
+        <p>We respect your data. Simple rules:</p>
+        <ul>
+          <li>We do <strong>not</strong> sell or trade your information.</li>
+          <li>We only store what’s necessary to run your account (email + usage).</li>
+          <li>Your text inputs are processed securely through our AI model.</li>
+          <li>We do <strong>not</strong> permanently store your rewritten content.</li>
+          <li>You can delete your account anytime by contacting support.</li>
+        </ul>
+        <p>
+          We use standard analytics tools to understand usage and improve the product.
+          Nothing creepy.
+        </p>
+      </section>
+
+      <!-- 3. AI Disclaimer -->
+      <section class="legal-section">
+        <h2>3. AI Disclaimer</h2>
+        <p>
+          Clarytiq uses AI to rewrite, simplify, and organize text. AI is powerful — but not perfect.
+        </p>
+        <p>By using the platform, you acknowledge that:</p>
+        <ul>
+          <li>AI-generated outputs may contain errors.</li>
+          <li>You should verify important information (especially for exams).</li>
+          <li>
+            We are not liable for academic mistakes caused by incorrect AI output.
+          </li>
+        </ul>
+        <p>Use the tool to <em>assist</em>, not replace your thinking.</p>
+      </section>
+
+      <!-- 4. Payments & Refunds -->
+      <section class="legal-section">
+        <h2>4. Payments & Refunds</h2>
+        <p>For paid plans:</p>
+        <ul>
+          <li>Payments are processed securely through our payment provider.</li>
+          <li>Subscriptions renew automatically unless you cancel.</li>
+          <li>
+            Refunds are issued only for genuine technical issues where the service did not
+            work as promised.
+          </li>
+          <li>
+            Chargebacks done fraudulently may result in account suspension.
+          </li>
+        </ul>
+        <p>PRO features unlock instantly after successful payment.</p>
+      </section>
+
+      <!-- 5. Fair Usage Policy -->
+      <section class="legal-section">
+        <h2>5. Fair Usage Policy</h2>
+        <p>To keep the platform fast for all users:</p>
+        <ul>
+          <li>Free plan has daily usage limits.</li>
+          <li>
+            Abusing the system (bots, automations, high-volume scraping) will lead
+            to restrictions.
+          </li>
+          <li>
+            Pro plan offers high limits but still must follow reasonable usage.
+          </li>
+        </ul>
+        <p>We just want the platform to stay clean and fast for everyone.</p>
+      </section>
+
+      <!-- 6. Intellectual Property -->
+      <section class="legal-section">
+        <h2>6. Intellectual Property</h2>
+        <p>
+          All branding, design, features, and UI elements belong to Clarytiq. You’re
+          not allowed to:
+        </p>
+        <ul>
+          <li>Clone the product design</li>
+          <li>Sell any part of the platform</li>
+          <li>Reverse-engineer core features</li>
+          <li>Use the brand name without permission</li>
+        </ul>
+        <p>Your own text content always remains <strong>yours</strong>.</p>
+      </section>
+
+      <!-- 7. Limitation of Liability -->
+      <section class="legal-section">
+        <h2>7. Limitation of Liability</h2>
+        <p>
+          We provide the service “as is”. We are not responsible for:
+        </p>
+        <ul>
+          <li>Mistakes in AI-generated content</li>
+          <li>Exam or academic performance</li>
+          <li>Technical issues caused by internet/device problems</li>
+          <li>Any indirect damage resulting from the use of the tool</li>
+        </ul>
+        <p>
+          We aim to keep uptime high and bugs minimal — but glitches can happen.
+        </p>
+      </section>
+
+      <!-- 8. Changes -->
+      <section class="legal-section">
+        <h2>8. Changes to These Terms</h2>
+        <p>
+          We may update these terms when needed.
+          We will always post the latest version here.
+        </p>
+      </section>
+
+      <!-- 9. Contact -->
+      <section class="legal-section">
+        <h2>9. Contact</h2>
+        <div class="contact-block">
+          <p>Questions? Problems? Refund requests?</p>
+          <p>Reach us at:</p>
+          <p>
+            <a href="mailto:support@clarytiq.com">
+              support@clarytiq.com
+            </a>
+          </p>
+          <p style="font-size: 0.82rem; color: var(--text-soft); margin-top: 0.3rem;">
+            We usually reply within 24–48 hours.
+          </p>
+        </div>
+      </section>
+
+      <div class="legal-footer-mini">
+        Clarytiq © <span>2025</span>. All rights reserved.
+      </div>
+    </main>
+  </div>
+</body>
+</html>
