@@ -1,965 +1,904 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Hello Aarish</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8" />
+<title>Clarytiq — App</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Clerk Auth -->
-  <script
-    async
-    crossorigin="anonymous"
-    data-clerk-publishable-key="pk_test_cHJvdmVuLW1ha28tNTAuY2xlcmsuYWNjb3VudHMuZGV2JA"
-    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js">
-  </script>
+<!-- FONTS -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet" />
 
-  <!-- Global Auth State + Clerk wiring -->
-  <script>
-    window.isUserLoggedIn = false;
+<!-- CLERK AUTH (KEEPING BOTH AS REQUESTED) -->
+<script async crossorigin="anonymous"
+data-clerk-publishable-key="pk_test_cHJvdmVuLW1ha28tNTAuY2xlcmsuYWNjb3VudHMuZGV2JA"
+src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js">
+</script>
 
-    // Update navbar + PRO pills
-    window.updateAuthUI = function () {
-      const signInBtn = document.getElementById("openSignIn");
-      const userBtnContainer = document.getElementById("clerk-user-button");
+<style>
+/* -----------------------------------------
+   ROOT VARIABLES
+------------------------------------------ */
+:root {
+    --aqua: #00eaff;
+    --cobalt: #0066ff;
+    --dark-panel: #000f09;
+    --bg-main: #050235;
+    --border-speed: 6s; /* slow loop as requested */
+}
 
-      if (!signInBtn || !userBtnContainer) return;
+/* -----------------------------------------
+   GLOBAL
+------------------------------------------ */
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-main);
+    color: white;
+    overflow-x: hidden;
+}
 
-      if (window.isUserLoggedIn) {
-        signInBtn.style.display = "none";
-        userBtnContainer.style.display = "block";
-      } else {
-        signInBtn.style.display = "inline-flex";
-        userBtnContainer.style.display = "none";
-      }
+/* -----------------------------------------
+   PARALLAX BACKGROUND (same as index)
+------------------------------------------ */
+.parallax-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -10;
+    background: radial-gradient(circle at 25% 10%, #06034a 0%, #040221 45%, #010010 100%);
+    pointer-events: none;
+    transition: transform 0.15s ease-out;
+}
 
-      // Lock/unlock PRO labels visually
-      const proButtons = document.querySelectorAll(
-        '.preset-btn[data-preset="exam"], .preset-btn[data-preset="genz"], .preset-btn[data-preset="cause_effect"]'
-      );
+/* -----------------------------------------
+   FLOATING PARTICLES (same as index)
+------------------------------------------ */
+.particle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: var(--aqua);
+    border-radius: 50%;
+    opacity: 0.4;
+    filter: blur(3px);
+    animation: floatParticle 14s infinite linear;
+    z-index: -5;
+}
 
-      proButtons.forEach(btn => {
-        const pill = btn.querySelector(".preset-pro-pill");
-        if (!pill) return;
-        pill.style.display = window.isUserLoggedIn ? "none" : "inline-flex";
-      });
-    };
+@keyframes floatParticle {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-80px) scale(1.4); }
+    100% { transform: translateY(0) scale(1); }
+}
 
-    window.addEventListener("load", async () => {
-      const signInOverlay = document.getElementById("sign-in");
-      const signInBox = document.getElementById("clerk-sign-in");
-      const openSignInBtn = document.getElementById("openSignIn");
-      const userBtnContainer = document.getElementById("clerk-user-button");
+/* -----------------------------------------
+   ORBIT ANIMATION BEHIND HEADER
+------------------------------------------ */
+.orbit-container {
+    position: absolute;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%);
+    width: 420px;
+    height: 420px;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.25;
+}
 
-      // Global helper to open Clerk sign-in
-      window.showSignInOverlay = function (e) {
-  e?.stopPropagation();   // <-- ADD THIS
+.orbit {
+    position: absolute;
+    inset: 0;
+    border: 2px dashed rgba(255,255,255,0.28);
+    border-radius: 50%;
+    animation: orbitSpin 18s linear infinite;
+}
 
-window.showSignInOverlay = function (e) {
-  e?.stopPropagation();
+@keyframes orbitSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
 
-  if (!signInOverlay) return;
+/* -----------------------------------------
+   NAVBAR (same as index)
+------------------------------------------ */
+.nav {
+    max-width: 1120px;
+    margin: 1.4rem auto;
+    padding: 1rem 1.6rem;
+    background: rgba(0, 25, 50, 0.35);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(18px);
+}
 
-  // 1. Show instantly
-  signInOverlay.style.display = "block";
+.brand {
+    font-size: 1.7rem;
+    font-weight: 900;
+    background: linear-gradient(90deg, var(--aqua), #4da8ff);
+    -webkit-background-clip: text;
+    color: transparent;
+}
 
-  // 2. THEN animate (important)
-  setTimeout(() => {
-    signInOverlay.classList.add("show");
-  }, 10);
+.nav-right a {
+    text-decoration: none;
+    color: #c7d8ff;
+    font-weight: 500;
+    margin-right: 1.4rem;
+}
 
-  if (window.Clerk && signInBox && !signInBox.hasChildNodes()) {
-    window.Clerk.mountSignIn(signInBox, {
-      appearance: { baseTheme: "light" }
-    });
-  }
-};
+.signin-btn {
+    padding: 0.55rem 1.2rem;
+    background: linear-gradient(135deg, #003a80, #0056c9);
+    border: none;
+    border-radius: 0.8rem;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
 
+/* -----------------------------------------
+   GLASS PANEL FOR TOOL
+------------------------------------------ */
+.glass-panel {
+    max-width: 1120px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: var(--dark-panel);
+    border-radius: 1.4rem;
 
+    /* dotted marching-ants slow animation */
+    border: 2px dotted white;
+    animation: march var(--border-speed) linear infinite;
 
-        if (window.Clerk && signInBox && !signInBox.hasChildNodes()) {
-          window.Clerk.mountSignIn(signInBox, {
-            appearance: { baseTheme: "light" }
-          });
-        }
-      };
+    /* animation trick */
+    background-clip: padding-box;
+}
 
-      if (openSignInBtn) {
-        openSignInBtn.addEventListener("click", (e) => {
-  e.stopPropagation();  // <-- ADD THIS
-  window.showSignInOverlay();
+@keyframes march {
+    to { border-color: transparent; }
+}
+
+/* -----------------------------------------
+   HEADLINE
+------------------------------------------ */
+.tool-hero {
+    text-align: center;
+    margin-top: 4rem;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.tool-hero h1 {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.tool-hero p {
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+    color: #b9c7e0;
+    font-family: 'Caveat', cursive;
+    font-size: 1.6rem;
+}
+
+/* -----------------------------------------
+   TOOL GRID
+------------------------------------------ */
+.tool-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+@media(max-width: 900px) {
+    .tool-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* -----------------------------------------
+   INPUT / OUTPUT BOXES
+------------------------------------------ */
+.textbox {
+    width: 100%;
+    min-height: 180px;
+    background: #000f09;
+    border: 1px solid white; /* static white border */
+    border-radius: 0.8rem;
+    padding: 1rem;
+    resize: vertical;
+    color: white;
+    font-size: 0.95rem;
+    outline: none;
+}
+
+.textbox:focus {
+    border-color: var(--aqua);
+}
+
+/* -----------------------------------------
+   PRESET BUTTONS
+------------------------------------------ */
+.preset-btn {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border-radius: 999px;
+    border: 1px solid white;
+    background: #000f09;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+}
+
+.preset-btn.selected {
+    background: linear-gradient(135deg, var(--aqua), var(--cobalt));
+    border: none;
+}
+
+.preset-pro-pill {
+    font-size: 0.75rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    background: #fffbeb;
+    color: #f59e0b;
+    border: 1px solid #facc15;
+}
+
+/* -----------------------------------------
+   MAIN HUMANIZE BUTTON
+------------------------------------------ */
+#humanizeBtn {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--aqua), var(--cobalt));
+    color: white;
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PARALLAX BACKGROUND -->
+<div class="parallax-bg"></div>
+
+<!-- FLOATING PARTICLES -->
+<script>
+for (let i = 0; i < 14; i++) {
+    const p = document.createElement("div");
+    p.classList.add("particle");
+    p.style.left = Math.random()*100 + "vw";
+    p.style.top = Math.random()*100 + "vh";
+    p.style.animationDelay = Math.random()*8 + "s";
+    document.body.appendChild(p);
+}
+</script>
+
+<!-- NAVBAR -->
+<header class="nav">
+    <div class="brand">Clarytiq</div>
+
+    <div class="nav-right">
+        <a href="/pricing.html">Pricing</a>
+        <a href="/legal.html">Legal</a>
+        <a href="/support.html">Support</a>
+        <button class="signin-btn" id="openSignIn">Sign In</button>
+    </div>
+</header>
+
+<!-- SIGN-IN OVERLAY (CUSTOM POPUP) -->
+<div id="sign-in" style="
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(12px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity .35s ease;
+">
+    <div id="clerk-sign-in" style="width:400px; max-width:90%;"></div>
+</div>
+
+<!-- HERO SECTION OF THE TOOL -->
+<section class="tool-hero">
+    <div class="orbit-container">
+        <div class="orbit"></div>
+    </div>
+
+    <h1>Turn raw text into clarity — instantly.</h1>
+    <p>Your understanding engine, built for speed and precision.</p>
+</section>
+
+<!-- MAIN GLASS PANEL FOR TOOL -->
+<div class="glass-panel">
+
+    <div class="tool-grid">
+        <!-- LEFT PANEL START -->
+        <section>
+            <h3 style="color:white; font-size:1rem; margin-bottom:0.4rem;">Your Text</h3>
+
+            <textarea id="inputText" class="textbox" placeholder="Paste AI-generated or class notes here…" maxlength="2000"></textarea>
+
+            <div style="display:flex; justify-content:space-between; margin-top:0.3rem; font-size:0.85rem;">
+                <div id="inputError" style="color:#ff6b6b;"></div>
+                <div id="charCounter" style="color:#cbd5e1;">0 / 2000</div>
+            </div>
+
+            <div style="margin-top:1rem;">
+                <h4 style="margin-bottom:0.4rem; color:#b9c7e0;">Choose mode</h4>
+
+                <button class="preset-btn selected" data-preset="simple">
+                    <span>Simple Humanizer (Free)</span>
+                </button>
+
+                <button class="preset-btn" data-preset="simple_words">
+                    <span>Easy Words (Free)</span>
+                </button>
+
+                <button class="preset-btn" data-preset="exam">
+                    <span>Exam Ready</span>
+                    <span class="preset-pro-pill">PRO</span>
+                </button>
+
+                <button class="preset-btn" data-preset="genz">
+                    <span>Gen-Z Mode</span>
+                    <span class="preset-pro-pill">PRO</span>
+                </button>
+
+                <button class="preset-btn" data-preset="cause_effect">
+                    <span>Cause → Effect</span>
+                    <span class="preset-pro-pill">PRO</span>
+                </button>
+            </div>
+
+            <div id="presetPreview" style="
+                margin-top:0.8rem;
+                padding:0.7rem;
+                background:#000f09;
+                border:1px solid white;
+                border-radius:0.8rem;
+                display:none;
+                font-size:0.9rem;
+                color:#d0e0ff;
+            "></div>
+
+            <div id="humanizeCounterRow" style="margin-top:0.6rem; font-size:0.85rem; text-align:right;">
+                <span id="humanizeCounter">(0 left today)</span>
+            </div>
+
+            <button id="humanizeBtn">✨ Humanize Notes</button>
+        </section>
+        <!-- LEFT PANEL END -->
+        <!-- RIGHT PANEL START -->
+        <section>
+            <h3 style="color:white; font-size:1rem; margin-bottom:0.4rem;">Result</h3>
+
+            <div id="outputBox" class="textbox" style="
+                min-height: 180px;
+                overflow-y: auto;
+                white-space: pre-wrap;
+            ">
+                <div style="color:#7a8ca1;">Your humanized notes will appear here…</div>
+            </div>
+
+            <div id="outputError" style="color:#ff6b6b; margin-top:0.4rem; font-size:0.85rem;"></div>
+
+            <div style="
+                margin-top:1rem;
+                display:flex;
+                gap:0.6rem;
+                justify-content:space-between;
+                flex-wrap:wrap;
+            ">
+                <button id="copyBtn" class="preset-btn" style="flex:1; text-align:center;">📋 Copy</button>
+                <button id="downloadBtn" class="preset-btn" style="flex:1; text-align:center;">⬇️ Download</button>
+            </div>
+
+            <div style="
+                margin-top:0.9rem;
+                font-size:0.85rem;
+                color:#cfd9e6;
+            ">
+                Mode used:
+                <span id="modeUsed" style="
+                    padding:0.2rem 0.6rem;
+                    border-radius:999px;
+                    background:#00151f;
+                    border:1px solid white;
+                    font-weight:600;
+                ">SIMPLE</span>
+            </div>
+        </section>
+        <!-- RIGHT PANEL END -->
+    </div> <!-- END GRID -->
+</div> <!-- END GLASS PANEL -->
+
+<!-- FOOTER -->
+<footer style="
+    text-align:center;
+    color:#8ea1c7;
+    font-size:0.9rem;
+    margin:3rem 0 2rem 0;
+">
+    © 2025 Clarytiq — Powered by Vercel • Clerk
+</footer>
+
+<!-- PRO EXAMPLE MODAL -->
+<div id="proExampleModal" style="
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+">
+    <div class="pro-modal" style="
+        background: #000f09;
+        padding: 1.6rem;
+        border-radius: 1rem;
+        border: 2px dotted white;
+        animation: march var(--border-speed) linear infinite;
+        max-width: 480px;
+        width: 90%;
+        color:white;
+    ">
+        <h2 style="margin-bottom:0.4rem;">PRO Rewrite Example 🔒</h2>
+        <p style="font-size:0.9rem; color:#d0e0ff;">
+            Here’s how PRO transforms your text:
+        </p>
+
+        <div id="exampleInput" style="
+            margin-top:1rem;
+            padding:1rem;
+            background:#000;
+            border:1px solid white;
+            border-radius:0.8rem;
+            white-space:pre-wrap;
+        "></div>
+
+        <div id="exampleOutput" style="
+            margin-top:1rem;
+            padding:1rem;
+            background:#000f13;
+            border:1px solid white;
+            border-radius:0.8rem;
+            white-space:pre-wrap;
+        "></div>
+
+        <button id="buyProBtn" style="
+            margin-top:1.3rem;
+            width:100%;
+            padding:0.8rem;
+            background:linear-gradient(135deg, var(--aqua), var(--cobalt));
+            color:white;
+            border:none;
+            border-radius:1rem;
+            cursor:pointer;
+            font-weight:700;
+        ">
+            Buy PRO Now →
+        </button>
+
+        <button id="proExampleCloseBtn" style="
+            margin-top:0.6rem;
+            width:100%;
+            padding:0.7rem;
+            border-radius:1rem;
+            border:1px solid white;
+            background:#000f09;
+            color:white;
+            cursor:pointer;
+        ">
+            Close
+        </button>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" style="
+    position: fixed;
+    right: 1.5rem;
+    bottom: 1.5rem;
+    padding: 0.6rem 1rem;
+    background: #22c55e;
+    color: white;
+    border-radius: 999px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s ease;
+    font-size: 0.85rem;
+    z-index:9999;
+">
+    <span id="toastMessage">Copied!</span>
+</div>
+<!-- MAIN APP LOGIC -->
+<script>
+/* =======================================================
+   PARALLAX BACKGROUND
+======================================================= */
+const parallax = document.querySelector(".parallax-bg");
+document.addEventListener("mousemove", (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 16;
+    const y = (e.clientY / window.innerHeight - 0.5) * 16;
+    parallax.style.transform = `translate(${x}px, ${y}px)`;
 });
 
-      }
+/* =======================================================
+   PRESET LOGIC
+======================================================= */
+const presetButtons = [...document.querySelectorAll(".preset-btn")];
+const presetPreview = document.getElementById("presetPreview");
+const modeUsedEl = document.getElementById("modeUsed");
 
-      if (!window.Clerk) {
-        console.warn("Clerk not loaded yet");
+let selectedPreset = "simple";
+
+const PRESET_DESC = {
+    simple: "Makes your text clean, natural and readable.",
+    simple_words: "Uses simpler language for easier understanding.",
+    exam: "PRO: Exam-style formal structured answers.",
+    genz: "PRO: Gen-Z tone, dark humour, emojis.",
+    cause_effect: "PRO: Cause → Effect structured logical reasoning."
+};
+
+presetButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        presetButtons.forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+
+        selectedPreset = btn.dataset.preset;
+        modeUsedEl.textContent = selectedPreset.toUpperCase();
+
+        if (PRESET_DESC[selectedPreset]) {
+            presetPreview.style.display = "block";
+            presetPreview.textContent = PRESET_DESC[selectedPreset];
+        }
+
+        updateCreditCounter();
+    });
+});
+
+/* =======================================================
+   CREDIT SYSTEM
+======================================================= */
+const LIMITS = {
+    beforeLogin: { simple: 1, simple_words: 1 },
+    afterLogin: { simple: 2, simple_words: 2, genz: 1, exam: 1, cause_effect: 1 }
+};
+
+const PRO_MODES = ["genz", "exam", "cause_effect"];
+
+function loadCredits() {
+    const today = new Date().toDateString();
+    const saved = JSON.parse(localStorage.getItem("nh_credits"));
+
+    if (!saved || saved.date !== today) {
+        const fresh = {
+            date: today,
+            beforeLogin: { ...LIMITS.beforeLogin },
+            afterLogin: { ...LIMITS.afterLogin }
+        };
+        localStorage.setItem("nh_credits", JSON.stringify(fresh));
+        return fresh;
+    }
+    return saved;
+}
+
+function saveCredits(d) {
+    localStorage.setItem("nh_credits", JSON.stringify(d));
+}
+
+let credits = loadCredits();
+
+function getCreditsLeft(preset) {
+    const pool = window.isUserLoggedIn ? credits.afterLogin : credits.beforeLogin;
+    return pool[preset] ?? 0;
+}
+
+function hasCredit(preset) {
+    return getCreditsLeft(preset) > 0;
+}
+
+function useCredit(preset) {
+    if (window.isUserLoggedIn) {
+        credits.afterLogin[preset]--;
+    } else {
+        credits.beforeLogin[preset]--;
+    }
+    saveCredits(credits);
+}
+
+const humanizeCounter = document.getElementById("humanizeCounter");
+function updateCreditCounter() {
+    const left = getCreditsLeft(selectedPreset);
+    if (PRO_MODES.includes(selectedPreset)) {
+        humanizeCounter.textContent = window.isUserLoggedIn
+            ? `(${left} PRO tries left today)`
+            : `(Login required for PRO)`;
+    } else {
+        humanizeCounter.textContent = `(${left} left today)`;
+    }
+}
+updateCreditCounter();
+
+/* =======================================================
+   API CALL WRAPPER
+======================================================= */
+async function callAI(preset, text) {
+    try {
+        const res = await fetch("/api/humanize", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ preset, userText: text })
+        });
+        const data = await res.json();
+        return data.output;
+    } catch (err) {
+        console.error("API error:", err);
+        return null;
+    }
+}
+
+/* =======================================================
+   PRO EXAMPLE POPUP DATA
+======================================================= */
+const PRO_EXAMPLES = {
+    genz: {
+        input: "The French Revolution changed France.",
+        output: "Bruhh France woke up and chose ✨chaos✨ 💀🔥. People said 'we ball' and removed the king."
+    },
+    exam: {
+        input: "The French Revolution changed France.",
+        output: "The French Revolution led to major political, economic, and social reforms in France."
+    },
+    cause_effect: {
+        input: "Taxes increased in France.",
+        output:
+`Cause → Effect:
+• High taxes → Public anger → Protests
+• Food prices rose → Riots
+• National debt increased → Collapse of monarchy`
+    }
+};
+
+/* =======================================================
+   HUMANIZE BUTTON
+======================================================= */
+const input = document.getElementById("inputText");
+const outputBox = document.getElementById("outputBox");
+const inputErr = document.getElementById("inputError");
+const outputErr = document.getElementById("outputError");
+const humanizeBtn = document.getElementById("humanizeBtn");
+
+const exampleModal = document.getElementById("proExampleModal");
+const exampleInput = document.getElementById("exampleInput");
+const exampleOutput = document.getElementById("exampleOutput");
+
+const signInOverlay = document.getElementById("sign-in");
+const signInBox = document.getElementById("clerk-sign-in");
+
+let outputText = "";
+
+humanizeBtn.addEventListener("click", async (e) => {
+    e.stopPropagation();
+
+    inputErr.textContent = "";
+    outputErr.textContent = "";
+
+    const text = input.value.trim();
+    if (!text) {
+        inputErr.textContent = "Paste some text first.";
         return;
-      }
+    }
 
-      try {
+    // NO CREDIT CASE
+    if (!hasCredit(selectedPreset)) {
+
+        // NOT LOGGED IN → SHOW CLERK POPUP
+        if (!window.isUserLoggedIn) {
+            if (window.showSignInOverlay) {
+                window.showSignInOverlay();
+            } else {
+                signInOverlay.style.display = "flex";
+                setTimeout(() => signInOverlay.style.opacity = 1, 20);
+            }
+            return;
+        }
+
+        // LOGGED IN → SHOW PRO DEMO
+        const ex = PRO_EXAMPLES[selectedPreset] || {
+            input: "No credits left.",
+            output: "Buy PRO to continue."
+        };
+
+        exampleInput.textContent = ex.input;
+        exampleOutput.textContent = ex.output;
+        exampleModal.style.display = "flex";
+        return;
+    }
+
+    // USE CREDIT
+    useCredit(selectedPreset);
+    updateCreditCounter();
+
+    // Fake loading skeleton
+    outputBox.innerHTML = `
+        <div style="display:flex; flex-direction:column; gap:0.4rem;">
+            <div style="height:0.8rem; background:#222; border-radius:1rem;"></div>
+            <div style="height:0.8rem; width:90%; background:#222; border-radius:1rem;"></div>
+            <div style="height:0.8rem; width:80%; background:#222; border-radius:1rem;"></div>
+        </div>
+    `;
+
+    const result = await callAI(selectedPreset, text);
+
+    if (!result) {
+        outputErr.textContent = "Something went wrong. Try again.";
+        return;
+    }
+
+    outputText = result;
+    outputBox.innerHTML = result.replace(/\n/g, "<br>");
+});
+
+/* =======================================================
+   COPY & DOWNLOAD
+======================================================= */
+const toast = document.getElementById("toast");
+const toastMsg = document.getElementById("toastMessage");
+
+function showToast(msg) {
+    toastMsg.textContent = msg;
+    toast.style.opacity = 1;
+    setTimeout(() => toast.style.opacity = 0, 1500);
+}
+
+document.getElementById("copyBtn").addEventListener("click", () => {
+    navigator.clipboard.writeText(outputText || "");
+    showToast("Copied!");
+});
+
+document.getElementById("downloadBtn").addEventListener("click", () => {
+    const blob = new Blob([outputText || ""], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "humanized.txt";
+    link.click();
+});
+
+/* =======================================================
+   PRO MODAL CLOSE
+======================================================= */
+document.getElementById("proExampleCloseBtn").addEventListener("click", () => {
+    exampleModal.style.display = "none";
+});
+
+exampleModal.addEventListener("click", (e) => {
+    const box = document.querySelector(".pro-modal");
+    if (!box.contains(e.target)) exampleModal.style.display = "none";
+});
+
+/* =======================================================
+   CHARACTER COUNTER
+======================================================= */
+const charCounter = document.getElementById("charCounter");
+input.addEventListener("input", () => {
+    charCounter.textContent = `${input.value.length} / 2000`;
+});
+
+/* =======================================================
+   ESC KEY HANDLING
+======================================================= */
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+        if (exampleModal.style.display === "flex") exampleModal.style.display = "none";
+        if (signInOverlay.style.display === "flex") {
+            signInOverlay.style.opacity = 0;
+            setTimeout(() => signInOverlay.style.display = "none", 300);
+        }
+    }
+});
+</script>
+<!-- CLERK AUTH + UI WIRING -->
+<script>
+window.isUserLoggedIn = false;
+
+window.updateAuthUI = function () {
+    const signInBtn = document.getElementById("openSignIn");
+    const userBtnContainer = document.getElementById("clerk-user-button");
+
+    if (!signInBtn || !userBtnContainer) return;
+
+    if (window.isUserLoggedIn) {
+        signInBtn.style.display = "none";
+        userBtnContainer.style.display = "block";
+    } else {
+        signInBtn.style.display = "inline-flex";
+        userBtnContainer.style.display = "none";
+    }
+};
+
+/* SIGN-IN POPUP OPEN FUNCTION */
+window.showSignInOverlay = function () {
+    const overlay = document.getElementById("sign-in");
+    const box = document.getElementById("clerk-sign-in");
+
+    overlay.style.display = "flex";
+    setTimeout(() => (overlay.style.opacity = "1"), 20);
+
+    if (window.Clerk && box && !box.hasChildNodes()) {
+        window.Clerk.mountSignIn(box, {
+            appearance: { baseTheme: "light" }
+        });
+    }
+};
+
+document.getElementById("openSignIn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    window.showSignInOverlay();
+});
+
+/* CLOSE SIGN-IN POPUP WHEN CLICKING OUTSIDE */
+document.getElementById("sign-in").addEventListener("click", (e) => {
+    const box = document.getElementById("clerk-sign-in");
+    if (!box.contains(e.target)) {
+        const overlay = document.getElementById("sign-in");
+        overlay.style.opacity = "0";
+        setTimeout(() => (overlay.style.display = "none"), 300);
+    }
+});
+
+/* CLERK INITIALIZATION */
+window.addEventListener("load", async () => {
+    const userBtnContainer = document.getElementById("clerk-user-button");
+
+    try {
         await window.Clerk.load();
 
         const emit = () => {
-          // user is null when signed out, object with id when signed in
-          const user = window.Clerk.user;
-          window.isUserLoggedIn = !!(user && user.id);
-          window.updateAuthUI();
+            const user = window.Clerk.user;
+            window.isUserLoggedIn = !!(user && user.id);
+            window.updateAuthUI();
         };
 
         emit();
         window.Clerk.addListener(emit);
 
         if (userBtnContainer) {
-          window.Clerk.mountUserButton(userBtnContainer, {
-            afterSignOutUrl: window.location.href,
-            appearance: { baseTheme: "light" }
-          });
+            window.Clerk.mountUserButton(userBtnContainer, {
+                afterSignOutUrl: window.location.href,
+                appearance: { baseTheme: "light" }
+            });
         }
-      } catch (err) {
+    } catch (err) {
         console.error("Clerk load error:", err);
-      }
-    });
-  </script>
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
-  <!-- CSS -->
-  <style>
-    :root {
-      --accent-blue: #0ea5e9;
-      --accent-green: #22c55e;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --text-soft: #94a3b8;
-      --danger: #ef4444;
-      --shadow-btn: 0 16px 40px rgba(8, 47, 73, 0.45);
     }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: "Inter", sans-serif;
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(circle at top left, #e0f2fe 0, #f9fafb 45%, #eef2ff 100%);
-      color: var(--text-main);
-    }
-
-    /* NAVBAR */
-    .nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 1.4rem;
-      background: white;
-      border-radius: 1rem;
-      margin: 1rem auto;
-      max-width: 1120px;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
-      position: sticky;
-      top: 1rem;
-      z-index: 10;
-    }
-
-    #openSignIn {
-      padding: 0.45rem 1rem;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent-blue), var(--accent-green));
-      color: white;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-
-    /* MAIN TOOL LAYOUT */
-    .main-card {
-      max-width: 1120px;
-      margin: 2rem auto;
-      background: white;
-      padding: 1.4rem;
-      border-radius: 1.4rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.2rem;
-      box-shadow: 0 24px 50px rgba(15, 23, 42, 0.12);
-    }
-
-    @media (max-width: 900px) {
-      .main-card {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .panel {
-      background: rgba(248, 250, 252, 0.9);
-      padding: 1rem;
-      border-radius: 1rem;
-      border: 1px solid #e2e8f0;
-    }
-
-    .textarea {
-      width: 100%;
-      min-height: 180px;
-      border-radius: 0.8rem;
-      padding: 0.8rem;
-      border: 1px solid #cbd5e1;
-      font-size: 0.95rem;
-      resize: vertical;
-      outline: none;
-    }
-
-    .textarea:focus {
-      border-color: var(--accent-blue);
-      box-shadow: 0 0 0 1px rgba(14, 165, 233, 0.4);
-    }
-
-    .preset-btn {
-      width: 100%;
-      border-radius: 999px;
-      border: 1px solid #cbd5e1;
-      padding: 0.6rem 0.9rem;
-      background: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.85rem;
-      cursor: pointer;
-      gap: 0.4rem;
-    }
-
-    .preset-btn.selected {
-      background: linear-gradient(135deg, var(--accent-blue), var(--accent-green));
-      color: white;
-      border: none;
-      box-shadow: 0 10px 24px rgba(14, 165, 233, 0.5);
-    }
-
-    .preset-pro-pill {
-      font-size: 0.7rem;
-      padding: 0.1rem 0.5rem;
-      border-radius: 999px;
-      border: 1px solid #facc15;
-      color: #f59e0b;
-      background: #fffbeb;
-      font-weight: 600;
-    }
-
-    /* HUMANIZE BUTTON */
-    #humanizeBtn {
-      margin-top: 0.4rem;
-      width: 100%;
-      border-radius: 999px;
-      padding: 0.8rem 1rem;
-      font-size: 1rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, #0ea5e9, #22c55e);
-      color: white;
-      border: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-      box-shadow: var(--shadow-btn);
-    }
-
-    #humanizeCounterRow {
-      margin-top: 0.8rem;
-      font-size: 0.78rem;
-      color: var(--text-soft);
-      text-align: right;
-    }
-
-    /* OUTPUT */
-    .output-box {
-      min-height: 180px;
-      background: white;
-      border-radius: 0.8rem;
-      padding: 0.8rem;
-      border: 1px solid #cbd5e1;
-      overflow-y: auto;
-      font-size: 0.93rem;
-      line-height: 1.5;
-    }
-
-    /* MODALS */
-.pro-modal-overlay {
-  position: fixed !important;
-  inset: 0 !important;
-  background: rgba(15, 23, 42, 0.45) !important;
-  backdrop-filter: blur(6px) !important;
-  display: none ;
-  align-items: center !important;
-  justify-content: center !important;
-  z-index: 999999 !important;
-}
-
-
-.pro-modal {
-  background: white !important;
-  padding: 1.6rem !important;
-  border-radius: 1rem !important;
-  max-width: 500px !important;
-  width: 90% !important;
-  box-shadow: 0 24px 40px rgba(15,23,42,0.22) !important;
-  position: relative !important;
-  z-index: 9999999 !important;
-}
-
-
-    /* TOAST */
-    #toast {
-      position: fixed;
-      right: 1.5rem;
-      bottom: 1.5rem;
-      padding: 0.6rem 0.9rem;
-      background: #16a34a;
-      color: white;
-      border-radius: 999px;
-      opacity: 0;
-      pointer-events: none;
-      transition: 0.25s;
-      font-size: 0.8rem;
-    }
-  
-    /* --- Clerk popup animation --- */
-
-#sign-in {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-
-#sign-in.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-  
-  </style>
-</head>
-
-<body>
-
-  <!-- Clerk Sign-In Overlay -->
-  <div id="sign-in" style="
-    display:none;
-    position: fixed;
-    inset: 0;
-    background: rgba(15,23,42,0.45);
-    backdrop-filter: blur(6px);
-    z-index: 9999;
-    padding-top: 4rem;
-  ">
-    <div id="clerk-sign-in" style="max-width: 360px; margin: auto;"></div>
-  </div>
-
-  <!-- NAVBAR -->
-  <header class="nav">
-    <div style="font-weight:800; font-size:1.1rem;">Hello Aarish</div>
-    <div style="display:flex; align-items:center; gap:0.8rem;">
-      <button id="openSignIn">Sign In ⚡</button>
-      <div id="clerk-user-button" style="display:none;"></div>
-    </div>
-  </header>
-
-  <!-- HERO -->
-  <section style="text-align:center; margin-top:2rem;">
-    <h1 style="
-      font-size:clamp(2.2rem,4vw,2.8rem);
-      font-weight:800;
-      margin-bottom:0.5rem;
-      color:#020617;
-    ">
-      Turn robotic notes into <span style="color:var(--accent-blue);">human text.</span>
-    </h1>
-
-    <p style="color:var(--text-muted); font-size:1rem; max-width:580px; margin:0 auto;">
-      Paste your text, choose a mode, and get natural, exam-ready notes within seconds.
-    </p>
-  </section>
-
-  <!-- MAIN TOOL -->
-  <main class="main-card" id="tool-card">
-
-    <!-- LEFT PANEL -->
-    <section class="panel">
-      <h3 style="margin:0 0 0.3rem 0; font-size:0.9rem; color:var(--text-muted);">Paste your text</h3>
-      <textarea id="inputText" class="textarea" placeholder="Paste AI-generated or class notes here…" maxlength="2000"></textarea>
-
-      <div style="display:flex; justify-content:space-between; margin-top:0.25rem; font-size:0.78rem; color:var(--text-soft);">
-        <div id="inputError" style="color:var(--danger);"></div>
-        <div id="charCounter">0 / 2000 characters</div>
-      </div>
-
-      <!-- PRESETS -->
-      <div style="margin-top:1rem;">
-        <h4 style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.4rem;">Choose mode</h4>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
-
-          <!-- FREE -->
-          <button class="preset-btn selected" data-preset="simple">
-            <span>Simple Humanizer (Free)</span>
-          </button>
-
-          <button class="preset-btn" data-preset="simple_words">
-            <span>Easy Words (Free)</span>
-          </button>
-
-          <!-- PRO -->
-          <button class="preset-btn" data-preset="exam">
-            <span>Exam Ready</span>
-            <span class="preset-pro-pill">PRO</span>
-          </button>
-
-          <button class="preset-btn" data-preset="genz">
-            <span>Gen-Z Mode</span>
-            <span class="preset-pro-pill">PRO</span>
-          </button>
-
-          <button class="preset-btn" data-preset="cause_effect">
-            <span>Cause → Effect</span>
-            <span class="preset-pro-pill">PRO</span>
-          </button>
-
-        </div>
-      </div>
-
-      <!-- PRESET DESCRIPTION -->
-      <div id="presetPreview" style="
-        margin-top:0.8rem;
-        padding:0.7rem;
-        border-radius:0.8rem;
-        font-size:0.82rem;
-        background:white;
-        border:1px solid #cbd5e1;
-        color:#475569;
-        display:none;
-      "></div>
-
-      <!-- COUNTER ABOVE BUTTON -->
-      <div id="humanizeCounterRow">
-        <span id="humanizeCounter">(0 left today)</span>
-      </div>
-
-      <!-- HUMANIZE BUTTON -->
-      <button id="humanizeBtn">
-        ✨ Humanize Notes
-      </button>
-    </section>
-
-    <!-- RIGHT PANEL -->
-    <section class="panel">
-      <h3 style="margin:0 0 0.3rem 0; font-size:0.9rem; color:var(--text-muted);">Result</h3>
-
-      <div id="outputBox" class="output-box">
-        <div style="color:#cbd5e1;">Your humanized notes will appear here…</div>
-      </div>
-
-      <div id="outputError" style="color:var(--danger); font-size:0.78rem; margin-top:0.3rem;"></div>
-
-      <div style="
-        display:flex;
-        justify-content:space-between;
-        margin-top:0.8rem;
-        flex-wrap:wrap;
-        gap:0.6rem;
-      ">
-        <button id="copyBtn" class="preset-btn" style="flex:1;">📋 Copy</button>
-        <button id="downloadBtn" class="preset-btn" style="flex:1;">⬇️ Download</button>
-      </div>
-
-      <div style="margin-top:0.9rem; font-size:0.78rem; color:var(--text-soft);">
-        Mode used:
-        <span id="modeUsed" style="
-          padding:0.15rem 0.5rem;
-          border-radius:999px;
-          background:#e2e8f0;
-          font-weight:600;
-        ">SIMPLE</span>
-      </div>
-    </section>
-  </main>
-
-  <!-- FOOTER -->
-  <footer style="
-    max-width:1120px;
-    margin:2.5rem auto;
-    padding:1.2rem 0;
-    text-align:center;
-    color:var(--text-muted);
-    font-size:0.85rem;
-  ">
-    <div style="
-  text-align:center; 
-  margin-top:2.5rem;
-  margin-bottom:2rem;
-">
-  <a href="/pricing.html" style="
-    display:inline-block;
-    padding:0.9rem 2rem;
-    background:linear-gradient(135deg, #0ea5e9, #22c55e);
-    color:white;
-    border-radius:999px;
-    font-size:1.1rem;
-    font-weight:700;
-    text-decoration:none;
-    box-shadow:0 10px 30px rgba(14,165,233,0.35);
-    transition:transform 0.15s ease, box-shadow 0.15s ease;
-  "
-  onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 14px 35px rgba(14,165,233,0.45)';"
-  onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(14,165,233,0.35)';"
-  >
-    🚀 Upgrade to PRO
-  </a>
-
-  <p style="margin-top:0.6rem; color:#64748b; font-size:0.9rem;">
-    Unlock all modes, unlimited rewrites, and full power.
-  </p>
-</div>
-
-  </footer>
-
-  <!-- PRO EXAMPLE MODAL -->
-  <div id="proExampleModal" class="pro-modal-overlay">
-    <div class="pro-modal">
-      <h2 style="margin-bottom:0.4rem;">PRO Rewrite Example 🔒</h2>
-      <p style="font-size:0.85rem; color:#64748b;">Here’s how PRO transforms your notes:</p>
-
-      <div id="exampleInput" style="
-        margin-top:1rem;
-        padding:1rem;
-        background:#f1f5f9;
-        border-radius:0.7rem;
-        white-space:pre-wrap;
-        font-size:0.9rem;
-      "></div>
-
-      <div id="exampleOutput" style="
-        margin-top:1rem;
-        padding:1rem;
-        background:white;
-        border:1px solid #cbd5e1;
-        border-radius:0.7rem;
-        white-space:pre-wrap;
-        box-shadow:0 6px 14px rgba(15,23,42,0.08);
-        font-size:0.9rem;
-      "></div>
-
-      <button id="buyProBtn" style="
-        margin-top:1.3rem;
-        width:100%;
-        padding:0.7rem;
-        background:linear-gradient(135deg,#0ea5e9,#22c55e);
-        color:white;
-        border-radius:999px;
-        font-weight:700;
-        border:none;
-        cursor:pointer;
-      ">
-        Buy PRO now →
-      </button>
-
-      <button id="proExampleCloseBtn" style="
-        margin-top:0.6rem;
-        width:100%;
-        padding:0.6rem;
-        background:white;
-        border:1px solid #cbd5e1;
-        border-radius:999px;
-        cursor:pointer;
-      ">
-        Close
-      </button>
-
-      <p style="margin-top:0.6rem; font-size:0.78rem; color:#64748b; text-align:center;">
-        or <a href="/pricing.html" style="color:#0ea5e9; font-weight:600;">open pricing page</a> in a new tab.
-      </p>
-    </div>
-  </div>
-
-  <!-- TOAST -->
-  <div id="toast">
-    <span id="toastMessage">Copied!</span>
-  </div>
-
-  <!-- APP LOGIC -->
-  <script>
-  (function initNotesHumanizer() {
-
-    /* ===============================
-        CREDIT SYSTEM CONFIG
-    =============================== */
-
-    const LIMITS = {
-      beforeLogin: { simple: 1, simple_words: 1 },
-      afterLogin: { simple: 2, simple_words: 2, genz: 1, exam: 1, cause_effect: 1 }
-    };
-
-    const PRO_MODES = ["genz", "exam", "cause_effect"];
-
-    function loadCredits() {
-      const today = new Date().toDateString();
-      const saved = JSON.parse(localStorage.getItem("nh_credits"));
-
-      if (!saved || saved.date !== today) {
-        const fresh = {
-          date: today,
-          beforeLogin: { ...LIMITS.beforeLogin },
-          afterLogin: { ...LIMITS.afterLogin }
-        };
-        localStorage.setItem("nh_credits", JSON.stringify(fresh));
-        return fresh;
-      }
-      return saved;
-    }
-
-    function saveCredits(data) {
-      localStorage.setItem("nh_credits", JSON.stringify(data));
-    }
-
-    let credits = loadCredits();
-
-    function getCreditsLeft(preset) {
-      const pool = window.isUserLoggedIn ? credits.afterLogin : credits.beforeLogin;
-      const val = pool && typeof pool[preset] === "number" ? pool[preset] : 0;
-      return val;
-    }
-
-    function hasCredit(preset) {
-      return getCreditsLeft(preset) > 0;
-    }
-
-    function useCredit(preset) {
-      if (window.isUserLoggedIn) {
-        if (typeof credits.afterLogin[preset] === "number") {
-          credits.afterLogin[preset]--;
-        }
-      } else {
-        if (typeof credits.beforeLogin[preset] === "number") {
-          credits.beforeLogin[preset]--;
-        }
-      }
-      saveCredits(credits);
-    }
-
-    /* ===============================
-        UI ELEMENTS
-    =============================== */
-
-    const input = document.getElementById("inputText");
-    const outputBox = document.getElementById("outputBox");
-    const outputErr = document.getElementById("outputError");
-    const inputErr = document.getElementById("inputError");
-    const presetButtons = [...document.querySelectorAll(".preset-btn")];
-    const presetPreview = document.getElementById("presetPreview");
-    const modeUsedEl = document.getElementById("modeUsed");
-
-    const humanizeBtn = document.getElementById("humanizeBtn");
-    const humanizeCounter = document.getElementById("humanizeCounter");
-
-    const charCounter = document.getElementById("charCounter");
-
-    let selectedPreset = "simple";
-    let outputText = "";
-
-    /* ===============================
-        CREDIT COUNTER DISPLAY
-    =============================== */
-
-    function updateCreditCounter() {
-      const left = getCreditsLeft(selectedPreset);
-
-      if (PRO_MODES.includes(selectedPreset)) {
-        if (!window.isUserLoggedIn) {
-          humanizeCounter.textContent = "(Login required for this mode)";
-        } else {
-          humanizeCounter.textContent = `(${left} PRO tries left today)`;
-        }
-      } else {
-        humanizeCounter.textContent = `(${left} left today)`;
-      }
-    }
-
-    updateCreditCounter();
-
-    /* ===============================
-        PRESET LOGIC
-    =============================== */
-
-    const PRESET_DESC = {
-      simple: "Makes your text sound human and clean.",
-      simple_words: "Explains ideas in very simple words.",
-      exam: "Exam-style, formal school answers. (PRO Trial)",
-      genz: "Dark humour, emojis, Gen-Z tone. (PRO Trial)",
-      cause_effect: "Cause → Effect logic chain explanation. (PRO Trial)"
-    };
-
-    presetButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        selectedPreset = btn.dataset.preset;
-
-        presetButtons.forEach(b => b.classList.remove("selected"));
-        btn.classList.add("selected");
-
-        modeUsedEl.textContent = selectedPreset.toUpperCase();
-
-        presetPreview.style.display = "block";
-        presetPreview.textContent = PRESET_DESC[selectedPreset] || "";
-
-        updateCreditCounter();
-      });
-    });
-
-    /* ===============================
-        API CALL WRAPPER
-    =============================== */
-
-    async function callAI(preset, text) {
-      try {
-        const res = await fetch("/api/humanize", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ preset, userText: text })
-        });
-        const data = await res.json();
-        return data.output;
-      } catch (err) {
-        console.error("API error:", err);
-        return null;
-      }
-    }
-
-    /* ===============================
-        HUMANIZE BUTTON
-    =============================== */
-
-    const exampleModal = document.getElementById("proExampleModal");
-    exampleModal.addEventListener("click", (e) => {
-  e.stopPropagation(); // prevent overlay from closing instantly
 });
+</script>
 
-    document.querySelector(".pro-modal").addEventListener("click", (e) => {
-  e.stopPropagation();  // prevents modal from closing instantly
-});
-
-    const exampleInput = document.getElementById("exampleInput");
-    const exampleOutput = document.getElementById("exampleOutput");
-
-    const signInOverlay = document.getElementById("sign-in");
-    document.getElementById("clerk-sign-in").addEventListener("click", (e) => {
-  e.stopPropagation();
-});
-
-
-    const PRO_EXAMPLES = {
-      genz: {
-        input: "The French Revolution changed France.",
-        output: "Bruhh France woke up and chose *violence* 💀🔥. King said 'stop', people said 'no'. Now boom—revolution."
-      },
-      exam: {
-        input: "The French Revolution changed France.",
-        output: "The French Revolution brought major political, economic, and social reforms to France."
-      },
-      cause_effect: {
-        input: "Taxes increased in France.",
-        output: "Cause → Effect:\n• Higher taxes → Public anger → Protests.\n• Food prices rose → Riots.\n• Govt debt increased → Collapse of monarchy."
-      }
-    };
-
-    humanizeBtn.addEventListener("click", async (e) => {
-  e.stopPropagation();   // <-- ADD THIS
-
-      inputErr.textContent = "";
-      outputErr.textContent = "";
-
-      const text = input.value.trim();
-      if (!text) {
-        inputErr.textContent = "Paste some text first.";
-        return;
-      }
-
-      // NO CREDIT STATE
-if (!hasCredit(selectedPreset)) {
-  console.log("NO CREDIT | loggedIn =", window.isUserLoggedIn, "| preset =", selectedPreset);
-
-  // CASE 1 → NOT LOGGED IN → ALWAYS SHOW LOGIN POPUP
-  if (!window.isUserLoggedIn) {
-    console.log("OPENING CLERK LOGIN POPUP");
-
-    if (window.showSignInOverlay) {
-      window.showSignInOverlay();
-    } else {
-      // Backup if function fails
-      const overlay = document.getElementById("sign-in");
-      if (overlay) overlay.style.display = "block";
-
-      const box = document.getElementById("clerk-sign-in");
-      if (window.Clerk && box && !box.hasChildNodes()) {
-        window.Clerk.mountSignIn(box, { appearance: { baseTheme: "light" } });
-      }
-    }
-
-    return; // STOP HERE
-  }
-
-  // CASE 2 → LOGGED IN → SHOW PRO EXAMPLE POPUP
-  console.log("OPENING PRO EXAMPLE POPUP");
-
-  const example = PRO_EXAMPLES[selectedPreset] || {
-    input: "You completed all free credits.",
-    output: "Unlock PRO to continue using this mode!"
-  };
-
-  exampleInput.textContent = example.input;
-  exampleOutput.textContent = example.output;
-  exampleModal.style.display = "flex";
-e.stopPropagation();  // <-- ADD THIS
-
-
-  return;
-}
-
-
-      // USE CREDIT
-      useCredit(selectedPreset);
-      updateCreditCounter();
-
-      // Loading skeleton
-      outputBox.innerHTML = `
-        <div style="display:flex; flex-direction:column; gap:0.4rem;">
-          <div style="height:0.75rem; background:#e2e8f0; border-radius:999px;"></div>
-          <div style="height:0.75rem; background:#e2e8f0; border-radius:999px; width:90%;"></div>
-          <div style="height:0.75rem; background:#e2e8f0; border-radius:999px; width:80%;"></div>
-        </div>
-      `;
-
-      const result = await callAI(selectedPreset, text);
-
-      if (!result) {
-        outputErr.textContent = "Something went wrong. Try again.";
-        return;
-      }
-
-      outputText = result;
-      outputBox.innerHTML = result.replace(/\n/g, "<br>");
-    });
-
-    /* ===============================
-        COPY & DOWNLOAD
-    =============================== */
-
-    const toast = document.getElementById("toast");
-    const toastMsg = document.getElementById("toastMessage");
-
-    function showToast(msg) {
-      toastMsg.textContent = msg;
-      toast.style.opacity = 1;
-      setTimeout(() => {
-        toast.style.opacity = 0;
-      }, 1500);
-    }
-
-    document.getElementById("copyBtn").addEventListener("click", () => {
-      navigator.clipboard.writeText(outputText || "");
-      showToast("Copied!");
-    });
-
-    document.getElementById("downloadBtn").addEventListener("click", () => {
-      const blob = new Blob([outputText || ""], { type: "text/plain" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "humanized.txt";
-      link.click();
-    });
-
-    /* ===============================
-        CLOSE MODALS
-    =============================== */
-
-    document.getElementById("proExampleCloseBtn").addEventListener("click", () => {
-      exampleModal.style.display = "none";
-    });
-
-// Close PRO modal when clicking OUTSIDE the modal box
-// Close PRO modal only when clicking OUTSIDE the modal box
-// Stop clicks INSIDE modal from closing it
-document.querySelector(".pro-modal").addEventListener("click", (e) => {
-  e.stopPropagation();
-});
-
-// Close modal only when clicking OUTSIDE the modal
-exampleModal.addEventListener("click", (e) => {
-  const box = document.querySelector(".pro-modal");
-  if (!box.contains(e.target)) {
-    exampleModal.style.display = "none";
-  }
-});
-
-
-
-// Close Clerk sign-in when clicking OUTSIDE the sign-in box
-signInOverlay.addEventListener("click", (e) => {
-  const box = document.getElementById("clerk-sign-in");
-  if (!box.contains(e.target)) {
-    signInOverlay.classList.remove("show");
-setTimeout(() => {
-  signInOverlay.style.display = "none";
-}, 300); // matches animation length
-
-  }
-});
-;
-
-
-    document.getElementById("buyProBtn").addEventListener("click", () => {
-      window.location.href = "/pricing.html";
-    });
-
-    /* ===============================
-        CHARACTER COUNTER
-    =============================== */
-
-    input.addEventListener("input", function () {
-      const count = this.value.length;
-      charCounter.textContent = `${count} / 2000 characters`;
-    });
-
-  })();
-  </script>
-
-  <!-- ESC key + optional scroll -->
-  <script>
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") {
-        const signInOverlay = document.getElementById("sign-in");
-        const proModal = document.getElementById("proExampleModal");
-
-        if (signInOverlay && signInOverlay.style.display === "block") {
-          signInOverlay.style.display = "none";
-        }
-        if (proModal && proModal.style.display === "flex") {
-          proModal.style.display = "none";
-        }
-      }
-    });
-
-    const scrollBtn = document.getElementById("landing-scroll-btn");
-    if (scrollBtn) {
-      scrollBtn.addEventListener("click", () => {
-        document.getElementById("tool-card")?.scrollIntoView({ behavior: "smooth" });
-      });
-    }
-  </script>
+<!-- SECOND CLERK SCRIPT (kept by your request) -->
+<script async crossorigin="anonymous"
+data-clerk-publishable-key="pk_test_cHJvdmVuLW1ha28tNTAuY2xlcmsuYWNjb3VudHMuZGV2JA"
+src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js">
+</script>
 
 </body>
 </html>
