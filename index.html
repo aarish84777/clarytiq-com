@@ -17,7 +17,7 @@
 :root {
     --cobalt: #0066ff;
     --aqua: #00eaff;
-    --glow: rgba(0, 180, 255, 0.28); /* glow reduced by 75% */
+    --glow: rgba(0, 180, 255, 0.28); 
     --glass-dark: rgba(0, 25, 50, 0.35);
     --border-light: rgba(0, 140, 255, 0.25);
     --max-width: 1120px;
@@ -36,7 +36,7 @@ body {
 }
 
 /* --------------------------------------------------
-   PARALLAX BACKGROUND LAYER
+   PARALLAX BACKGROUND
 -------------------------------------------------- */
 .parallax-bg {
     position: fixed;
@@ -145,7 +145,7 @@ body {
 }
 
 /* --------------------------------------------------
-   HERO SECTION
+   HERO
 -------------------------------------------------- */
 .hero {
     max-width: var(--max-width);
@@ -155,10 +155,6 @@ body {
     align-items: center;
     gap: 3rem;
     position: relative;
-}
-
-.hero-left {
-    flex: 1;
 }
 
 .hero-left h1 {
@@ -195,7 +191,6 @@ body {
     transform: translateY(-3px);
 }
 
-/* Hero right image */
 .hero-right img {
     width: 480px;
     border-radius: 1rem;
@@ -224,9 +219,6 @@ body {
     font-weight: 800;
 }
 
-/* --------------------------------------------------
-   VALUE CARDS
--------------------------------------------------- */
 .grid-3 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
@@ -248,7 +240,7 @@ body {
 }
 
 /* --------------------------------------------------
-   FAQ ACCORDION
+   FAQ
 -------------------------------------------------- */
 .faq-item {
     margin-bottom: 1rem;
@@ -416,7 +408,7 @@ for (let i = 0; i < 14; i++) {
     </div>
 </section>
 
-<!-- PRICING PREVIEW -->
+<!-- PRICING -->
 <section class="glass-section">
     <h2 class="section-title">Simple, transparent pricing</h2>
 
@@ -467,11 +459,10 @@ for (let i = 0; i < 14; i++) {
     © 2025 Clarytiq — Powered by Vercel • Clerk
 </footer>
 
-<!-- SCRIPTS -->
+
+<!-- SCRIPT: PARALLAX + FAQ + SIGN-IN -->
 <script>
-/* --------------------------------------------------
-   PARALLAX BACKGROUND
--------------------------------------------------- */
+/* PARALLAX */
 const parallax = document.querySelector(".parallax-bg");
 document.addEventListener("mousemove", (e) => {
     const x = (e.clientX / window.innerWidth - 0.5) * 16;
@@ -479,42 +470,48 @@ document.addEventListener("mousemove", (e) => {
     parallax.style.transform = `translate(${x}px, ${y}px)`;
 });
 
-/* --------------------------------------------------
-   FAQ ACCORDION
--------------------------------------------------- */
+/* FAQ ACCORDION */
 document.querySelectorAll(".faq-item").forEach(item => {
     item.addEventListener("click", () => {
         item.classList.toggle("open");
     });
 });
 
-/* --------------------------------------------------
-   SIGN-IN MODAL
--------------------------------------------------- */
+/* SIGN-IN POPUP */
 const overlay = document.getElementById("sign-in");
-const signInBtns = [document.getElementById("openSignIn"), document.getElementById("openSignIn2")];
+const signInBox = document.getElementById("clerk-sign-in");
 
-signInBtns.forEach(btn =>
-    btn.addEventListener("click", () => {
-        overlay.style.display = "flex";
-        setTimeout(() => overlay.style.opacity = "1", 20);
+function openOverlay() {
+    overlay.style.display = "flex";
+    setTimeout(() => overlay.style.opacity = "1", 20);
 
-        if (window.Clerk && !document.getElementById("clerk-sign-in").hasChildNodes()) {
-            window.Clerk.mountSignIn(document.getElementById("clerk-sign-in"), { appearance: { baseTheme: "light" } });
-        }
-    })
-);
+    if (window.Clerk && !signInBox.hasChildNodes()) {
+        window.Clerk.mountSignIn(signInBox, { appearance: { baseTheme: "light" } });
+    }
+}
 
+document.getElementById("openSignIn").addEventListener("click", openOverlay);
+document.getElementById("openSignIn2").addEventListener("click", openOverlay);
+
+/* CLOSE ONLY IF CLICK OUTSIDE */
 overlay.addEventListener("click", (e) => {
-    const box = document.getElementById("clerk-sign-in");
-    if (!box.contains(e.target)) {
+    if (!signInBox.contains(e.target)) {
         overlay.style.opacity = "0";
         setTimeout(() => overlay.style.display = "none", 300);
     }
 });
+
+/* LOAD CLERK */
+window.addEventListener("load", async () => {
+    try {
+        await window.Clerk.load();
+    } catch (err) {
+        console.error("Clerk load error:", err);
+    }
+});
 </script>
 
-<!-- CLERK -->
+<!-- CLERK SDK -->
 <script async crossorigin="anonymous"
     data-clerk-publishable-key="pk_test_cHJvdmVuLW1ha28tNTAuY2xlcmsuYWNjb3VudHMuZGV2JA"
     src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js">
