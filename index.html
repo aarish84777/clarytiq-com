@@ -683,10 +683,22 @@
     =============================== */
 
     const exampleModal = document.getElementById("proExampleModal");
+    exampleModal.addEventListener("click", (e) => {
+  e.stopPropagation(); // prevent overlay from closing instantly
+});
+
+    document.querySelector(".pro-modal").addEventListener("click", (e) => {
+  e.stopPropagation();  // prevents modal from closing instantly
+});
+
     const exampleInput = document.getElementById("exampleInput");
     const exampleOutput = document.getElementById("exampleOutput");
 
     const signInOverlay = document.getElementById("sign-in");
+    document.getElementById("clerk-sign-in").addEventListener("click", (e) => {
+  e.stopPropagation();
+});
+
 
     const PRO_EXAMPLES = {
       genz: {
