@@ -2,10 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Clarytiq AI — Fix Your NPC Notes</title>
+  <title>Clarytiq AI — Crystal-Clear Understanding</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Clerk Auth -->
+  <!-- =============== FONTS =============== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- SF Pro (Apple UI Font) -->
+  <style>
+    @font-face {
+      font-family: 'SF Pro Display';
+      src: url('https://sf.abarba.me/SF-Pro-Display-Regular.otf');
+    }
+  </style>
+
+  <!-- =============== CLERK =============== -->
   <script
     async
     crossorigin="anonymous"
@@ -13,370 +26,383 @@
     src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js">
   </script>
 
-  <script>
-    window.isUserLoggedIn = false;
-
-    window.updateAuthUI = function () {
-      const signInBtn = document.getElementById("openSignIn");
-      const userBtnContainer = document.getElementById("clerk-user-button");
-
-      if (!signInBtn || !userBtnContainer) return;
-
-      if (window.isUserLoggedIn) {
-        signInBtn.style.display = "none";
-        userBtnContainer.style.display = "block";
-      } else {
-        signInBtn.style.display = "inline-flex";
-        userBtnContainer.style.display = "none";
-      }
-    };
-
-    window.addEventListener("load", async () => {
-      const signInOverlay = document.getElementById("sign-in");
-      const signInBox = document.getElementById("clerk-sign-in");
-      const openSignInBtn = document.getElementById("openSignIn");
-      const userBtnContainer = document.getElementById("clerk-user-button");
-
-      // Global helper to open Clerk sign-in
-      window.showSignInOverlay = function (e) {
-        e?.stopPropagation();
-        signInOverlay.style.display = "block";
-        setTimeout(() => signInOverlay.classList.add("show"), 10);
-
-        if (window.Clerk && signInBox && !signInBox.hasChildNodes()) {
-          window.Clerk.mountSignIn(signInBox, {
-            appearance: { baseTheme: "light" }
-          });
-        }
-      };
-
-      if (openSignInBtn) {
-        openSignInBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          window.showSignInOverlay();
-        });
-      }
-
-      if (!window.Clerk) return;
-
-      try {
-        await window.Clerk.load();
-
-        const emit = () => {
-          const user = window.Clerk.user;
-          window.isUserLoggedIn = !!(user && user.id);
-          window.updateAuthUI();
-        };
-
-        emit();
-        window.Clerk.addListener(emit);
-
-        if (userBtnContainer) {
-          window.Clerk.mountUserButton(userBtnContainer, {
-            afterSignOutUrl: "/",
-            appearance: { baseTheme: "light" }
-          });
-        }
-      } catch (err) {
-        console.error("Clerk load error:", err);
-      }
-    });
-  </script>
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
+  <!-- =============== STYLES =============== -->
   <style>
     :root {
-      --accent-blue: #0ea5e9;
-      --accent-green: #22c55e;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
+      --cobalt: #0066ff;
+      --cobalt-light: #3ba3ff;
+      --cobalt-glow: #00c8ff;
+      --dark-bg: #000814;
+      --text-light: #ffffff;
+      --text-dark: #0a0a0a;
+      --max-width: 1120px;
     }
 
+    /* Auto Light/Dark Mode */
     body {
       margin: 0;
-      font-family: "Inter", sans-serif;
-      background: radial-gradient(circle at top left, #e0f2fe 0, #f9fafb 45%, #eef2ff 100%);
-      color: var(--text-main);
+      font-family: 'Inter', 'SF Pro Display', sans-serif;
+      transition: background 0.4s ease, color 0.4s ease;
     }
 
-    /* NAVBAR */
+    @media (prefers-color-scheme: light) {
+      body {
+        background: #f8f9fb;
+        color: var(--text-dark);
+      }
+      .nav {
+        background: rgb(255,255,255,0.7);
+        backdrop-filter: blur(14px);
+      }
+      .glass-section {
+        background: rgba(255,255,255,0.6);
+        border: 1px solid rgba(0,0,0,0.05);
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: radial-gradient(circle at 20% 10%, #031b3f 0%, #020617 45%, #000000 100%);
+        color: var(--text-light);
+      }
+      .nav {
+        background: rgba(0, 20, 40, 0.4);
+        backdrop-filter: blur(18px);
+      }
+      .glass-section {
+        background: rgba(0, 20, 40, 0.35);
+        border: 1px solid rgba(0, 140, 255, 0.25);
+      }
+    }
+
+    /* =============== NAVBAR =============== */
     .nav {
-      max-width: 1120px;
-      margin: 1rem auto;
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 1.2rem auto;
       padding: 1rem 1.4rem;
-      border-radius: 1rem;
-      background: white;
-      box-shadow: 0 12px 30px rgba(15,23,42,0.08);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      border-radius: 1.1rem;
     }
 
-    #openSignIn {
-      padding: 0.45rem 1rem;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent-blue), var(--accent-green));
-      color: white;
-      font-weight: 600;
+    .brand {
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: -0.5px;
+    }
+
+    /* Premium Neon Button */
+    .btn {
+      padding: 1.4rem 3.4rem;
+      font-size: 1.6rem;
+      font-weight: 800;
+      border-radius: 1.3rem;
       border: none;
       cursor: pointer;
+      color: white;
+      background: linear-gradient(145deg, #00214d, #003780);
+      box-shadow:
+        0 12px 30px rgba(0,0,0,0.4),
+        inset 0 1px 3px rgba(255,255,255,0.06),
+        0 0 28px rgba(0,120,255,0.55);
+      transition: 0.25s ease;
     }
 
-    /* HERO SECTION */
+    .btn:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow:
+        0 25px 55px rgba(0,0,0,0.55),
+        0 0 32px rgba(0,150,255,0.9);
+    }
+
+    /* =============== HERO =============== */
     .hero {
       text-align: center;
-      margin-top: 3rem;
+      margin-top: 6rem;
       padding: 1rem;
     }
 
     .hero h1 {
-      font-size: clamp(2.4rem, 4vw, 3.2rem);
       font-weight: 800;
-      line-height: 1.2;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      margin: 0;
+      max-width: 820px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.15;
+      position: relative;
+    }
+
+    /* Neon Sweep Animation */
+    .hero h1 span {
+      background: linear-gradient(90deg, #0066ff, #00c8ff);
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: glowSweep 3.5s infinite;
+    }
+
+    @keyframes glowSweep {
+      0% { filter: drop-shadow(0 0 0px #00c8ff); }
+      50% { filter: drop-shadow(0 0 22px #00c8ff); }
+      100% { filter: drop-shadow(0 0 0px #00c8ff); }
     }
 
     .hero p {
-      color: var(--text-muted);
-      max-width: 620px;
-      margin: 1rem auto;
-      font-size: 1.1rem;
+      margin-top: 1rem;
+      color: #94a3b8;
+      font-size: 1.2rem;
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
     }
 
     .hero-buttons {
-      margin-top: 1.5rem;
+      margin-top: 2rem;
       display: flex;
-      gap: 1rem;
       justify-content: center;
+      gap: 1.2rem;
       flex-wrap: wrap;
     }
 
-    .btn-main {
-      padding: 0.9rem 2rem;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent-blue), var(--accent-green));
-      color: white;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 10px 30px rgba(14,165,233,0.35);
+    /* =============== GLASS CARD SECTION =============== */
+    .glass-section {
+      max-width: var(--max-width);
+      margin: 5rem auto;
+      padding: 2rem;
+      border-radius: 1.3rem;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
     }
 
-    .btn-outline {
-      padding: 0.9rem 2rem;
-      border-radius: 999px;
-      border: 2px solid var(--accent-blue);
-      color: var(--accent-blue);
-      font-weight: 700;
-      background: white;
-      cursor: pointer;
-    }
-
-    /* PAIN CARDS */
-    .pain-section {
-      max-width: 1120px;
-      margin: 4rem auto;
+    .section-title {
       text-align: center;
-      padding: 1rem;
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 2rem;
     }
 
-    .pain-cards {
+    .grid-3 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1rem;
-      margin-top: 1.5rem;
+      gap: 1.6rem;
     }
 
-    .pain-card {
-      padding: 1.4rem;
-      border-radius: 1rem;
-      background: white;
-      box-shadow: 0 12px 30px rgba(15,23,42,0.08);
-      font-size: 0.95rem;
-      line-height: 1.5;
+    .card {
+      padding: 1.6rem;
+      border-radius: 1.2rem;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(0,150,255,0.25);
+      transition: 0.3s ease;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.25);
     }
 
-    /* MODES */
-    .modes {
-      max-width: 1120px;
-      margin: 4rem auto;
-      padding: 1rem;
-      text-align: center;
-    }
-
-    .mode-list {
-      margin-top: 1rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1rem;
-    }
-
-    .mode-item {
-      background: white;
-      padding: 1.4rem;
-      border-radius: 1rem;
-      box-shadow: 0 12px 30px rgba(15,23,42,0.08);
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0,150,255,0.4);
+      border-color: #00c8ff;
     }
 
     /* PRICING */
     .pricing {
-      max-width: 1120px;
-      margin: 4rem auto;
-      padding: 1rem;
       text-align: center;
+      margin-top: 5rem;
     }
 
     .price-cards {
+      max-width: var(--max-width);
+      margin: 2rem auto;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1rem;
-      margin-top: 1.5rem;
+      gap: 1.6rem;
     }
 
     .price-card {
-      background: white;
-      padding: 1.4rem;
-      border-radius: 1rem;
-      box-shadow: 0 12px 30px rgba(15,23,42,0.1);
+      padding: 1.8rem;
+      border-radius: 1.2rem;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(0,150,255,0.25);
+      transition: 0.3s ease;
+    }
+
+    .price-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0,150,255,0.5);
+      border-color: #00c8ff;
     }
 
     /* FOOTER */
     footer {
-      margin-top: 4rem;
       text-align: center;
-      padding: 2rem;
-      color: var(--text-muted);
+      padding: 3rem;
+      color: #64748b;
+      font-size: 0.95rem;
+      margin-top: 4rem;
     }
 
-    /* SIGN-IN POPUP */
+    /* CLERK MODAL */
     #sign-in {
-      opacity: 0;
-      transform: translateY(20px);
-      display: none;
       position: fixed;
       inset: 0;
-      background: rgba(15,23,42,0.45);
-      backdrop-filter: blur(6px);
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(12px);
+      display: none;
+      opacity: 0;
       transition: 0.35s ease;
+      padding-top: 6rem;
       z-index: 9999;
-      padding-top: 4rem;
     }
 
     #sign-in.show {
+      display: block;
       opacity: 1;
-      transform: translateY(0);
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Clerk Sign-In Overlay -->
-  <div id="sign-in">
-    <div id="clerk-sign-in" style="max-width: 360px; margin: auto;"></div>
-  </div>
-
   <!-- NAVBAR -->
   <header class="nav">
-    <div style="font-weight:800; font-size:1.1rem;">Clarytiq AI</div>
+    <div class="brand">Clarytiq AI</div>
 
-    <div style="display:flex; align-items:center; gap:0.8rem;">
-      <button id="openSignIn">Sign In ⚡</button>
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <button id="openSignIn" class="btn" style="padding:1rem 2rem; font-size:1.1rem;">Sign In</button>
       <div id="clerk-user-button" style="display:none;"></div>
     </div>
   </header>
 
+  <!-- CLERK SIGN-IN OVERLAY -->
+  <div id="sign-in">
+    <div id="clerk-sign-in" style="max-width:420px; margin:auto;"></div>
+  </div>
+
   <!-- HERO -->
   <section class="hero">
-    <h1>“Your notes sound like a robot had a stroke.”</h1>
-    <p>Clarytiq AI rewrites your stiff, boring, NPC notes into clean, simple, exam-ready human text. No cringe. No headache. No robotic vibes.</p>
+    <h1>Turn chaotic notes into <span>crystal-clear understanding.</span></h1>
+
+    <p>Your AI-powered note transformer. Clean. Fast. Human.</p>
 
     <div class="hero-buttons">
-      <a href="/app.html"><button class="btn-main">✨ Try It Free</button></a>
-      <button id="openSignIn" class="btn-outline">Sign In</button>
+      <a href="/app.html"><button class="btn">✨ Try It Free</button></a>
+      <button id="openSignIn" class="btn">Sign In</button>
     </div>
-
-    <p style="margin-top:1rem; color:#475569; font-size:0.9rem;">
-      Transform your notes before they transform you into a dropout 💀🔥.
-    </p>
   </section>
 
-  <!-- PAIN SECTION -->
-  <section class="pain-section">
-    <h2 style="font-size:1.8rem; font-weight:800;">Let’s be honest… you’re not reading your class notes.</h2>
+  <!-- PROBLEMS SECTION -->
+  <section class="glass-section">
+    <h2 class="section-title">Why your notes feel impossible:</h2>
 
-    <div class="pain-cards">
-      <div class="pain-card">
-        <h3>📘 AI Notes = Emotionally Dead</h3>
-        GPT writes like a British scientist trapped in a cave.
+    <div class="grid-3">
+      <div class="card">
+        <h3>🤖 AI Notes Are Stiff</h3>
+        They read like a robot writing a research thesis.
       </div>
 
-      <div class="pain-card">
-        <h3>🧠 Textbooks = NPC Dialogue</h3>
-        Who TF uses “therefore” in real life? Exactly.
+      <div class="card">
+        <h3>📚 Textbooks Are NPC Dialogue</h3>
+        Too formal, too boring, too long.
       </div>
 
-      <div class="pain-card">
-        <h3>🥲 Teachers = PDF Machines</h3>
-        They dump info. You decode. Why??
+      <div class="card">
+        <h3>🥲 Teachers Dump Info</h3>
+        They explain. You decode. Pain.
       </div>
     </div>
-
-    <p style="margin-top:1.5rem; font-weight:600; font-size:1rem;">
-      “School gave you notes. We give you understanding.”
-    </p>
   </section>
 
   <!-- MODES -->
-  <section class="modes">
-    <h2 style="font-size:1.8rem; font-weight:800;">Pick your vibe.</h2>
+  <section class="glass-section">
+    <h2 class="section-title">Choose your transformation mode</h2>
 
-    <div class="mode-list">
-      <div class="mode-item">✔ Simple Humanizer — Your notes, finally readable.</div>
-      <div class="mode-item">✔ Easy Words — Because “photosynthesis” shouldn’t require a brain transplant.</div>
-      <div class="mode-item">🔒 Exam Ready (PRO) — Write like a 98% kid on 2 hours of sleep.</div>
-      <div class="mode-item">🔒 Gen-Z Mode (PRO) — Notes explained like your gossiping friend.</div>
-      <div class="mode-item">🔒 Cause → Effect (PRO) — Converts chaos → logic.</div>
+    <div class="grid-3">
+      <div class="card">✔ Simple Humanizer — readable, clean notes.</div>
+      <div class="card">✔ Easy Words — clarity for every topic.</div>
+      <div class="card">🔒 Exam Ready (PRO)</div>
+      <div class="card">🔒 Gen-Z Mode (PRO)</div>
+      <div class="card">🔒 Cause → Effect (PRO)</div>
     </div>
   </section>
 
   <!-- PRICING -->
   <section class="pricing">
-    <h2 style="font-size:1.8rem; font-weight:800;">Pay less than 1 plate of momos. Get more marks.</h2>
+    <h2 class="section-title">Premium clarity at student prices</h2>
 
     <div class="price-cards">
       <div class="price-card">
         <h3>$4.99 / Monthly</h3>
-        For broke but ambitious kids.
       </div>
 
       <div class="price-card">
         <h3>$29.99 / Yearly</h3>
-        Half the price. Smart people choose this.
       </div>
 
       <div class="price-card">
         <h3>$49 / Lifetime</h3>
-        One-time. Permanent flex.
       </div>
     </div>
 
-    <div style="margin-top:1.5rem;">
-      <a href="/app.html"><button class="btn-main">Try Free →</button></a>
-    </div>
-
-    <p style="margin-top:0.6rem; color:#64748b;">
-      Invest in your brain, not another ₹150 Maggi plate.
-    </p>
+    <a href="/app.html"><button class="btn">Start Free →</button></a>
   </section>
 
-  <!-- FOOTER -->
-  <footer>
-    Clarytiq AI © 2025 — Made for the un-serious but secretly genius kids.
-  </footer>
+  <footer>Clarytiq AI © 2025 — Built for clarity seekers.</footer>
+
+  <!-- CLERK LOGIC -->
+  <script>
+    window.isUserLoggedIn = false;
+
+    window.updateAuthUI = function () {
+      const signInBtn = document.querySelectorAll("#openSignIn");
+      const userBtn = document.getElementById("clerk-user-button");
+      if (window.isUserLoggedIn) {
+        signInBtn.forEach(btn => btn.style.display = "none");
+        userBtn.style.display = "block";
+      } else {
+        signInBtn.forEach(btn => btn.style.display = "inline-flex");
+        userBtn.style.display = "none";
+      }
+    };
+
+    window.addEventListener("load", async () => {
+      const overlay = document.getElementById("sign-in");
+      const signInBox = document.getElementById("clerk-sign-in");
+      const openButtons = document.querySelectorAll("#openSignIn");
+
+      window.showSignIn = function() {
+        overlay.classList.add("show");
+        if (window.Clerk && signInBox && !signInBox.hasChildNodes()) {
+          window.Clerk.mountSignIn(signInBox, { appearance: { baseTheme: "light" } });
+        }
+      };
+
+      openButtons.forEach(btn => btn.addEventListener("click", window.showSignIn));
+
+      if (!window.Clerk) return;
+
+      try {
+        await window.Clerk.load();
+
+        const update = () => {
+          const user = window.Clerk.user;
+          window.isUserLoggedIn = !!user;
+          window.updateAuthUI();
+        };
+
+        update();
+        window.Clerk.addListener(update);
+
+        window.Clerk.mountUserButton(document.getElementById("clerk-user-button"), {
+          afterSignOutUrl: "/",
+          appearance: { baseTheme: "light" }
+        });
+
+      } catch (err) {
+        console.error("Clerk failed:", err);
+      }
+    });
+  </script>
 
 </body>
 </html>
