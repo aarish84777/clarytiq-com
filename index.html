@@ -51,7 +51,9 @@
       const userBtnContainer = document.getElementById("clerk-user-button");
 
       // Global helper to open Clerk sign-in
-      window.showSignInOverlay = function () {
+      window.showSignInOverlay = function (e) {
+  e?.stopPropagation();   // <-- ADD THIS
+
         if (!signInOverlay) return;
         signInOverlay.style.display = "block";
 
@@ -63,9 +65,11 @@
       };
 
       if (openSignInBtn) {
-        openSignInBtn.addEventListener("click", () => {
-          window.showSignInOverlay();
-        });
+        openSignInBtn.addEventListener("click", (e) => {
+  e.stopPropagation();  // <-- ADD THIS
+  window.showSignInOverlay();
+});
+
       }
 
       if (!window.Clerk) {
@@ -699,7 +703,9 @@
       }
     };
 
-    humanizeBtn.addEventListener("click", async () => {
+    humanizeBtn.addEventListener("click", async (e) => {
+  e.stopPropagation();   // <-- ADD THIS
+
       inputErr.textContent = "";
       outputErr.textContent = "";
 
@@ -744,6 +750,8 @@ if (!hasCredit(selectedPreset)) {
   exampleInput.textContent = example.input;
   exampleOutput.textContent = example.output;
   exampleModal.style.display = "flex";
+e.stopPropagation();  // <-- ADD THIS
+
 
   return;
 }
