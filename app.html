@@ -5,7 +5,7 @@
   <title>Clarytiq App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Clerk Auth -->
+  <!-- Clerk Auth (ONLY ONCE) -->
   <script
     async
     crossorigin="anonymous"
@@ -25,7 +25,7 @@
       if (!signInBtn || !userBtnContainer) return;
 
       if (window.isUserLoggedIn) {
-        // show "Signed in" state
+        // Show "Signed in" state instead of hiding
         signInBtn.textContent = "Signed in ✅";
         signInBtn.disabled = true;
         signInBtn.classList.add("signed-in");
@@ -50,9 +50,9 @@
     };
 
     window.addEventListener("load", async () => {
-      const signInOverlay   = document.getElementById("sign-in");
-      const signInBox       = document.getElementById("clerk-sign-in");
-      const openSignInBtn   = document.getElementById("openSignIn");
+      const signInOverlay    = document.getElementById("sign-in");
+      const signInBox        = document.getElementById("clerk-sign-in");
+      const openSignInBtn    = document.getElementById("openSignIn");
       const userBtnContainer = document.getElementById("clerk-user-button");
 
       // Helper to open Clerk sign-in popup
@@ -61,7 +61,6 @@
         if (!signInOverlay) return;
 
         signInOverlay.style.display = "flex";
-        // animate
         requestAnimationFrame(() => {
           signInOverlay.classList.add("show");
         });
@@ -69,14 +68,13 @@
 
       if (openSignInBtn) {
         openSignInBtn.addEventListener("click", (e) => {
-          // if already logged in, do nothing
-          if (window.isUserLoggedIn) return;
+          if (window.isUserLoggedIn) return; // already logged in
           window.showSignInOverlay(e);
         });
       }
 
-      // close sign-in when clicking outside the box
-      if (signInOverlay) {
+      // Close sign-in popup when clicking outside the box
+      if (signInOverlay && signInBox) {
         signInOverlay.addEventListener("click", (e) => {
           if (!signInBox.contains(e.target)) {
             signInOverlay.classList.remove("show");
@@ -95,10 +93,11 @@
       try {
         await window.Clerk.load();
 
-        // Mount sign-in UI inside popup with redirect to app.html
+        // Mount sign-in UI INSIDE the popup
         if (signInBox && !signInBox.hasChildNodes()) {
           window.Clerk.mountSignIn(signInBox, {
             appearance: { baseTheme: "light" },
+            // ALWAYS go to app.html after sign in / sign up
             afterSignInUrl: "/app.html",
             afterSignUpUrl: "/app.html"
           });
@@ -113,7 +112,7 @@
         emit();
         window.Clerk.addListener(emit);
 
-        // Mount Clerk user button (avatar) with redirect back to app.html after sign-out
+        // User avatar button (top-right), also back to app.html after sign-out
         if (userBtnContainer) {
           window.Clerk.mountUserButton(userBtnContainer, {
             afterSignOutUrl: "/app.html",
@@ -131,7 +130,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- CSS (Redesigned, background stays #050235) -->
+  <!-- CSS (background fixed to #050235, redesigned, LESS GLOW) -->
   <style>
     :root {
       --bg-main: #050235;
@@ -139,12 +138,10 @@
       --panel-soft: #0c102b;
       --accent-cyan: #22d3ee;
       --accent-purple: #a855f7;
-      --accent-red: #f97373;
       --text-main: #e5e7eb;
       --text-muted: #9ca3af;
       --border-subtle: #1f2937;
       --danger: #f97373;
-      --shadow-heavy: 0 18px 60px rgba(0, 0, 0, 0.6);
     }
 
     * {
@@ -174,7 +171,7 @@
       margin: 1.2rem auto;
       max-width: 1120px;
       border: 1px solid rgba(148, 163, 184, 0.35);
-      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.7);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.8);
       position: sticky;
       top: 1rem;
       z-index: 10;
@@ -206,13 +203,14 @@
       align-items: center;
       gap: 0.4rem;
       font-size: 0.85rem;
-      box-shadow: 0 10px 30px rgba(34, 211, 238, 0.45);
+      /* 🔥 GLOW REMOVED: just a tiny soft shadow */
+      box-shadow: 0 4px 12px rgba(34, 211, 238, 0.35);
       transition: transform 0.12s ease, box-shadow 0.12s ease, opacity 0.12s ease;
     }
 
     #openSignIn:hover:not(.signed-in) {
       transform: translateY(-1px);
-      box-shadow: 0 16px 40px rgba(34, 211, 238, 0.7);
+      box-shadow: 0 6px 18px rgba(34, 211, 238, 0.45);
     }
 
     #openSignIn.signed-in {
@@ -221,7 +219,7 @@
       border: 1px solid rgba(148, 163, 184, 0.8);
       box-shadow: none;
       cursor: default;
-      opacity: 0.85;
+      opacity: 0.9;
     }
 
     #clerk-user-button {
@@ -264,8 +262,8 @@
       background: radial-gradient(circle at top left, #111827 0, #020617 55%);
       padding: 1.6rem;
       border-radius: 1.5rem;
-      box-shadow: var(--shadow-heavy);
       border: 1px solid rgba(55, 65, 81, 0.9);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.8);
     }
 
     .main-grid {
@@ -362,7 +360,8 @@
       background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
       color: #020617;
       border: none;
-      box-shadow: 0 10px 28px rgba(34, 211, 238, 0.55);
+      /* 🔥 GLOW REMOVED: no box-shadow here */
+      box-shadow: none;
     }
 
     .preset-pro-pill {
@@ -409,13 +408,14 @@
       align-items: center;
       justify-content: center;
       gap: 0.4rem;
-      box-shadow: 0 16px 40px rgba(34, 211, 238, 0.6);
+      /* 🔥 GLOW REMOVED: no big neon, just tiny */
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
       transition: transform 0.12s ease, box-shadow 0.12s ease;
     }
 
     #humanizeBtn:hover {
       transform: translateY(-1px);
-      box-shadow: 0 22px 50px rgba(168, 85, 247, 0.7);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.85);
     }
 
     /* OUTPUT BOX */
@@ -457,7 +457,6 @@
 
     .secondary-btn:hover {
       border-color: var(--accent-cyan);
-      background: #020617;
       transform: translateY(-1px);
     }
 
@@ -1015,14 +1014,6 @@
       });
     })();
   </script>
-
-  <!-- (Optional) second Clerk script if you still use it elsewhere -->
-  <!--
-  <script async crossorigin="anonymous"
-    data-clerk-publishable-key="pk_test_cHJvdmVuLW1ha28tNTAuY2xlcmsuYWNjb3VudHMuZGV2JA"
-    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js">
-  </script>
-  -->
 
 </body>
 </html>
