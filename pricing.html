@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pricing – Hello Aarish</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --accent-blue: #0ea5e9;
+      --accent-green: #22c55e;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --card-bg: white;
+      --shadow: 0 20px 40px rgba(15,23,42,0.12);
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background: radial-gradient(circle at top left, #e0f2fe 0, #f9fafb 45%, #eef2ff 100%);
+      color: var(--text-main);
+    }
+
+    /* NAV */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.4rem;
+      background: white;
+      border-radius: 1rem;
+      margin: 1rem auto;
+      max-width: 1120px;
+      box-shadow: 0 10px 30px rgba(15,23,42,0.08);
+      position: sticky;
+      top: 1rem;
+      z-index: 10;
+    }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      margin-top: 2.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 4vw, 2.8rem);
+      font-weight: 800;
+    }
+
+    /* PRICING GRID */
+    .pricing-grid {
+      max-width: 1100px;
+      margin: 3rem auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      padding: 0 1rem;
+    }
+
+    .price-card {
+      background: var(--card-bg);
+      padding: 2rem 1.6rem;
+      border-radius: 1.4rem;
+      box-shadow: var(--shadow);
+      text-align: center;
+      border: 1px solid #e2e8f0;
+    }
+
+    .price-card h2 {
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .price-card .price {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin: 0.4rem 0 1rem;
+      color: var(--accent-blue);
+    }
+
+    .features {
+      text-align: left;
+      margin: 1.3rem 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .features li {
+      margin: 0.4rem 0;
+    }
+
+    .cta-btn {
+      width: 100%;
+      padding: 0.9rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-green));
+      color: white;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      margin-top: 1rem;
+      box-shadow: 0 14px 32px rgba(14,165,233,0.35);
+      transition: 0.2s;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <header class="nav">
+    <div style="font-weight:800; font-size:1.1rem;">Hello Aarish</div>
+    <div style="display:flex; align-items:center; gap:0.8rem;">
+      <button id="openSignIn" style="
+        padding:0.45rem 1rem;
+        border-radius:999px;
+        background:linear-gradient(135deg, var(--accent-blue), var(--accent-green));
+        color:white;
+        border:none;
+        font-weight:600;
+        cursor:pointer;
+      ">Sign In ⚡</button>
+
+      <div id="clerk-user-button" style="display:none;"></div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Simple, Fair Pricing for Everyone 🌍</h1>
+    <p style="color:var(--text-muted); max-width:600px; margin:auto;">
+      Choose the plan that fits you. No hidden charges. Cancel anytime.
+    </p>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing-grid">
+
+    <!-- MONTHLY -->
+    <div class="price-card">
+      <h2>Monthly PRO</h2>
+      <div class="price">$4.99<span style="font-size:1rem; font-weight:500;">/mo</span></div>
+
+      <ul class="features">
+        <li>✔ Unlimited Rewrites</li>
+        <li>✔ Exam Mode</li>
+        <li>✔ Gen-Z Mode</li>
+        <li>✔ Cause → Effect Mode</li>
+        <li>✔ Faster AI Engine</li>
+        <li>✔ Priority Access</li>
+      </ul>
+
+      <button class="cta-btn" onclick="upgrade('monthly')">Get Monthly</button>
+    </div>
+
+    <!-- YEARLY -->
+    <div class="price-card" style="border:2px solid var(--accent-blue);">
+      <h2>Yearly PRO <span style="color:var(--accent-green); font-weight:700;">(Best Deal)</span></h2>
+      <div class="price">$29.99<span style="font-size:1rem; font-weight:500;">/yr</span></div>
+
+      <ul class="features">
+        <li>🔥 Save 50% vs monthly</li>
+        <li>✔ Unlimited Rewrites</li>
+        <li>✔ All PRO Modes</li>
+        <li>✔ High-Speed Output</li>
+        <li>✔ Early Access Features</li>
+      </ul>
+
+      <button class="cta-btn" onclick="upgrade('yearly')">Get Yearly</button>
+    </div>
+
+    <!-- LIFETIME -->
+    <div class="price-card">
+      <h2>Lifetime PRO</h2>
+      <div class="price">$49<span style="font-size:1rem; font-weight:500;"> one-time</span></div>
+
+      <ul class="features">
+        <li>✔ Pay Once, Use Forever</li>
+        <li>✔ All PRO Features</li>
+        <li>✔ Fastest AI Engine</li>
+        <li>✔ No Subscriptions Ever</li>
+      </ul>
+
+      <button class="cta-btn" onclick="upgrade('lifetime')">Get Lifetime</button>
+    </div>
+  </section>
+
+  <script>
+    // Upgrade handler
+    async function upgrade(plan) {
+      if (!window.isUserLoggedIn) {
+        // force sign-in overlay
+        if (window.showSignInOverlay) {
+          return window.showSignInOverlay();
+        }
+        return;
+      }
+
+      // After login → redirect to Stripe/checkout
+      alert("Redirecting to checkout for: " + plan);
+      // Replace alert with real checkout URL later
+    }
+
+    // Clerk wiring (same as your main page)
+    document.addEventListener("DOMContentLoaded", () => {
+      const openBtn = document.getElementById("openSignIn");
+      if (openBtn) {
+        openBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          window.showSignInOverlay();
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
