@@ -68,9 +68,12 @@ window.showSignInOverlay = function (e) {
   }, 10);
 
   if (window.Clerk && signInBox && !signInBox.hasChildNodes()) {
-    window.Clerk.mountSignIn(signInBox, {
-      appearance: { baseTheme: "light" }
-    });
+window.Clerk.mountSignIn(signInBox, {
+  afterSignInUrl: window.location.href,
+  afterSignUpUrl: window.location.href,
+  appearance: { baseTheme: "light" }
+});
+
   }
 };
 
@@ -110,10 +113,13 @@ window.showSignInOverlay = function (e) {
         window.Clerk.addListener(emit);
 
         if (userBtnContainer) {
-          window.Clerk.mountUserButton(userBtnContainer, {
-            afterSignOutUrl: window.location.href,
-            appearance: { baseTheme: "light" }
-          });
+window.Clerk.mountUserButton(userButtonContainer, {
+  afterSignInUrl: window.location.href,
+  afterSignUpUrl: window.location.href,
+  afterSignOutUrl: window.location.href,
+  appearance: { baseTheme: "light" }
+});
+
         }
       } catch (err) {
         console.error("Clerk load error:", err);
