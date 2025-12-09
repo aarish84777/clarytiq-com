@@ -317,6 +317,8 @@ for (let i = 0; i < 14; i++) {
         <a href="/legal.html">Legal</a>
         <a href="/support.html">Support</a>
         <button class="signin-btn" id="openSignIn">Sign In</button>
+        <span id="clerk-user-button"></span>
+
     </div>
 </header>
 
@@ -509,6 +511,47 @@ window.addEventListener("load", async () => {
         console.error("Clerk load error:", err);
     }
 });
+
+/* AUTH STATE UI -------------------------------------------------- */
+window.addEventListener("load", async () => {
+    try {
+        await window.Clerk.load();
+
+        const signInBtn = document.getElementById("openSignIn");
+        const signInBtn2 = document.getElementById("openSignIn2");
+        const userButtonContainer = document.getElementById("clerk-user-button");
+
+        function updateUI() {
+            const user = window.Clerk.user;
+
+            if (user) {
+                // User is logged in → hide Sign In buttons
+                if (signInBtn) signInBtn.style.display = "none";
+                if (signInBtn2) signInBtn2.style.display = "none";
+
+                // Show Clerk user button
+                window.Clerk.mountUserButton(userButtonContainer);
+            } else {
+                // User logged out → show Sign In buttons
+                if (signInBtn) signInBtn.style.display = "inline-block";
+                if (signInBtn2) signInBtn2.style.display = "inline-block";
+
+                // Clear user button slot
+                userButtonContainer.innerHTML = "";
+            }
+        }
+
+        updateUI();
+
+        // Re-run UI update whenever auth state changes
+        window.Clerk.addListener(updateUI);
+
+    } catch (err) {
+        console.error("Clerk load error:", err);
+    }
+});
+
+
 </script>
 
 <!-- CLERK SDK -->
