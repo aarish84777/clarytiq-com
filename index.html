@@ -277,7 +277,7 @@
   inset: 0 !important;
   background: rgba(15, 23, 42, 0.45) !important;
   backdrop-filter: blur(6px) !important;
-  display: none !important;
+  display: none ;
   align-items: center !important;
   justify-content: center !important;
   z-index: 999999 !important;
@@ -829,22 +829,32 @@ e.stopPropagation();  // <-- ADD THIS
       exampleModal.style.display = "none";
     });
 
-    document.addEventListener("click", (e) => {
-      if (
-        exampleModal.style.display === "flex" &&
-        !exampleModal.querySelector(".pro-modal").contains(e.target)
-      ) {
-        exampleModal.style.display = "none";
-      }
+// Close PRO modal when clicking OUTSIDE the modal box
+// Close PRO modal only when clicking OUTSIDE the modal box
+// Stop clicks INSIDE modal from closing it
+document.querySelector(".pro-modal").addEventListener("click", (e) => {
+  e.stopPropagation();
+});
 
-      if (
-        signInOverlay.style.display === "block" &&
-        !document.getElementById("clerk-sign-in").contains(e.target) &&
-        e.target.id !== "openSignIn"
-      ) {
-        signInOverlay.style.display = "none";
-      }
-    });
+// Close modal only when clicking OUTSIDE the modal
+exampleModal.addEventListener("click", (e) => {
+  const box = document.querySelector(".pro-modal");
+  if (!box.contains(e.target)) {
+    exampleModal.style.display = "none";
+  }
+});
+
+
+
+// Close Clerk sign-in when clicking OUTSIDE the sign-in box
+signInOverlay.addEventListener("click", (e) => {
+  const box = document.getElementById("clerk-sign-in");
+  if (!box.contains(e.target)) {
+    signInOverlay.style.display = "none";
+  }
+});
+;
+
 
     document.getElementById("buyProBtn").addEventListener("click", () => {
       window.location.href = "/pricing";
