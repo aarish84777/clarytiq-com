@@ -55,7 +55,9 @@
   e?.stopPropagation();   // <-- ADD THIS
 
         if (!signInOverlay) return;
-        signInOverlay.style.display = "block";
+        signInOverlay.classList.add("show");
+signInOverlay.style.display = "block";
+
 
         if (window.Clerk && signInBox && !signInBox.hasChildNodes()) {
           window.Clerk.mountSignIn(signInBox, {
@@ -310,6 +312,21 @@
       transition: 0.25s;
       font-size: 0.8rem;
     }
+  
+    /* --- Clerk popup animation --- */
+
+#sign-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+#sign-in.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+  
   </style>
 </head>
 
@@ -877,7 +894,11 @@ exampleModal.addEventListener("click", (e) => {
 signInOverlay.addEventListener("click", (e) => {
   const box = document.getElementById("clerk-sign-in");
   if (!box.contains(e.target)) {
-    signInOverlay.style.display = "none";
+    signInOverlay.classList.remove("show");
+setTimeout(() => {
+  signInOverlay.style.display = "none";
+}, 300); // matches animation length
+
   }
 });
 ;
