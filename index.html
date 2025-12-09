@@ -10,9 +10,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-<!-- Bradley Hand ITC substitute -->
-<link href="https://fonts.googleapis.com/css2?family=Bradley+Hand&display=swap" rel="stylesheet">
-
 <style>
 /* --------------------------------------------------
    ROOT VARIABLES & PREMIUM COLOURS
@@ -72,7 +69,35 @@ body {
 }
 
 /* --------------------------------------------------
-   NAVBAR — UPDATED FOR BIG CENTERED BRAND
+   ORBIT ANIMATION BEHIND HERO
+-------------------------------------------------- */
+.orbit-container {
+    position: absolute;
+    left: 50%;
+    top: 54%;
+    transform: translate(-50%, -50%);
+    width: 460px;
+    height: 460px;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.25;
+}
+
+.orbit {
+    position: absolute;
+    inset: 0;
+    border: 2px dashed rgba(0, 200, 255, 0.35);
+    border-radius: 50%;
+    animation: orbitSpin 18s linear infinite;
+}
+
+@keyframes orbitSpin {
+    from { transform: rotate(0); }
+    to { transform: rotate(360deg); }
+}
+
+/* --------------------------------------------------
+   NAVBAR
 -------------------------------------------------- */
 .nav {
     max-width: var(--max-width);
@@ -82,22 +107,18 @@ body {
     background: rgba(0, 25, 50, 0.35);
     border: 1px solid var(--border-light);
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     backdrop-filter: blur(18px);
-    gap: 1rem;
 }
 
-/* BIG CENTERED BRAND */
 .brand {
-    font-family: "Bradley Hand ITC", "Bradley Hand", cursive;
-    font-size: 5rem; /* 3× bigger */
+    font-size: 1.7rem;
     font-weight: 900;
-    text-align: center;
-    width: 100%;
-    display: block;
-    color: white;
+    background: linear-gradient(90deg, var(--aqua), #4d9fff);
+    -webkit-background-clip: text;
+    color: transparent;
+    letter-spacing: -0.5px;
 }
 
 .nav-right {
@@ -110,7 +131,7 @@ body {
     text-decoration: none;
     color: #c7d8ff;
     font-weight: 500;
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .signin-btn {
@@ -126,7 +147,6 @@ body {
 /* --------------------------------------------------
    HERO
 -------------------------------------------------- */
-/* (unchanged) — keeping your original hero styles */
 .hero {
     max-width: var(--max-width);
     margin: 5rem auto;
@@ -179,7 +199,7 @@ body {
 }
 
 /* --------------------------------------------------
-   GLASS SECTIONS — unchanged
+   GLASS SECTIONS
 -------------------------------------------------- */
 .glass-section {
     max-width: var(--max-width);
@@ -219,7 +239,9 @@ body {
     border-color: var(--aqua);
 }
 
-/* FAQ */
+/* --------------------------------------------------
+   FAQ
+-------------------------------------------------- */
 .faq-item {
     margin-bottom: 1rem;
     background: rgba(0,0,0,0.25);
@@ -257,7 +279,9 @@ body {
     transform: rotate(90deg);
 }
 
-/* FOOTER */
+/* --------------------------------------------------
+   FOOTER
+-------------------------------------------------- */
 footer {
     text-align: center;
     padding: 2rem;
@@ -294,6 +318,7 @@ for (let i = 0; i < 14; i++) {
         <a href="/support.html">Support</a>
         <button class="signin-btn" id="openSignIn">Sign In</button>
         <span id="clerk-user-button"></span>
+
     </div>
 </header>
 
@@ -313,16 +338,21 @@ for (let i = 0; i < 14; i++) {
     <div id="clerk-sign-in" style="width:400px; max-width:90%;"></div>
 </div>
 
-<!-- HERO SECTION -->
+<!-- HERO -->
 <section class="hero">
+    <div class="orbit-container"><div class="orbit"></div></div>
+
     <div class="hero-left">
         <h1>Transform complex notes into clear, human text. Instantly.</h1>
-        <p>Clarytiq rewrites AI-generated and class notes into concise, natural, exam-ready explanations.</p>
-
+        <p>
+            Clarytiq rewrites AI-generated and class notes into concise,
+            natural, exam-ready explanations—designed for clarity, speed, and results.
+        </p>
         <div class="cta-row">
             <a href="/app.html"><button class="btn">✨ Try Free</button></a>
             <button class="btn" id="openSignIn2">Sign In</button>
         </div>
+        <p style="margin-top:1rem; color:#b0c0d0;">No fluff. No noise. Just clean understanding.</p>
     </div>
 
     <div class="hero-right">
@@ -330,28 +360,123 @@ for (let i = 0; i < 14; i++) {
     </div>
 </section>
 
+<!-- VALUE PROP -->
+<section class="glass-section">
+    <h2 class="section-title">Why students choose Clarytiq</h2>
 
-<!-- REST OF YOUR PAGE CONTENT (unchanged)... -->
-<!-- VALUE PROP, MODES, HOW IT WORKS, PRICING, FAQ, FINAL CTA, FOOTER -->
+    <div class="grid-3">
+        <div class="card">🌐 <strong>Precision Rewriting</strong><br>Turn raw robotic text into smooth human notes.</div>
+        <div class="card">⚡ <strong>Ultra-Fast Understanding</strong><br>Summaries rewritten into high-clarity explanations.</div>
+        <div class="card">🎯 <strong>Designed for Focus</strong><br>Reduces confusion. Improves clarity instantly.</div>
+    </div>
+</section>
 
+<!-- MODES -->
+<section class="glass-section">
+    <h2 class="section-title">Modes built for every need</h2>
+
+    <div class="grid-3">
+        <div class="card">✔ Simple Humanizer</div>
+        <div class="card">✔ Easy Words</div>
+        <div class="card">🔒 Exam Ready (PRO)</div>
+        <div class="card">🔒 Gen-Z Mode (PRO)</div>
+        <div class="card">🔒 Cause → Effect (PRO)</div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="glass-section">
+    <h2 class="section-title">How it works</h2>
+
+    <div class="grid-3">
+        <div class="card">1️⃣ Paste your text.</div>
+        <div class="card">2️⃣ Choose a mode.</div>
+        <div class="card">3️⃣ Get clean, beautifully structured notes.</div>
+    </div>
+
+    <p style="text-align:center; margin-top:1rem; color:#a9bdd2;">
+        Built for students. Optimized for clarity.
+    </p>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="glass-section">
+    <h2 class="section-title">What students say</h2>
+
+    <div class="grid-3">
+        <div class="card">“Finally, notes that actually make sense.”<br><br><small>Student — Delhi</small></div>
+        <div class="card">“Cleaner than anything I’ve ever written.”<br><br><small>Student — Mumbai</small></div>
+        <div class="card">“Exam Ready mode is ridiculously good.”<br><br><small>Student — Bangalore</small></div>
+    </div>
+</section>
+
+<!-- PRICING -->
+<section class="glass-section">
+    <h2 class="section-title">Simple, transparent pricing</h2>
+
+    <div class="grid-3">
+        <div class="card"><h3>$4.99 / Monthly</h3><p>Unlimited rewrites • All PRO modes</p><a href="/pricing.html"><button class="btn">Get Monthly</button></a></div>
+        <div class="card"><h3>$29.99 / Yearly</h3><p>Save more • All PRO features</p><a href="/pricing.html"><button class="btn">Get Yearly</button></a></div>
+        <div class="card"><h3>$49 Lifetime</h3><p>One-time payment • Full access forever</p><a href="/pricing.html"><button class="btn">Get Lifetime</button></a></div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="glass-section">
+    <h2 class="section-title">FAQ</h2>
+
+    <div class="faq-item">
+        <div class="faq-question">How many free rewrites do I get per day?<span class="chevron">›</span></div>
+        <div class="faq-answer">You get daily free credits. PRO unlocks unlimited rewrites.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">What’s included in PRO?<span class="chevron">›</span></div>
+        <div class="faq-answer">PRO includes Exam Ready, Gen-Z Mode, Cause → Effect, unlimited rewrites, and faster output.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">Do you store my notes?<span class="chevron">›</span></div>
+        <div class="faq-answer">Clarytiq does not store your personal notes by default. See the legal page for details.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">How do I upgrade?<span class="chevron">›</span></div>
+        <div class="faq-answer">Visit <a href="/pricing.html">pricing</a> to upgrade instantly.</div>
+    </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="glass-section">
+    <h2 class="section-title">Upgrade your learning experience</h2>
+
+    <div style="text-align:center;">
+        <a href="/app.html"><button class="btn">Try Free</button></a>
+        <a href="/pricing.html"><button class="btn" style="margin-left:1rem;">See Pricing</button></a>
+    </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
     © 2025 Clarytiq — Powered by Vercel • Clerk
 </footer>
 
 
-<!-- SCRIPT: PARALLAX + FAQ + SIGN-IN + AUTH LOGIC -->
+<!-- SCRIPT: PARALLAX + FAQ + SIGN-IN -->
 <script>
 /* PARALLAX */
 const parallax = document.querySelector(".parallax-bg");
 document.addEventListener("mousemove", (e) => {
     const x = (e.clientX / window.innerWidth - 0.5) * 16;
     const y = (e.clientY / window.innerHeight - 0.5) * 16;
-    parallax.style.transform = `translate(${x}px, ${y}px)`; 
+    parallax.style.transform = `translate(${x}px, ${y}px)`;
 });
 
-/* FAQ */
+/* FAQ ACCORDION */
 document.querySelectorAll(".faq-item").forEach(item => {
-    item.addEventListener("click", () => item.classList.toggle("open"));
+    item.addEventListener("click", () => {
+        item.classList.toggle("open");
+    });
 });
 
 /* SIGN-IN POPUP */
@@ -370,6 +495,7 @@ function openOverlay() {
 document.getElementById("openSignIn").addEventListener("click", openOverlay);
 document.getElementById("openSignIn2").addEventListener("click", openOverlay);
 
+/* CLOSE ONLY IF CLICK OUTSIDE */
 overlay.addEventListener("click", (e) => {
     if (!signInBox.contains(e.target)) {
         overlay.style.opacity = "0";
@@ -377,7 +503,16 @@ overlay.addEventListener("click", (e) => {
     }
 });
 
-/* AUTH STATE UI */
+/* LOAD CLERK */
+window.addEventListener("load", async () => {
+    try {
+        await window.Clerk.load();
+    } catch (err) {
+        console.error("Clerk load error:", err);
+    }
+});
+
+/* AUTH STATE UI -------------------------------------------------- */
 window.addEventListener("load", async () => {
     try {
         await window.Clerk.load();
@@ -390,26 +525,36 @@ window.addEventListener("load", async () => {
             const user = window.Clerk.user;
 
             if (user) {
+                // User is logged in → hide Sign In buttons
                 if (signInBtn) signInBtn.style.display = "none";
                 if (signInBtn2) signInBtn2.style.display = "none";
+
+                // Show Clerk user button
                 window.Clerk.mountUserButton(userButtonContainer);
             } else {
+                // User logged out → show Sign In buttons
                 if (signInBtn) signInBtn.style.display = "inline-block";
                 if (signInBtn2) signInBtn2.style.display = "inline-block";
+
+                // Clear user button slot
                 userButtonContainer.innerHTML = "";
             }
         }
 
         updateUI();
+
+        // Re-run UI update whenever auth state changes
         window.Clerk.addListener(updateUI);
 
     } catch (err) {
-        console.error("Clerk auth error:", err);
+        console.error("Clerk load error:", err);
     }
 });
+
+
 </script>
 
-<!-- Clerk SDK -->
+<!-- CLERK SDK -->
 <script async crossorigin="anonymous"
     data-clerk-publishable-key="pk_test_cHJvdmVuLW1ha28tNTAuY2xlcmsuYWNjb3VudHMuZGV2JA"
     src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js">
