@@ -691,6 +691,13 @@ async function saveCredits(data) {
     const charCounter = document.getElementById("charCounter");
 
     let selectedPreset = "simple";
+    // LOAD CREDITS ON START
+let credits = null;
+loadCredits().then(c => {
+  credits = c;
+  updateCreditCounter();
+});
+
     /* ===============================
     CREDIT FUNCTIONS (REQUIRED)
 =============================== */
