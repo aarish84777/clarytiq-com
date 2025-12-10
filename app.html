@@ -613,50 +613,65 @@ window.Clerk.mountUserButton(userButtonContainer, {
 
     const PRO_MODES = ["genz", "exam", "cause_effect"];
 
-    function loadCredits() {
-      const today = new Date().toDateString();
-      const saved = JSON.parse(localStorage.getItem("nh_credits"));
+async function loadCredits() {
+  const user = window.Clerk?.user;
+  const today = new Date().toDateString();
 
-      if (!saved || saved.date !== today) {
-        const fresh = {
-          date: today,
-          beforeLogin: { ...LIMITS.beforeLogin },
-          afterLogin: { ...LIMITS.afterLogin }
-        };
-        localStorage.setItem("nh_credits", JSON.stringify(fresh));
-        return fresh;
-      }
-      return saved;
+  // If not logged in → fall back to localStorage LIMITS
+  if (!user) {
+    const saved = JSON.parse(localStorage.getItem("nh_credits"));
+    if (!saved || saved.date !== today) {
+      const fresh = {
+        date: today,
+        beforeLogin: { ...LIMITS.beforeLogin }
+      };
+      localStorage.setItem("nh_credits", JSON.stringify(fresh));
+      return fresh;
     }
+    return saved;
+  }
 
-    function saveCredits(data) {
-      localStorage.setItem("nh_credits", JSON.stringify(data));
-    }
+  // LOGGED IN → fetch credits from backend
+  const res = await fetch(`/api/getCredits?userId=${user.id}`);
+  const data = await res.json();
 
-    let credits = loadCredits();
+  if (!data || data.date !== today) {
+    // New day → reset on server
+    const fresh = {
+      date: today,
+      afterLogin: { ...LIMITS.afterLogin }
+    };
 
-    function getCreditsLeft(preset) {
-      const pool = window.isUserLoggedIn ? credits.afterLogin : credits.beforeLogin;
-      const val = pool && typeof pool[preset] === "number" ? pool[preset] : 0;
-      return val;
-    }
+    await fetch(`/api/saveCredits`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: user.id, credits: fresh })
+    });
 
-    function hasCredit(preset) {
-      return getCreditsLeft(preset) > 0;
-    }
+    return fresh;
+  }
 
-    function useCredit(preset) {
-      if (window.isUserLoggedIn) {
-        if (typeof credits.afterLogin[preset] === "number") {
-          credits.afterLogin[preset]--;
-        }
-      } else {
-        if (typeof credits.beforeLogin[preset] === "number") {
-          credits.beforeLogin[preset]--;
-        }
-      }
-      saveCredits(credits);
-    }
+  return data;
+}
+
+
+async function saveCredits(data) {
+  const user = window.Clerk?.user;
+
+  if (!user) {
+    // Not logged in → save only locally
+    localStorage.setItem("nh_credits", JSON.stringify(data));
+    return;
+  }
+
+  // Logged in → save on server
+  await fetch(`/api/saveCredits`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ userId: user.id, credits: data })
+  });
+}
+
 
     /* ===============================
         UI ELEMENTS
