@@ -12,7 +12,8 @@ export default function handler(req, res) {
     return res.status(400).json({ error: "Missing email or userId" });
   }
 
-const file = path.join(process.cwd(), "api", "_data", "emailToUserId.json");
+const file = path.join(process.cwd(), "_data", "emailToUserId.json");
+
 
 
   // Create file if doesn't exist
