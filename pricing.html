@@ -212,8 +212,21 @@
       }
     });
   </script>
-<script src="https://assets.lemonsqueezy.com/lemon.js" defer></script>
-<script>LemonSqueezy.init();</script>
+<script src="https://assets.lemonsqueezy.com/lemon.js"></script>
+<script>
+  LemonSqueezy.init();
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("[data-ls-checkout]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      console.log("Checkout click detected!");
+    });
+  });
+});
+</script>
+
 
 
 </body>
