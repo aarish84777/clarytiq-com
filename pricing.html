@@ -149,7 +149,8 @@
         <li>✔ Priority Access</li>
       </ul>
 
-      <button class="cta-btn" onclick="upgrade('monthly')">Get Monthly</button>
+<a href="/pro.html"><button class="cta-btn">Get Monthly</button></a>
+
     </div>
 
     <!-- YEARLY -->
@@ -165,7 +166,8 @@
         <li>✔ Early Access Features</li>
       </ul>
 
-      <button class="cta-btn" onclick="upgrade('yearly')">Get Yearly</button>
+<a href="/pro.html"><button class="cta-btn">Get Yearly</button></a>
+
     </div>
 
     <!-- LIFETIME -->
@@ -180,37 +182,12 @@
         <li>✔ No Subscriptions Ever</li>
       </ul>
 
-      <button class="cta-btn" onclick="upgrade('lifetime')">Get Lifetime</button>
+<a href="/pro.html"><button class="cta-btn">Get Lifetime</button></a>
+
     </div>
   </section>
 
-  <script>
-    // Upgrade handler
-    async function upgrade(plan) {
-      if (!window.isUserLoggedIn) {
-        // force sign-in overlay
-        if (window.showSignInOverlay) {
-          return window.showSignInOverlay();
-        }
-        return;
-      }
 
-      // After login → redirect to Stripe/checkout
-      alert("Redirecting to checkout for: " + plan);
-      // Replace alert with real checkout URL later
-    }
-
-    // Clerk wiring (same as your main page)
-    document.addEventListener("DOMContentLoaded", () => {
-      const openBtn = document.getElementById("openSignIn");
-      if (openBtn) {
-        openBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          window.showSignInOverlay();
-        });
-      }
-    });
-  </script>
 
 </body>
 </html>
