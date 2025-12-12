@@ -501,14 +501,39 @@ overlay.addEventListener("click", (e) => {
     }
 });
 
-/* LOAD CLERK */
+/* LOAD CLERK + AUTH STATE */
 window.addEventListener("load", async () => {
     try {
         await window.Clerk.load();
+
+        const signInBtn1 = document.getElementById("openSignIn");
+        const signInBtn2 = document.getElementById("openSignIn2");
+
+        function updateAuthUI() {
+            const user = window.Clerk.user;
+
+            if (user) {
+                // User is logged in → hide Sign In buttons
+                if (signInBtn1) signInBtn1.style.display = "none";
+                if (signInBtn2) signInBtn2.style.display = "none";
+            } else {
+                // User is logged out → show Sign In buttons
+                if (signInBtn1) signInBtn1.style.display = "inline-block";
+                if (signInBtn2) signInBtn2.style.display = "inline-block";
+            }
+        }
+
+        // Run once on load
+        updateAuthUI();
+
+        // Re-run whenever auth state changes
+        window.Clerk.addListener(updateAuthUI);
+
     } catch (err) {
         console.error("Clerk load error:", err);
     }
 });
+
 </script>
 
 <!-- CLERK SDK -->
