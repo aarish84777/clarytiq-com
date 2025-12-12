@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>Clarytiq — Transform Notes into Clear Text</title>
+<title>Clarytiq — Transform Notes into Clear Understanding</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <!-- FONTS -->
@@ -99,16 +99,6 @@ body {
 /* --------------------------------------------------
    NAVBAR
 -------------------------------------------------- */
-.big-brand {
-    font-family: "Bradley Hand ITC", "Bradley Hand", cursive;
-    font-size: 4rem;
-    font-weight: 700;
-    text-align: center;
-    margin-top: 2rem;
-    margin-bottom: 0.5rem;
-    color: white;
-}
-
 .nav {
     max-width: var(--max-width);
     margin: 1.4rem auto;
@@ -159,15 +149,12 @@ body {
 -------------------------------------------------- */
 .hero {
     max-width: var(--max-width);
-    margin: 0 auto;
+    margin: 5rem auto;
     padding: 2rem;
     display: flex;
     align-items: center;
     gap: 3rem;
     position: relative;
-
-    /* SHIFT HERO RIGHT BY 2 CM */
-    margin-right: 2cm;
 }
 
 .hero-left h1 {
@@ -302,14 +289,6 @@ footer {
     font-size: 1rem;
 }
 </style>
-
-<!-- Privacy-friendly analytics by Plausible -->
-<script async src="https://plausible.io/js/pa-giwVKduso5k4WRbNlcti2.js"></script>
-<script>
-  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-  plausible.init()
-</script>
-
 </head>
 
 <body>
@@ -330,9 +309,9 @@ for (let i = 0; i < 14; i++) {
 </script>
 
 <!-- NAVBAR -->
-<div class="big-brand">Clarytiq</div>
-
 <header class="nav">
+    <div class="brand">Clarytiq</div>
+
     <div class="nav-right">
         <a href="/pricing.html">Pricing</a>
         <a href="/legal.html">Legal</a>
@@ -341,14 +320,31 @@ for (let i = 0; i < 14; i++) {
     </div>
 </header>
 
+<!-- SIGN-IN OVERLAY -->
+<div id="sign-in" style="
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(12px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity .35s ease;
+">
+    <div id="clerk-sign-in" style="width:400px; max-width:90%;"></div>
+</div>
+
 <!-- HERO -->
 <section class="hero">
     <div class="orbit-container"><div class="orbit"></div></div>
 
     <div class="hero-left">
-        <h1>Transform boring text into usable and interesting notes.</h1>
+        <h1>Transform complex notes into clear, human text. Instantly.</h1>
         <p>
-            Clarytiq makes boring notes and lectures into fun Gen Z explanations, logical cause-effect breakdowns, and easy-worded (like you're 10) answers — plus exam-ready rewrites.
+            Clarytiq rewrites AI-generated and class notes into concise,
+            natural, exam-ready explanations—designed for clarity, speed, and results.
         </p>
         <div class="cta-row">
             <a href="/app.html"><button class="btn">✨ Try Free</button></a>
@@ -357,7 +353,9 @@ for (let i = 0; i < 14; i++) {
         <p style="margin-top:1rem; color:#b0c0d0;">No fluff. No noise. Just clean understanding.</p>
     </div>
 
-    <div class="hero-right"></div>
+    <div class="hero-right">
+        <img src="/screenshot.png" alt="App screenshot" />
+    </div>
 </section>
 
 <!-- VALUE PROP -->
@@ -415,21 +413,9 @@ for (let i = 0; i < 14; i++) {
     <h2 class="section-title">Simple, transparent pricing</h2>
 
     <div class="grid-3">
-        <div class="card">
-            <h3>$4.99 / Monthly</h3>
-            <p>Unlimited rewrites • All PRO modes</p>
-            <a href="/pricing.html"><button class="btn">Get Monthly</button></a>
-        </div>
-        <div class="card">
-            <h3>$29.99 / Yearly</h3>
-            <p>Save more • All PRO features</p>
-            <a href="/pricing.html"><button class="btn">Get Yearly</button></a>
-        </div>
-        <div class="card">
-            <h3>$49 Lifetime</h3>
-            <p>One-time payment • Full access forever</p>
-            <a href="/pricing.html"><button class="btn">Get Lifetime</button></a>
-        </div>
+        <div class="card"><h3>$4.99 / Monthly</h3><p>Unlimited rewrites • All PRO modes</p><a href="/pricing.html"><button class="btn">Get Monthly</button></a></div>
+        <div class="card"><h3>$29.99 / Yearly</h3><p>Save more • All PRO features</p><a href="/pricing.html"><button class="btn">Get Yearly</button></a></div>
+        <div class="card"><h3>$49 Lifetime</h3><p>One-time payment • Full access forever</p><a href="/pricing.html"><button class="btn">Get Lifetime</button></a></div>
     </div>
 </section>
 
@@ -470,8 +456,9 @@ for (let i = 0; i < 14; i++) {
 
 <!-- FOOTER -->
 <footer>
-    © 2025 Clarytiq — Powered by Vercel
+    © 2025 Clarytiq — Powered by Vercel • Clerk
 </footer>
+
 
 <!-- SCRIPT: PARALLAX + FAQ + SIGN-IN -->
 <script>
@@ -490,16 +477,44 @@ document.querySelectorAll(".faq-item").forEach(item => {
     });
 });
 
-/* SIGN-IN BUTTONS → GO TO APP PAGE (Supabase auth will live there) */
-const signInBtn = document.getElementById("openSignIn");
-const signInBtn2 = document.getElementById("openSignIn2");
+/* SIGN-IN POPUP */
+const overlay = document.getElementById("sign-in");
+const signInBox = document.getElementById("clerk-sign-in");
 
-function goToApp() {
-    window.location.href = "/app.html";
+function openOverlay() {
+    overlay.style.display = "flex";
+    setTimeout(() => overlay.style.opacity = "1", 20);
+
+    if (window.Clerk && !signInBox.hasChildNodes()) {
+        window.Clerk.mountSignIn(signInBox, { appearance: { baseTheme: "light" } });
+    }
 }
 
-if (signInBtn) signInBtn.addEventListener("click", goToApp);
-if (signInBtn2) signInBtn2.addEventListener("click", goToApp);
+document.getElementById("openSignIn").addEventListener("click", openOverlay);
+document.getElementById("openSignIn2").addEventListener("click", openOverlay);
+
+/* CLOSE ONLY IF CLICK OUTSIDE */
+overlay.addEventListener("click", (e) => {
+    if (!signInBox.contains(e.target)) {
+        overlay.style.opacity = "0";
+        setTimeout(() => overlay.style.display = "none", 300);
+    }
+});
+
+/* LOAD CLERK */
+window.addEventListener("load", async () => {
+    try {
+        await window.Clerk.load();
+    } catch (err) {
+        console.error("Clerk load error:", err);
+    }
+});
+</script>
+
+<!-- CLERK SDK -->
+<script async crossorigin="anonymous"
+    data-clerk-publishable-key="pk_test_cHJvdmVuLW1ha28tNTAuY2xlcmsuYWNjb3VudHMuZGV2JA"
+    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js">
 </script>
 
 </body>

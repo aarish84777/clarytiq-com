@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pricing – Clarytiq</title>
+  <title>Pricing – Hello Aarish</title>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -117,7 +117,7 @@
 
   <!-- NAVBAR -->
   <header class="nav">
-    <div style="font-weight:800; font-size:1.1rem;">Clarytiq</div>
+    <div style="font-weight:800; font-size:1.1rem;">Hello Aarish</div>
     <div style="display:flex; align-items:center; gap:0.8rem;">
       <button id="openSignIn" style="
         padding:0.45rem 1rem;
@@ -158,13 +158,7 @@
         <li>✔ Priority Access</li>
       </ul>
 
-<button 
-  class="cta-btn" 
-  data-ls-checkout="variant:c46948af-46cf-45e1-a232-758057835937">
-  Get Monthly
-</button>
-
-
+      <button class="cta-btn" onclick="upgrade('monthly')">Get Monthly</button>
     </div>
 
     <!-- YEARLY -->
@@ -180,12 +174,7 @@
         <li>✔ Early Access Features</li>
       </ul>
 
-<button 
-  class="cta-btn" 
-  data-ls-checkout="variant:c46948af-46cf-45e1-a232-758057835937">
-  Get Yearly
-</button>
-
+      <button class="cta-btn" onclick="upgrade('yearly')">Get Yearly</button>
     </div>
 
     <!-- LIFETIME -->
@@ -200,17 +189,25 @@
         <li>✔ No Subscriptions Ever</li>
       </ul>
 
-<button 
-  class="cta-btn" 
-  data-ls-checkout="variant:c46948af-46cf-45e1-a232-758057835937">
-  Get Lifetime
-</button>
-
+      <button class="cta-btn" onclick="upgrade('lifetime')">Get Lifetime</button>
     </div>
   </section>
 
   <script>
+    // Upgrade handler
+    async function upgrade(plan) {
+      if (!window.isUserLoggedIn) {
+        // force sign-in overlay
+        if (window.showSignInOverlay) {
+          return window.showSignInOverlay();
+        }
+        return;
+      }
 
+      // After login → redirect to Stripe/checkout
+      alert("Redirecting to checkout for: " + plan);
+      // Replace alert with real checkout URL later
+    }
 
     // Clerk wiring (same as your main page)
     document.addEventListener("DOMContentLoaded", () => {
@@ -223,21 +220,6 @@
       }
     });
   </script>
-<script>
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll("[data-ls-checkout]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      console.log("Checkout click detected!");
-    });
-  });
-});
-</script>
-
-<script src="https://app.lemonsqueezy.com/js/checkout.js"></script>
-
 
 </body>
 </html>

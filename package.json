@@ -3,8 +3,6 @@
   "version": "1.0.0",
   "type": "module",
   "dependencies": {
-    "@supabase/supabase-js": "^2.87.1",
-    "groq-sdk": "^0.37.0",
-    "raw-body": "^3.0.2"
+    "groq-sdk": "^0.37.0"
   }
 }
