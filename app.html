@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Clarytiq AI</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- Clerk Auth -->
-  <script
-    async
-    crossorigin="anonymous"
+  <script async crossorigin="anonymous"
     data-clerk-publishable-key="pk_test_cHJvdmVuLW1ha28tNTAuY2xlcmsuYWNjb3VudHMuZGV2JA"
     src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js">
-  </script>
+    </script>
 
   <!-- Global Auth State + Clerk wiring -->
   <script>
@@ -52,27 +51,27 @@
 
       // Global helper to open Clerk sign-in
       window.showSignInOverlay = function (e) {
-  e?.stopPropagation();   // <-- ADD THIS
+        e?.stopPropagation();   // <-- ADD THIS
 
-window.showSignInOverlay = function (e) {
-  e?.stopPropagation();
+        window.showSignInOverlay = function (e) {
+          e?.stopPropagation();
 
-  if (!signInOverlay) return;
+          if (!signInOverlay) return;
 
-  // 1. Show instantly
-  signInOverlay.style.display = "block";
+          // 1. Show instantly
+          signInOverlay.style.display = "block";
 
-  // 2. THEN animate (important)
-  setTimeout(() => {
-    signInOverlay.classList.add("show");
-  }, 10);
+          // 2. THEN animate (important)
+          setTimeout(() => {
+            signInOverlay.classList.add("show");
+          }, 10);
 
-  if (window.Clerk && signInBox && !signInBox.hasChildNodes()) {
-    window.Clerk.mountSignIn(signInBox, {
-      appearance: { baseTheme: "light" }
-    });
-  }
-};
+          if (window.Clerk && signInBox && !signInBox.hasChildNodes()) {
+            window.Clerk.mountSignIn(signInBox, {
+              appearance: { baseTheme: "light" }
+            });
+          }
+        };
 
 
 
@@ -85,9 +84,9 @@ window.showSignInOverlay = function (e) {
 
       if (openSignInBtn) {
         openSignInBtn.addEventListener("click", (e) => {
-  e.stopPropagation();  // <-- ADD THIS
-  window.showSignInOverlay();
-});
+          e.stopPropagation();  // <-- ADD THIS
+          window.showSignInOverlay();
+        });
 
       }
 
@@ -291,28 +290,28 @@ window.showSignInOverlay = function (e) {
     }
 
     /* MODALS */
-.pro-modal-overlay {
-  position: fixed !important;
-  inset: 0 !important;
-  background: rgba(15, 23, 42, 0.45) !important;
-  backdrop-filter: blur(6px) !important;
-  display: none ;
-  align-items: center !important;
-  justify-content: center !important;
-  z-index: 999999 !important;
-}
+    .pro-modal-overlay {
+      position: fixed !important;
+      inset: 0 !important;
+      background: rgba(15, 23, 42, 0.45) !important;
+      backdrop-filter: blur(6px) !important;
+      display: none;
+      align-items: center !important;
+      justify-content: center !important;
+      z-index: 999999 !important;
+    }
 
 
-.pro-modal {
-  background: white !important;
-  padding: 1.6rem !important;
-  border-radius: 1rem !important;
-  max-width: 500px !important;
-  width: 90% !important;
-  box-shadow: 0 24px 40px rgba(15,23,42,0.22) !important;
-  position: relative !important;
-  z-index: 9999999 !important;
-}
+    .pro-modal {
+      background: white !important;
+      padding: 1.6rem !important;
+      border-radius: 1rem !important;
+      max-width: 500px !important;
+      width: 90% !important;
+      box-shadow: 0 24px 40px rgba(15, 23, 42, 0.22) !important;
+      position: relative !important;
+      z-index: 9999999 !important;
+    }
 
 
     /* TOAST */
@@ -329,28 +328,23 @@ window.showSignInOverlay = function (e) {
       transition: 0.25s;
       font-size: 0.8rem;
     }
-  
+
     /* --- Clerk popup animation --- */
 
-#sign-in {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
+    #sign-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
 
-#sign-in.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-  
+    #sign-in.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
   </style>
 
-<script
-  defer
-  data-domain="clarytiq.com"
-  src="https://plausible.io/js/script.js">
-</script>
+  <script defer data-domain="clarytiq.com" src="https://plausible.io/js/script.js">
+  </script>
 
 
 </head>
@@ -401,9 +395,11 @@ window.showSignInOverlay = function (e) {
     <!-- LEFT PANEL -->
     <section class="panel">
       <h3 style="margin:0 0 0.3rem 0; font-size:0.9rem; color:var(--text-muted);">Paste your text</h3>
-      <textarea id="inputText" class="textarea" placeholder="Paste AI-generated or class notes here…" maxlength="2000"></textarea>
+      <textarea id="inputText" class="textarea" placeholder="Paste AI-generated or class notes here…"
+        maxlength="2000"></textarea>
 
-      <div style="display:flex; justify-content:space-between; margin-top:0.25rem; font-size:0.78rem; color:var(--text-soft);">
+      <div
+        style="display:flex; justify-content:space-between; margin-top:0.25rem; font-size:0.78rem; color:var(--text-soft);">
         <div id="inputError" style="color:var(--danger);"></div>
         <div id="charCounter">0 / 2000 characters</div>
       </div>
@@ -512,7 +508,7 @@ window.showSignInOverlay = function (e) {
   margin-top:2.5rem;
   margin-bottom:2rem;
 ">
-  <a href="/pricing.html" style="
+      <a href="/pricing.html" style="
     display:inline-block;
     padding:0.9rem 2rem;
     background:linear-gradient(135deg, #0ea5e9, #22c55e);
@@ -523,17 +519,15 @@ window.showSignInOverlay = function (e) {
     text-decoration:none;
     box-shadow:0 10px 30px rgba(14,165,233,0.35);
     transition:transform 0.15s ease, box-shadow 0.15s ease;
-  "
-  onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 14px 35px rgba(14,165,233,0.45)';"
-  onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(14,165,233,0.35)';"
-  >
-    🚀 Upgrade to PRO
-  </a>
+  " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 14px 35px rgba(14,165,233,0.45)';"
+        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(14,165,233,0.35)';">
+        🚀 Upgrade to PRO
+      </a>
 
-  <p style="margin-top:0.6rem; color:#64748b; font-size:0.9rem;">
-    Unlock all modes, unlimited rewrites, and full power.
-  </p>
-</div>
+      <p style="margin-top:0.6rem; color:#64748b; font-size:0.9rem;">
+        Unlock all modes, unlimited rewrites, and full power.
+      </p>
+    </div>
 
   </footer>
 
@@ -602,250 +596,250 @@ window.showSignInOverlay = function (e) {
 
   <!-- APP LOGIC -->
   <script>
-  (function initNotesHumanizer() {
+    (function initNotesHumanizer() {
 
-    /* ===============================
-        CREDIT SYSTEM CONFIG
-    =============================== */
+      /* ===============================
+          CREDIT SYSTEM CONFIG
+      =============================== */
 
-    const LIMITS = {
-      beforeLogin: { simple: 3, simple_words: 3 },
-      afterLogin: { simple: 15, simple_words: 15, genz: 5, exam: 5, cause_effect: 5 }
-    };
+      const LIMITS = {
+        beforeLogin: { simple: 3, simple_words: 3 },
+        afterLogin: { simple: 15, simple_words: 15, genz: 5, exam: 5, cause_effect: 5 }
+      };
 
-    const PRO_MODES = ["genz", "exam", "cause_effect"];
+      const PRO_MODES = ["genz", "exam", "cause_effect"];
 
-    function loadCredits() {
-      const today = new Date().toDateString();
-      const saved = JSON.parse(localStorage.getItem("nh_credits"));
+      function loadCredits() {
+        const today = new Date().toDateString();
+        const saved = JSON.parse(localStorage.getItem("nh_credits"));
 
-      if (!saved || saved.date !== today) {
-        const fresh = {
-          date: today,
-          beforeLogin: { ...LIMITS.beforeLogin },
-          afterLogin: { ...LIMITS.afterLogin }
-        };
-        localStorage.setItem("nh_credits", JSON.stringify(fresh));
-        return fresh;
-      }
-      return saved;
-    }
-
-    function saveCredits(data) {
-      localStorage.setItem("nh_credits", JSON.stringify(data));
-    }
-
-    let credits = loadCredits();
-
-    function getCreditsLeft(preset) {
-      const pool = window.isUserLoggedIn ? credits.afterLogin : credits.beforeLogin;
-      const val = pool && typeof pool[preset] === "number" ? pool[preset] : 0;
-      return val;
-    }
-
-    function hasCredit(preset) {
-      return getCreditsLeft(preset) > 0;
-    }
-
-    function useCredit(preset) {
-      if (window.isUserLoggedIn) {
-        if (typeof credits.afterLogin[preset] === "number") {
-          credits.afterLogin[preset]--;
+        if (!saved || saved.date !== today) {
+          const fresh = {
+            date: today,
+            beforeLogin: { ...LIMITS.beforeLogin },
+            afterLogin: { ...LIMITS.afterLogin }
+          };
+          localStorage.setItem("nh_credits", JSON.stringify(fresh));
+          return fresh;
         }
-      } else {
-        if (typeof credits.beforeLogin[preset] === "number") {
-          credits.beforeLogin[preset]--;
-        }
+        return saved;
       }
-      saveCredits(credits);
-    }
 
-    /* ===============================
-        UI ELEMENTS
-    =============================== */
+      function saveCredits(data) {
+        localStorage.setItem("nh_credits", JSON.stringify(data));
+      }
 
-    const input = document.getElementById("inputText");
-    const outputBox = document.getElementById("outputBox");
-    const outputErr = document.getElementById("outputError");
-    const inputErr = document.getElementById("inputError");
-    const presetButtons = [...document.querySelectorAll(".preset-btn")];
-    const presetPreview = document.getElementById("presetPreview");
-    const modeUsedEl = document.getElementById("modeUsed");
+      let credits = loadCredits();
 
-    const humanizeBtn = document.getElementById("humanizeBtn");
-    const humanizeCounter = document.getElementById("humanizeCounter");
+      function getCreditsLeft(preset) {
+        const pool = window.isUserLoggedIn ? credits.afterLogin : credits.beforeLogin;
+        const val = pool && typeof pool[preset] === "number" ? pool[preset] : 0;
+        return val;
+      }
 
-    const charCounter = document.getElementById("charCounter");
+      function hasCredit(preset) {
+        return getCreditsLeft(preset) > 0;
+      }
 
-    let selectedPreset = "simple";
-    let outputText = "";
-
-    /* ===============================
-        CREDIT COUNTER DISPLAY
-    =============================== */
-
-    function updateCreditCounter() {
-      const left = getCreditsLeft(selectedPreset);
-
-      if (PRO_MODES.includes(selectedPreset)) {
-        if (!window.isUserLoggedIn) {
-          humanizeCounter.textContent = "(Login required for this mode)";
+      function useCredit(preset) {
+        if (window.isUserLoggedIn) {
+          if (typeof credits.afterLogin[preset] === "number") {
+            credits.afterLogin[preset]--;
+          }
         } else {
-          humanizeCounter.textContent = `(${left} PRO tries left today)`;
+          if (typeof credits.beforeLogin[preset] === "number") {
+            credits.beforeLogin[preset]--;
+          }
         }
-      } else {
-        humanizeCounter.textContent = `(${left} left today)`;
-      }
-    }
-
-    updateCreditCounter();
-
-    /* ===============================
-        PRESET LOGIC
-    =============================== */
-
-    const PRESET_DESC = {
-      simple: "Makes your text sound human and clean.",
-      simple_words: "Explains ideas in very simple words.",
-      exam: "Exam-style, formal school answers. (PRO Trial)",
-      genz: "Dark humour, emojis, Gen-Z tone. (PRO Trial)",
-      cause_effect: "Cause → Effect logic chain explanation. (PRO Trial)"
-    };
-
-    presetButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        selectedPreset = btn.dataset.preset;
-
-        presetButtons.forEach(b => b.classList.remove("selected"));
-        btn.classList.add("selected");
-
-        modeUsedEl.textContent = selectedPreset.toUpperCase();
-
-        presetPreview.style.display = "block";
-        presetPreview.textContent = PRESET_DESC[selectedPreset] || "";
-
-        updateCreditCounter();
-      });
-    });
-
-    /* ===============================
-        API CALL WRAPPER
-    =============================== */
-
-    async function callAI(preset, text) {
-      try {
-        const res = await fetch("/api/humanize", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ preset, userText: text })
-        });
-        const data = await res.json();
-        return data.output;
-      } catch (err) {
-        console.error("API error:", err);
-        return null;
-      }
-    }
-
-    /* ===============================
-        HUMANIZE BUTTON
-    =============================== */
-
-    const exampleModal = document.getElementById("proExampleModal");
-    exampleModal.addEventListener("click", (e) => {
-  e.stopPropagation(); // prevent overlay from closing instantly
-});
-
-    document.querySelector(".pro-modal").addEventListener("click", (e) => {
-  e.stopPropagation();  // prevents modal from closing instantly
-});
-
-    const exampleInput = document.getElementById("exampleInput");
-    const exampleOutput = document.getElementById("exampleOutput");
-
-    const signInOverlay = document.getElementById("sign-in");
-    document.getElementById("clerk-sign-in").addEventListener("click", (e) => {
-  e.stopPropagation();
-});
-
-
-    const PRO_EXAMPLES = {
-      genz: {
-        input: "The French Revolution changed France.",
-        output: "Bruhh France woke up and chose *violence* 💀🔥. King said 'stop', people said 'no'. Now boom—revolution."
-      },
-      exam: {
-        input: "The French Revolution changed France.",
-        output: "The French Revolution brought major political, economic, and social reforms to France."
-      },
-      cause_effect: {
-        input: "Taxes increased in France.",
-        output: "Cause → Effect:\n• Higher taxes → Public anger → Protests.\n• Food prices rose → Riots.\n• Govt debt increased → Collapse of monarchy."
-      }
-    };
-
-    humanizeBtn.addEventListener("click", async (e) => {
-      if (window.plausible) plausible("Humanize Click");
-
-  e.stopPropagation();   // <-- ADD THIS
-
-      inputErr.textContent = "";
-      outputErr.textContent = "";
-
-      const text = input.value.trim();
-      if (!text) {
-        inputErr.textContent = "Paste some text first.";
-        return;
+        saveCredits(credits);
       }
 
-      // NO CREDIT STATE
-if (!hasCredit(selectedPreset)) {
-  console.log("NO CREDIT | loggedIn =", window.isUserLoggedIn, "| preset =", selectedPreset);
+      /* ===============================
+          UI ELEMENTS
+      =============================== */
 
-  // CASE 1 → NOT LOGGED IN → ALWAYS SHOW LOGIN POPUP
-  if (!window.isUserLoggedIn) {
-    console.log("OPENING CLERK LOGIN POPUP");
+      const input = document.getElementById("inputText");
+      const outputBox = document.getElementById("outputBox");
+      const outputErr = document.getElementById("outputError");
+      const inputErr = document.getElementById("inputError");
+      const presetButtons = [...document.querySelectorAll(".preset-btn")];
+      const presetPreview = document.getElementById("presetPreview");
+      const modeUsedEl = document.getElementById("modeUsed");
 
-    if (window.showSignInOverlay) {
-      window.showSignInOverlay();
-    } else {
-      // Backup if function fails
-      const overlay = document.getElementById("sign-in");
-      if (overlay) overlay.style.display = "block";
+      const humanizeBtn = document.getElementById("humanizeBtn");
+      const humanizeCounter = document.getElementById("humanizeCounter");
 
-      const box = document.getElementById("clerk-sign-in");
-      if (window.Clerk && box && !box.hasChildNodes()) {
-        window.Clerk.mountSignIn(box, { appearance: { baseTheme: "light" } });
+      const charCounter = document.getElementById("charCounter");
+
+      let selectedPreset = "simple";
+      let outputText = "";
+
+      /* ===============================
+          CREDIT COUNTER DISPLAY
+      =============================== */
+
+      function updateCreditCounter() {
+        const left = getCreditsLeft(selectedPreset);
+
+        if (PRO_MODES.includes(selectedPreset)) {
+          if (!window.isUserLoggedIn) {
+            humanizeCounter.textContent = "(Login required for this mode)";
+          } else {
+            humanizeCounter.textContent = `(${left} PRO tries left today)`;
+          }
+        } else {
+          humanizeCounter.textContent = `(${left} left today)`;
+        }
       }
-    }
 
-    return; // STOP HERE
-  }
-
-  // CASE 2 → LOGGED IN → SHOW PRO EXAMPLE POPUP
-  console.log("OPENING PRO EXAMPLE POPUP");
-
-  const example = PRO_EXAMPLES[selectedPreset] || {
-    input: "You completed all free credits.",
-    output: "Unlock PRO to continue using this mode!"
-  };
-
-  exampleInput.textContent = example.input;
-  exampleOutput.textContent = example.output;
-  exampleModal.style.display = "flex";
-e.stopPropagation();  // <-- ADD THIS
-
-
-  return;
-}
-
-
-      // USE CREDIT
-      useCredit(selectedPreset);
       updateCreditCounter();
 
-      // Loading skeleton
-      outputBox.innerHTML = `
+      /* ===============================
+          PRESET LOGIC
+      =============================== */
+
+      const PRESET_DESC = {
+        simple: "Makes your text sound human and clean.",
+        simple_words: "Explains ideas in very simple words.",
+        exam: "Exam-style, formal school answers. (PRO Trial)",
+        genz: "Dark humour, emojis, Gen-Z tone. (PRO Trial)",
+        cause_effect: "Cause → Effect logic chain explanation. (PRO Trial)"
+      };
+
+      presetButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          selectedPreset = btn.dataset.preset;
+
+          presetButtons.forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+
+          modeUsedEl.textContent = selectedPreset.toUpperCase();
+
+          presetPreview.style.display = "block";
+          presetPreview.textContent = PRESET_DESC[selectedPreset] || "";
+
+          updateCreditCounter();
+        });
+      });
+
+      /* ===============================
+          API CALL WRAPPER
+      =============================== */
+
+      async function callAI(preset, text) {
+        try {
+          const res = await fetch("/api/humanize", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ preset, userText: text })
+          });
+          const data = await res.json();
+          return data.output;
+        } catch (err) {
+          console.error("API error:", err);
+          return null;
+        }
+      }
+
+      /* ===============================
+          HUMANIZE BUTTON
+      =============================== */
+
+      const exampleModal = document.getElementById("proExampleModal");
+      exampleModal.addEventListener("click", (e) => {
+        e.stopPropagation(); // prevent overlay from closing instantly
+      });
+
+      document.querySelector(".pro-modal").addEventListener("click", (e) => {
+        e.stopPropagation();  // prevents modal from closing instantly
+      });
+
+      const exampleInput = document.getElementById("exampleInput");
+      const exampleOutput = document.getElementById("exampleOutput");
+
+      const signInOverlay = document.getElementById("sign-in");
+      document.getElementById("clerk-sign-in").addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+
+
+      const PRO_EXAMPLES = {
+        genz: {
+          input: "The French Revolution changed France.",
+          output: "Bruhh France woke up and chose *violence* 💀🔥. King said 'stop', people said 'no'. Now boom—revolution."
+        },
+        exam: {
+          input: "The French Revolution changed France.",
+          output: "The French Revolution brought major political, economic, and social reforms to France."
+        },
+        cause_effect: {
+          input: "Taxes increased in France.",
+          output: "Cause → Effect:\n• Higher taxes → Public anger → Protests.\n• Food prices rose → Riots.\n• Govt debt increased → Collapse of monarchy."
+        }
+      };
+
+      humanizeBtn.addEventListener("click", async (e) => {
+        if (window.plausible) plausible("Humanize Click");
+
+        e.stopPropagation();   // <-- ADD THIS
+
+        inputErr.textContent = "";
+        outputErr.textContent = "";
+
+        const text = input.value.trim();
+        if (!text) {
+          inputErr.textContent = "Paste some text first.";
+          return;
+        }
+
+        // NO CREDIT STATE
+        if (!hasCredit(selectedPreset)) {
+          console.log("NO CREDIT | loggedIn =", window.isUserLoggedIn, "| preset =", selectedPreset);
+
+          // CASE 1 → NOT LOGGED IN → ALWAYS SHOW LOGIN POPUP
+          if (!window.isUserLoggedIn) {
+            console.log("OPENING CLERK LOGIN POPUP");
+
+            if (window.showSignInOverlay) {
+              window.showSignInOverlay();
+            } else {
+              // Backup if function fails
+              const overlay = document.getElementById("sign-in");
+              if (overlay) overlay.style.display = "block";
+
+              const box = document.getElementById("clerk-sign-in");
+              if (window.Clerk && box && !box.hasChildNodes()) {
+                window.Clerk.mountSignIn(box, { appearance: { baseTheme: "light" } });
+              }
+            }
+
+            return; // STOP HERE
+          }
+
+          // CASE 2 → LOGGED IN → SHOW PRO EXAMPLE POPUP
+          console.log("OPENING PRO EXAMPLE POPUP");
+
+          const example = PRO_EXAMPLES[selectedPreset] || {
+            input: "You completed all free credits.",
+            output: "Unlock PRO to continue using this mode!"
+          };
+
+          exampleInput.textContent = example.input;
+          exampleOutput.textContent = example.output;
+          exampleModal.style.display = "flex";
+          e.stopPropagation();  // <-- ADD THIS
+
+
+          return;
+        }
+
+
+        // USE CREDIT
+        useCredit(selectedPreset);
+        updateCreditCounter();
+
+        // Loading skeleton
+        outputBox.innerHTML = `
         <div style="display:flex; flex-direction:column; gap:0.4rem;">
           <div style="height:0.75rem; background:#e2e8f0; border-radius:999px;"></div>
           <div style="height:0.75rem; background:#e2e8f0; border-radius:999px; width:90%;"></div>
@@ -853,98 +847,98 @@ e.stopPropagation();  // <-- ADD THIS
         </div>
       `;
 
-      const result = await callAI(selectedPreset, text);
+        const result = await callAI(selectedPreset, text);
 
-      if (!result) {
-        outputErr.textContent = "Something went wrong. Try again.";
-        return;
+        if (!result) {
+          outputErr.textContent = "Something went wrong. Try again.";
+          return;
+        }
+
+        outputText = result;
+        outputBox.innerHTML = result.replace(/\n/g, "<br>");
+      });
+
+      /* ===============================
+          COPY & DOWNLOAD
+      =============================== */
+
+      const toast = document.getElementById("toast");
+      const toastMsg = document.getElementById("toastMessage");
+
+      function showToast(msg) {
+        toastMsg.textContent = msg;
+        toast.style.opacity = 1;
+        setTimeout(() => {
+          toast.style.opacity = 0;
+        }, 1500);
       }
 
-      outputText = result;
-      outputBox.innerHTML = result.replace(/\n/g, "<br>");
-    });
+      document.getElementById("copyBtn").addEventListener("click", () => {
+        navigator.clipboard.writeText(outputText || "");
+        showToast("Copied!");
+      });
 
-    /* ===============================
-        COPY & DOWNLOAD
-    =============================== */
+      document.getElementById("downloadBtn").addEventListener("click", () => {
+        const blob = new Blob([outputText || ""], { type: "text/plain" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "humanized.txt";
+        link.click();
+      });
 
-    const toast = document.getElementById("toast");
-    const toastMsg = document.getElementById("toastMessage");
+      /* ===============================
+          CLOSE MODALS
+      =============================== */
 
-    function showToast(msg) {
-      toastMsg.textContent = msg;
-      toast.style.opacity = 1;
-      setTimeout(() => {
-        toast.style.opacity = 0;
-      }, 1500);
-    }
+      document.getElementById("proExampleCloseBtn").addEventListener("click", () => {
+        exampleModal.style.display = "none";
+      });
 
-    document.getElementById("copyBtn").addEventListener("click", () => {
-      navigator.clipboard.writeText(outputText || "");
-      showToast("Copied!");
-    });
+      // Close PRO modal when clicking OUTSIDE the modal box
+      // Close PRO modal only when clicking OUTSIDE the modal box
+      // Stop clicks INSIDE modal from closing it
+      document.querySelector(".pro-modal").addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
 
-    document.getElementById("downloadBtn").addEventListener("click", () => {
-      const blob = new Blob([outputText || ""], { type: "text/plain" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "humanized.txt";
-      link.click();
-    });
-
-    /* ===============================
-        CLOSE MODALS
-    =============================== */
-
-    document.getElementById("proExampleCloseBtn").addEventListener("click", () => {
-      exampleModal.style.display = "none";
-    });
-
-// Close PRO modal when clicking OUTSIDE the modal box
-// Close PRO modal only when clicking OUTSIDE the modal box
-// Stop clicks INSIDE modal from closing it
-document.querySelector(".pro-modal").addEventListener("click", (e) => {
-  e.stopPropagation();
-});
-
-// Close modal only when clicking OUTSIDE the modal
-exampleModal.addEventListener("click", (e) => {
-  const box = document.querySelector(".pro-modal");
-  if (!box.contains(e.target)) {
-    exampleModal.style.display = "none";
-  }
-});
+      // Close modal only when clicking OUTSIDE the modal
+      exampleModal.addEventListener("click", (e) => {
+        const box = document.querySelector(".pro-modal");
+        if (!box.contains(e.target)) {
+          exampleModal.style.display = "none";
+        }
+      });
 
 
 
-// Close Clerk sign-in when clicking OUTSIDE the sign-in box
-signInOverlay.addEventListener("click", (e) => {
-  const box = document.getElementById("clerk-sign-in");
-  if (!box.contains(e.target)) {
-    signInOverlay.classList.remove("show");
-setTimeout(() => {
-  signInOverlay.style.display = "none";
-}, 300); // matches animation length
+      // Close Clerk sign-in when clicking OUTSIDE the sign-in box
+      signInOverlay.addEventListener("click", (e) => {
+        const box = document.getElementById("clerk-sign-in");
+        if (!box.contains(e.target)) {
+          signInOverlay.classList.remove("show");
+          setTimeout(() => {
+            signInOverlay.style.display = "none";
+          }, 300); // matches animation length
 
-  }
-});
-;
+        }
+      });
+      ;
 
 
-    document.getElementById("buyProBtn").addEventListener("click", () => {
-      window.location.href = "/pricing.html";
-    });
+      document.getElementById("buyProBtn").addEventListener("click", () => {
+        window.location.href = "/pricing.html";
+      });
 
-    /* ===============================
-        CHARACTER COUNTER
-    =============================== */
+      /* ===============================
+          CHARACTER COUNTER
+      =============================== */
 
-    input.addEventListener("input", function () {
-      const count = this.value.length;
-      charCounter.textContent = `${count} / 2000 characters`;
-    });
+      input.addEventListener("input", function () {
+        const count = this.value.length;
+        charCounter.textContent = `${count} / 2000 characters`;
+      });
 
-  })();
+    })();
   </script>
 
   <!-- ESC key + optional scroll -->
@@ -972,4 +966,5 @@ setTimeout(() => {
   </script>
 
 </body>
+
 </html>
