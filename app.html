@@ -53,25 +53,15 @@
       window.showSignInOverlay = function (e) {
         e?.stopPropagation();
 
-        window.showSignInOverlay = function (e) {
-          e?.stopPropagation();
+        if (!signInOverlay) return;
 
-          if (!signInOverlay) return;
+        // 1. Show instantly
+        signInOverlay.style.display = "block";
 
-          // 1. Show instantly
-          signInOverlay.style.display = "block";
-
-          // 2. THEN animate
-          setTimeout(() => {
-            signInOverlay.classList.add("show");
-          }, 10);
-
-          if (window.Clerk && signInBox && !signInBox.hasChildNodes()) {
-            window.Clerk.mountSignIn(signInBox, {
-              appearance: { baseTheme: "light" }
-            });
-          }
-        };
+        // 2. THEN animate
+        setTimeout(() => {
+          signInOverlay.classList.add("show");
+        }, 10);
 
         if (window.Clerk && signInBox && !signInBox.hasChildNodes()) {
           window.Clerk.mountSignIn(signInBox, {
@@ -321,6 +311,7 @@
     #humanizeBtn:hover {
       background: transparent;
       color: var(--text-primary);
+      transform: translateY(-2px);
     }
 
     #humanizeCounterRow {
@@ -371,6 +362,39 @@
       color: white;
     }
 
+    /* ANIMATIONS (PREMIUM FEEL) */
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+        filter: blur(8px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    /* Utility Classes */
+    .animate-in {
+      animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
+    }
+
+    .delay-100 {
+      animation-delay: 0.1s;
+    }
+
+    .delay-200 {
+      animation-delay: 0.2s;
+    }
+
+    .delay-300 {
+      animation-delay: 0.3s;
+    }
+
     /* TOAST */
     #toast {
       position: fixed;
@@ -386,6 +410,7 @@
       font-size: 0.9rem;
       font-weight: 600;
       z-index: 99999;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
     /* --- Clerk popup animation --- */
@@ -449,7 +474,7 @@
   </div>
 
   <!-- NAVBAR -->
-  <header class="nav">
+  <header class="nav animate-in">
     <div style="font-weight:800; font-size:1.1rem;">Clarytiq AI</div>
     <div style="display:flex; align-items:center; gap:0.8rem;">
       <button id="openSignIn">Sign In</button>
@@ -459,7 +484,7 @@
 
   <!-- HERO -->
   <section style="text-align:center; margin-top:2rem;">
-    <h1 style="
+    <h1 class="animate-in delay-100" style="
       font-size:clamp(2.5rem,5vw,3.5rem);
       font-weight:800;
       margin-bottom:0.8rem;
@@ -469,13 +494,14 @@
         text.</span>
     </h1>
 
-    <p style="color:var(--text-secondary); font-size:1.1rem; max-width:580px; margin:1rem auto 0; line-height:1.6;">
+    <p class="animate-in delay-200"
+      style="color:var(--text-secondary); font-size:1.1rem; max-width:580px; margin:1rem auto 0; line-height:1.6;">
       Paste your text, choose a mode, and get natural, exam-ready notes within seconds.
     </p>
   </section>
 
   <!-- MAIN TOOL -->
-  <main class="main-card" id="tool-card">
+  <main class="main-card animate-in delay-300" id="tool-card">
 
     <!-- LEFT PANEL -->
     <section class="panel">

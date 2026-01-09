@@ -18,15 +18,10 @@
        -------------------------------------------------- */
         :root {
             --bg-deep: #000000;
-            /* Pure Black */
             --bg-surface: #0a0a0a;
-            /* Almost Black */
             --border-light: #27272a;
-            /* Zinc 800 */
             --text-primary: #ffffff;
-            /* White */
             --text-secondary: #a1a1aa;
-            /* Zinc 400 */
             --accent-white: #ffffff;
             --font-sans: "Inter", sans-serif;
         }
@@ -95,11 +90,12 @@
             border-radius: 6px;
             font-weight: 600;
             font-size: 0.9rem;
-            transition: opacity 0.2s;
+            transition: all 0.2s;
         }
 
         .signin-btn:hover {
             opacity: 0.9;
+            transform: translateY(-1px);
         }
 
         /* HERO SECTION */
@@ -144,13 +140,14 @@
             font-weight: 600;
             border-radius: 6px;
             font-size: 1rem;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             border: 1px solid var(--text-primary);
         }
 
         .btn:hover {
             background: transparent;
             color: var(--text-primary);
+            transform: translateY(-2px);
         }
 
         .hero-right {
@@ -165,14 +162,15 @@
             border: 1px solid var(--border-light);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
             filter: grayscale(100%);
-            transition: filter 0.3s;
+            transition: filter 0.5s ease, transform 0.5s ease;
         }
 
         .hero-right img:hover {
             filter: grayscale(0%);
+            transform: scale(1.02);
         }
 
-        /* GLASS SECTIONS (Now Clean Sections) */
+        /* GLASS SECTIONS */
         .glass-section {
             padding: 6rem 2rem;
             max-width: 1200px;
@@ -200,12 +198,13 @@
             border: 1px solid var(--border-light);
             padding: 2rem;
             border-radius: 12px;
-            transition: transform 0.2s, border-color 0.2s;
+            transition: all 0.3s ease;
         }
 
         .card:hover {
             border-color: var(--text-secondary);
-            transform: translateY(-2px);
+            transform: translateY(-4px);
+            background: #111;
         }
 
         .card strong {
@@ -250,6 +249,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: color 0.2s;
+        }
+
+        .faq-question:hover {
+            color: #ddd;
         }
 
         .chevron {
@@ -266,7 +270,7 @@
         .faq-answer {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease;
+            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             color: var(--text-secondary);
             line-height: 1.6;
             padding: 0 0;
@@ -275,6 +279,62 @@
         .faq-item.open .faq-answer {
             max-height: 200px;
             padding-bottom: 1.5rem;
+        }
+
+        /* ANIMATIONS (PREMIUM FEEL) */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+                filter: blur(10px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+                filter: blur(0);
+            }
+        }
+
+        /* Utility Classes for Animation */
+        .animate-in {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            /* Hidden by default */
+        }
+
+        .delay-100 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-200 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-300 {
+            animation-delay: 0.3s;
+        }
+
+        .delay-400 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-500 {
+            animation-delay: 0.5s;
+        }
+
+        /* Scroll Animation Classes */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            filter: blur(4px);
+        }
+
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
         }
 
         /* FOOTER */
@@ -332,17 +392,37 @@
     </script>
 
     <script>
+        // FAQ Logic
         document.addEventListener("DOMContentLoaded", () => {
             const items = document.querySelectorAll('.faq-item');
             items.forEach(item => {
                 const question = item.querySelector('.faq-question');
                 question.addEventListener('click', () => {
-                    // close others if needed, using accordion style
                     items.forEach(other => {
                         if (other !== item) other.classList.remove('open');
                     });
                     item.classList.toggle('open');
                 });
+            });
+
+            // Intersection Observer for Scroll Animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe elements
+            document.querySelectorAll('.scroll-animate').forEach(el => {
+                observer.observe(el);
             });
         });
     </script>
@@ -351,7 +431,7 @@
 <body>
 
     <!-- NAVBAR -->
-    <nav class="nav">
+    <nav class="nav animate-in">
         <div class="brand">Clarytiq AI</div>
         <div class="nav-right">
             <a href="/app.html">App</a>
@@ -364,25 +444,25 @@
     <!-- HERO -->
     <section class="hero">
         <div class="hero-left">
-            <h1>Turn robotic notes into <span
+            <h1 class="animate-in delay-100">Turn robotic notes into <span
                     style="background: linear-gradient(to right, #999, #fff); -webkit-background-clip:text; color: transparent;">human
                     text.</span></h1>
-            <p>
+            <p class="animate-in delay-200">
                 AI notes are useful but obvious. Clarytiq rewrites them to sound natural, clear, and exam-ready.
                 Undetectable by AI checkers.
             </p>
-            <div class="cta-row">
+            <div class="cta-row animate-in delay-300">
                 <a href="/app.html" class="btn">Try for Free</a>
             </div>
         </div>
-        <div class="hero-right">
+        <div class="hero-right animate-in delay-400">
             <!-- You can put a screenshot here or a minimalist placeholder -->
             <img src="preview.png" alt="App Preview" />
         </div>
     </section>
 
     <!-- FEATURES -->
-    <section class="glass-section">
+    <section class="glass-section scroll-animate">
         <h2 class="section-title">Why Clarytiq?</h2>
         <div class="grid-3">
             <div class="card">
@@ -401,7 +481,7 @@
     </section>
 
     <!-- FAQ -->
-    <section class="glass-section">
+    <section class="glass-section scroll-animate">
         <h2 class="section-title">Frequently Asked Questions</h2>
         <div class="faq-container">
             <div class="faq-item">
