@@ -14,167 +14,62 @@
 
     <style>
         /* --------------------------------------------------
-   FUTURE GLASS THEME - REFINED (High Visibility)
-   -------------------------------------------------- */
+       BLACK MINIMALISTIC THEME (INDEX)
+       -------------------------------------------------- */
         :root {
-            --bg-deep: #020617;
-            --accent-cyan: #22d3ee;
-            --accent-violet: #8b5cf6;
+            --bg-deep: #000000;
+            /* Pure Black */
+            --bg-surface: #0a0a0a;
+            /* Almost Black */
+            --border-light: #27272a;
+            /* Zinc 800 */
             --text-primary: #ffffff;
-            --text-secondary: #cbd5e1;
-            --glass-bg: rgba(30, 41, 59, 0.4);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --glass-highlight: rgba(255, 255, 255, 0.05);
-            --glow: 0 0 25px rgba(34, 211, 238, 0.25);
-            --max-width: 1120px;
+            /* White */
+            --text-secondary: #a1a1aa;
+            /* Zinc 400 */
+            --accent-white: #ffffff;
             --font-sans: "Inter", sans-serif;
-            --cobalt: #22d3ee;
-            --aqua: #22d3ee;
-            --border-light: rgba(255, 255, 255, 0.2);
-            --glass-dark: rgba(15, 23, 42, 0.6);
         }
 
-        /* --------------------------------------------------
-   BASE & BACKGROUND
-   -------------------------------------------------- */
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
+            padding: 0;
             font-family: var(--font-sans);
             background-color: var(--bg-deep);
             color: var(--text-primary);
             overflow-x: hidden;
-            background-image:
-                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.2), transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(34, 211, 238, 0.2), transparent 40%);
-            min-height: 100vh;
+            line-height: 1.5;
         }
 
-        /* Aurora Overlay */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(2, 6, 23, 0.8) 100%);
-            pointer-events: none;
-            z-index: -2;
+        a {
+            text-decoration: none;
+            color: inherit;
         }
 
-        /* --------------------------------------------------
-   PARALLAX BACKGROUND
-   -------------------------------------------------- */
-        .parallax-bg {
-            position: fixed;
-            inset: 0;
-            z-index: -10;
-            pointer-events: none;
-            background:
-                radial-gradient(1px 1px at 20% 30%, white 1px, transparent 0),
-                radial-gradient(2px 2px at 40% 70%, white 1px, transparent 0),
-                radial-gradient(1px 1px at 60% 40%, white 1px, transparent 0),
-                radial-gradient(2px 2px at 80% 10%, white 1px, transparent 0);
-            background-size: 500px 500px;
-            opacity: 0.3;
-        }
-
-        /* --------------------------------------------------
-   FLOATING PARTICLES
-   -------------------------------------------------- */
-        .particle {
-            position: fixed;
-            width: 3px;
-            height: 3px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 0 4px white;
-            animation: floatParticle 25s infinite linear;
-            z-index: -5;
-            pointer-events: none;
-        }
-
-        @keyframes floatParticle {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-
-            10% {
-                opacity: 0.8;
-            }
-
-            90% {
-                opacity: 0.8;
-            }
-
-            100% {
-                transform: translateY(-10vh) translateX(20px);
-                opacity: 0;
-            }
-        }
-
-        /* --------------------------------------------------
-   ORBIT ANIMATION
-   -------------------------------------------------- */
-        .orbit-container {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px;
-            height: 600px;
-            pointer-events: none;
-            z-index: -1;
-            opacity: 0.4;
-        }
-
-        .orbit {
-            position: absolute;
-            inset: 0;
-            border: 1px solid rgba(34, 211, 238, 0.4);
-            border-radius: 50%;
-            animation: orbitSpin 30s linear infinite;
-            box-shadow: 0 0 50px rgba(34, 211, 238, 0.1);
-        }
-
-        @keyframes orbitSpin {
-            from {
-                transform: rotate(0);
-            }
-
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* --------------------------------------------------
-   NAVBAR
-   -------------------------------------------------- */
+        /* NAVBAR */
         .nav {
-            max-width: var(--max-width);
-            margin: 1.5rem auto;
-            padding: 1rem 2rem;
-            border-radius: 16px;
-            background: rgba(15, 23, 42, 0.7);
-            border: 1px solid var(--glass-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            padding: 1.2rem 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             position: sticky;
-            top: 1rem;
+            top: 0;
             z-index: 1000;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid var(--border-light);
         }
 
         .brand {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: white;
-            letter-spacing: -0.02em;
-            text-shadow: 0 0 20px rgba(34, 211, 238, 0.5);
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            letter-spacing: -0.03em;
         }
 
         .nav-right {
@@ -184,562 +79,365 @@
         }
 
         .nav-right a {
-            text-decoration: none;
+            font-size: 0.9rem;
             color: var(--text-secondary);
-            font-weight: 500;
-            font-size: 1rem;
-            transition: all 0.2s;
+            transition: color 0.2s;
         }
 
         .nav-right a:hover {
-            color: white;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+            color: var(--text-primary);
         }
 
         .signin-btn {
-            padding: 0.7rem 1.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--glass-border);
-            border-radius: 999px;
-            color: white;
+            padding: 0.6rem 1.2rem;
+            background: var(--text-primary);
+            color: var(--bg-deep);
+            border-radius: 6px;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
         }
 
         .signin-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            opacity: 0.9;
         }
 
-        /* --------------------------------------------------
-   HERO
-   -------------------------------------------------- */
+        /* HERO SECTION */
         .hero {
-            max-width: var(--max-width);
-            margin: 6rem auto;
-            padding: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 4rem;
             position: relative;
-            z-index: 10;
+            max-width: 1200px;
+            margin: 6rem auto 4rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
         }
 
         .hero-left h1 {
-            font-size: clamp(3rem, 6vw, 4.5rem);
-            font-weight: 800;
+            font-size: 3.5rem;
             line-height: 1.1;
-            color: white;
-            text-shadow: 0 0 50px rgba(34, 211, 238, 0.3);
+            font-weight: 800;
             margin-bottom: 1.5rem;
+            color: var(--text-primary);
+            letter-spacing: -0.04em;
         }
 
         .hero-left p {
-            margin-top: 1rem;
-            color: var(--text-secondary);
-            font-size: 1.35rem;
-            max-width: 580px;
+            font-size: 1.1rem;
             line-height: 1.6;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 500px;
         }
 
         .cta-row {
-            margin-top: 2.5rem;
             display: flex;
-            gap: 1.2rem;
+            gap: 1rem;
         }
 
         .btn {
-            padding: 1.1rem 2.4rem;
-            font-size: 1.15rem;
-            font-weight: 700;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            color: #020617;
-            background: linear-gradient(135deg, #22d3ee, #8b5cf6);
-            box-shadow: 0 0 30px rgba(34, 211, 238, 0.4);
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 20;
+            display: inline-block;
+            padding: 0.8rem 1.6rem;
+            background: var(--text-primary);
+            color: var(--bg-deep);
+            font-weight: 600;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            border: 1px solid var(--text-primary);
         }
 
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 60px rgba(34, 211, 238, 0.6);
+            background: transparent;
+            color: var(--text-primary);
+        }
+
+        .hero-right {
+            display: flex;
+            justify-content: center;
         }
 
         .hero-right img {
-            width: 480px;
-            border-radius: 1.5rem;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 12px;
             border: 1px solid var(--border-light);
-            box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            filter: grayscale(100%);
+            transition: filter 0.3s;
         }
 
-        /* --------------------------------------------------
-   GLASS SECTIONS
-   -------------------------------------------------- */
+        .hero-right img:hover {
+            filter: grayscale(0%);
+        }
+
+        /* GLASS SECTIONS (Now Clean Sections) */
         .glass-section {
-            max-width: var(--max-width);
-            margin: 8rem auto;
-            padding: 3rem 2rem;
-            position: relative;
-            z-index: 10;
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
             text-align: center;
-            font-size: 2.8rem;
-            margin-bottom: 3.5rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            background: linear-gradient(to right, white, #94a3b8);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            color: var(--text-primary);
+            letter-spacing: -0.03em;
         }
 
+        /* GRID */
         .grid-3 {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2.5rem;
+            gap: 2rem;
         }
 
         .card {
-            background: linear-gradient(180deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.5) 100%);
-            padding: 2.5rem;
-            border-radius: 1.5rem;
-            border: 1px solid var(--glass-border);
-            transition: all 0.4s ease;
-            font-size: 1.1rem;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            background: var(--bg-surface);
+            border: 1px solid var(--border-light);
+            padding: 2rem;
+            border-radius: 12px;
+            transition: transform 0.2s, border-color 0.2s;
         }
 
         .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent-cyan);
-            box-shadow: 0 20px 50px rgba(34, 211, 238, 0.15);
-            background: linear-gradient(180deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.7) 100%);
+            border-color: var(--text-secondary);
+            transform: translateY(-2px);
         }
 
         .card strong {
-            color: var(--accent-cyan);
-            font-size: 1.3rem;
             display: block;
-            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
         }
 
-        /* --------------------------------------------------
-   FAQ & FOOTER
-   -------------------------------------------------- */
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* FAQ */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
         .faq-item {
-            margin-bottom: 1.2rem;
-            background: rgba(30, 41, 59, 0.4);
-            border-radius: 1rem;
-            border: 1px solid var(--glass-border);
-            overflow: hidden;
-            transition: all 0.3s;
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 0;
+            background: transparent;
         }
 
-        .faq-item:hover {
-            border-color: rgba(255, 255, 255, 0.3);
+        .faq-item:first-child {
+            border-top: 1px solid var(--border-light);
         }
 
         .faq-question {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            padding: 1.5rem 0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
             display: flex;
             justify-content: space-between;
-            padding: 1.5rem;
-            font-size: 1.2rem;
-            cursor: pointer;
-            font-weight: 500;
-            color: white;
+            align-items: center;
+        }
+
+        .chevron {
+            transition: transform 0.3s;
+            opacity: 0.5;
+            color: var(--text-primary);
+        }
+
+        .faq-item.open .chevron {
+            transform: rotate(180deg);
+            opacity: 1;
         }
 
         .faq-answer {
             max-height: 0;
             overflow: hidden;
-            transition: max-height .4s ease;
-            padding: 0 1.5rem;
-            font-size: 1.1rem;
+            transition: max-height 0.3s ease;
             color: var(--text-secondary);
             line-height: 1.6;
+            padding: 0 0;
         }
 
         .faq-item.open .faq-answer {
-            max-height: 300px;
+            max-height: 200px;
             padding-bottom: 1.5rem;
         }
 
-        .faq-item.open {
-            background: rgba(30, 41, 59, 0.7);
-            border-color: var(--accent-cyan);
-        }
-
-        .chevron {
-            transition: transform .3s;
-            opacity: 0.7;
-        }
-
-        .faq-item.open .chevron {
-            transform: rotate(90deg);
-            opacity: 1;
-            color: var(--accent-cyan);
-        }
-
+        /* FOOTER */
         footer {
+            border-top: 1px solid var(--border-light);
+            padding: 4rem 2rem;
             text-align: center;
-            padding: 5rem 1rem;
             color: var(--text-secondary);
-            font-size: 1rem;
-            border-top: 1px solid var(--glass-border);
-            margin-top: 6rem;
-            background: linear-gradient(to top, #020617, transparent);
-            position: relative;
-            z-index: 10;
+            font-size: 0.9rem;
+            background: var(--bg-deep);
         }
 
-        /* --------------------------------------------------
-   MOBILE FIXES
-   -------------------------------------------------- */
-        @media (max-width: 480px) {
-            .nav {
-                margin: 1rem;
-                padding: 0.8rem 1.2rem;
-            }
+        footer a {
+            text-decoration: underline;
+        }
 
-            .brand {
-                font-size: 1.4rem;
-            }
-
-            .nav-right {
-                gap: 0.5rem;
-            }
-
-            .nav-right a {
-                display: none;
-            }
-
-            .signin-btn {
-                padding: 0.5rem 1rem;
-                font-size: 0.9rem;
-            }
-
+        /* MOBILE */
+        @media (max-width: 768px) {
             .hero {
-                flex-direction: column;
-                margin: 5rem auto 3rem;
-                padding: 1.5rem;
-                text-align: left;
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+                margin-top: 3rem;
             }
 
             .hero-left h1 {
-                font-size: 2.8rem;
+                font-size: 2.5rem;
             }
 
-            .hero-right img {
-                width: 100%;
+            .hero-left p {
+                margin: 0 auto 2rem auto;
             }
 
-            .orbit-container {
-                display: none;
+            .cta-row {
+                justify-content: center;
             }
 
-            .glass-section {
-                padding: 2rem 1.5rem;
-                margin: 4rem auto;
-            }
-
-            .card {
-                padding: 1.8rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
             }
         }
     </style>
 
-    <script defer data-domain="clarytiq.com" src="https://plausible.io/js/script.js">
+    <script defer data-domain="clarytiq.com" src="https://plausible.io/js/script.js"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H3R688R326"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-H3R688R326');
     </script>
 
-
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const items = document.querySelectorAll('.faq-item');
+            items.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', () => {
+                    // close others if needed, using accordion style
+                    items.forEach(other => {
+                        if (other !== item) other.classList.remove('open');
+                    });
+                    item.classList.toggle('open');
+                });
+            });
+        });
+    </script>
 </head>
 
 <body>
 
-    <!-- BACKGROUND -->
-    <div class="parallax-bg"></div>
-
-    <!-- FLOATING PARTICLES -->
-    <script>
-        for (let i = 0; i < 14; i++) {
-            const p = document.createElement("div");
-            p.classList.add("particle");
-            p.style.left = Math.random() * 100 + "vw";
-            p.style.top = Math.random() * 100 + "vh";
-            p.style.animationDelay = Math.random() * 8 + "s";
-            document.body.appendChild(p);
-        }
-    </script>
-
     <!-- NAVBAR -->
-    <header class="nav">
-        <div class="brand">Clarytiq</div>
-
+    <nav class="nav">
+        <div class="brand">Clarytiq AI</div>
         <div class="nav-right">
+            <a href="/app.html">App</a>
             <a href="/pricing.html">Pricing</a>
-            <a href="/legal.html">Legal</a>
-            <a href="/support.html">Support</a>
-            <button class="signin-btn" id="openSignIn">Sign In</button>
+            <a href="/notes-humanizer.html">Notes Humanizer</a>
+            <a href="/login.html" class="signin-btn">Sign In</a>
         </div>
-    </header>
-
-    <!-- SIGN-IN OVERLAY -->
-    <div id="sign-in" style="
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
-    backdrop-filter: blur(12px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    opacity: 0;
-    transition: opacity .35s ease;
-">
-        <div id="clerk-sign-in" style="width:400px; max-width:90%;"></div>
-    </div>
+    </nav>
 
     <!-- HERO -->
     <section class="hero">
-        <div class="orbit-container">
-            <div class="orbit"></div>
-        </div>
-
         <div class="hero-left">
-            <h1>Transform complex notes into clear, human text. Instantly.</h1>
+            <h1>Turn robotic notes into <span
+                    style="background: linear-gradient(to right, #999, #fff); -webkit-background-clip:text; color: transparent;">human
+                    text.</span></h1>
             <p>
-                Clarytiq rewrites AI-generated and class notes into concise,
-                natural, exam-ready explanations—designed for clarity, speed, and results.
+                AI notes are useful but obvious. Clarytiq rewrites them to sound natural, clear, and exam-ready.
+                Undetectable by AI checkers.
             </p>
             <div class="cta-row">
-                <a href="/app.html"><button class="btn">✨ Try Free</button></a>
-                <button class="btn" id="openSignIn2">Sign In</button>
+                <a href="/app.html" class="btn">Try for Free</a>
             </div>
-            <p style="margin-top:1rem; color:#b0c0d0;">No fluff. No noise. Just clean understanding.</p>
         </div>
-
         <div class="hero-right">
-
+            <!-- You can put a screenshot here or a minimalist placeholder -->
+            <img src="preview.png" alt="App Preview" />
         </div>
     </section>
 
-    <!-- VALUE PROP -->
+    <!-- FEATURES -->
     <section class="glass-section">
-        <h2 class="section-title">Why students choose Clarytiq</h2>
-
-        <div class="grid-3">
-            <div class="card">🌐 <strong>Precision Rewriting</strong><br>Turn raw robotic text into smooth human notes.
-            </div>
-            <div class="card">⚡ <strong>Ultra-Fast Understanding</strong><br>Summaries rewritten into high-clarity
-                explanations.</div>
-            <div class="card">🎯 <strong>Designed for Focus</strong><br>Reduces confusion. Improves clarity instantly.
-            </div>
-        </div>
-    </section>
-
-    <!-- MODES -->
-    <section class="glass-section">
-        <h2 class="section-title">Modes built for every need</h2>
-
-        <div class="grid-3">
-            <div class="card">✔ Simple Humanizer</div>
-            <div class="card">✔ Easy Words</div>
-            <div class="card">🔒 Exam Ready (PRO)</div>
-            <div class="card">🔒 Gen-Z Mode (PRO)</div>
-            <div class="card">🔒 Cause → Effect (PRO)</div>
-        </div>
-    </section>
-
-    <!-- HOW IT WORKS -->
-    <section class="glass-section">
-        <h2 class="section-title">How it works</h2>
-
-        <div class="grid-3">
-            <div class="card">1️⃣ Paste your text.</div>
-            <div class="card">2️⃣ Choose a mode.</div>
-            <div class="card">3️⃣ Get clean, beautifully structured notes.</div>
-        </div>
-
-        <p style="text-align:center; margin-top:1rem; color:#a9bdd2;">
-            Built for students. Optimized for clarity.
-        </p>
-    </section>
-
-    <!-- SOCIAL PROOF -->
-    <section class="glass-section">
-        <h2 class="section-title">What students say</h2>
-
-        <div class="grid-3">
-            <div class="card">“Finally, notes that actually make sense.”<br><br><small>Student — Delhi</small></div>
-            <div class="card">“Cleaner than anything I’ve ever written.”<br><br><small>Student — Mumbai</small></div>
-            <div class="card">“Exam Ready mode is ridiculously good.”<br><br><small>Student — Bangalore</small></div>
-        </div>
-    </section>
-
-    <!-- PRICING -->
-    <section class="glass-section">
-        <h2 class="section-title">Simple, transparent pricing</h2>
-
+        <h2 class="section-title">Why Clarytiq?</h2>
         <div class="grid-3">
             <div class="card">
-                <h3>$4.99 / Monthly</h3>
-                <p>Unlimited rewrites • All PRO modes</p><a href="/pricing.html"><button class="btn">Get
-                        Monthly</button></a>
+                <strong>⚡ Instant Humanization</strong>
+                <p>One click transforms stiff AI text into natural, flowing study material.</p>
             </div>
             <div class="card">
-                <h3>$29.99 / Yearly</h3>
-                <p>Save more • All PRO features</p><a href="/pricing.html"><button class="btn">Get Yearly</button></a>
+                <strong>🎓 Exam Styles</strong>
+                <p>Choose "Exam Ready", "Simple Explainer", or "Gen-Z" modes.</p>
             </div>
             <div class="card">
-                <h3>$49 Lifetime</h3>
-                <p>One-time payment • Full access forever</p><a href="/pricing.html"><button class="btn">Get
-                        Lifetime</button></a>
+                <strong>🛡️ AI Bypass</strong>
+                <p>Rewritten content passes AI detection tools, making it safe for submissions.</p>
             </div>
         </div>
     </section>
 
     <!-- FAQ -->
     <section class="glass-section">
-        <h2 class="section-title">FAQ</h2>
-
-        <div class="faq-item">
-            <div class="faq-question">How many free rewrites do I get per day?<span class="chevron">›</span></div>
-            <div class="faq-answer">You get daily free credits. PRO unlocks unlimited rewrites.</div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">What’s included in PRO?<span class="chevron">›</span></div>
-            <div class="faq-answer">PRO includes Exam Ready, Gen-Z Mode, Cause → Effect, unlimited rewrites, and faster
-                output.</div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">Do you store my notes?<span class="chevron">›</span></div>
-            <div class="faq-answer">Clarytiq does not store your personal notes by default. See the legal page for
-                details.</div>
-        </div>
-
-        <div class="faq-item">
-            <div class="faq-question">How do I upgrade?<span class="chevron">›</span></div>
-            <div class="faq-answer">Visit <a href="/pricing.html">pricing</a> to upgrade instantly.</div>
-        </div>
-    </section>
-
-    <!-- FINAL CTA -->
-    <section class="glass-section">
-        <h2 class="section-title">Upgrade your learning experience</h2>
-
-        <div style="text-align:center;">
-            <a href="/app.html"><button class="btn">Try Free</button></a>
-            <a href="/pricing.html"><button class="btn" style="margin-left:1rem;">See Pricing</button></a>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <button class="faq-question">
+                    Is it free to use?
+                    <span class="chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    Yes! You get free credits daily without login. For more, you can upgrade to Pro.
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    Does it work for essays?
+                    <span class="chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    Absolutely. While optimized for notes, it handles essays and summaries perfectly.
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-question">
+                    What is "Gen-Z Mode"?
+                    <span class="chevron">▼</span>
+                </button>
+                <div class="faq-answer">
+                    A fun mode that rewrites content with slang, emojis, and a casual tone. Perfect for quick reading.
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
     <footer>
-        © 2025 Clarytiq — Powered by Vercel • Clerk
+        <p>© 2026 Clarytiq. All rights reserved.</p>
+        <p style="margin-top:0.5rem;"><a href="/legal.html">Privacy & Terms</a></p>
     </footer>
-
-
-    <!-- SCRIPT: PARALLAX + FAQ + SIGN-IN -->
-    <script>
-        /* PARALLAX */
-        const parallax = document.querySelector(".parallax-bg");
-        document.addEventListener("mousemove", (e) => {
-            const x = (e.clientX / window.innerWidth - 0.5) * 16;
-            const y = (e.clientY / window.innerHeight - 0.5) * 16;
-            parallax.style.transform = `translate(${x}px, ${y}px)`;
-        });
-
-        /* FAQ ACCORDION */
-        document.querySelectorAll(".faq-item").forEach(item => {
-            item.addEventListener("click", () => {
-                item.classList.toggle("open");
-            });
-        });
-
-        /* SIGN-IN POPUP */
-        const overlay = document.getElementById("sign-in");
-        const signInBox = document.getElementById("clerk-sign-in");
-
-        function openOverlay() {
-            overlay.style.display = "flex";
-            setTimeout(() => overlay.style.opacity = "1", 20);
-
-            if (window.Clerk && !signInBox.hasChildNodes()) {
-                window.Clerk.mountSignIn(signInBox, { appearance: { baseTheme: "light" } });
-            }
-        }
-
-        document.getElementById("openSignIn").addEventListener("click", () => {
-            if (window.plausible) plausible("Sign In Click");
-            openOverlay();
-        });
-
-        document.getElementById("openSignIn2").addEventListener("click", openOverlay);
-
-        /* CLOSE ONLY IF CLICK OUTSIDE */
-        overlay.addEventListener("click", (e) => {
-            if (!signInBox.contains(e.target)) {
-                overlay.style.opacity = "0";
-                setTimeout(() => overlay.style.display = "none", 300);
-            }
-        });
-
-        /* LOAD CLERK + AUTH STATE */
-        window.addEventListener("load", async () => {
-            try {
-                await window.Clerk.load();
-
-                const signInBtn1 = document.getElementById("openSignIn");
-                const signInBtn2 = document.getElementById("openSignIn2");
-
-                function updateAuthUI() {
-                    const user = window.Clerk.user;
-
-                    if (user) {
-                        // User is logged in → hide Sign In buttons
-                        if (signInBtn1) signInBtn1.style.display = "none";
-                        if (signInBtn2) signInBtn2.style.display = "none";
-                    } else {
-                        // User is logged out → show Sign In buttons
-                        if (signInBtn1) signInBtn1.style.display = "inline-block";
-                        if (signInBtn2) signInBtn2.style.display = "inline-block";
-                    }
-                }
-
-                // Run once on load
-                updateAuthUI();
-
-                // Re-run whenever auth state changes
-                window.Clerk.addListener(updateAuthUI);
-
-            } catch (err) {
-                console.error("Clerk load error:", err);
-            }
-        });
-
-    </script>
-
-    <!-- CLERK SDK -->
-    <script async crossorigin="anonymous"
-        data-clerk-publishable-key="pk_test_cHJvdmVuLW1ha28tNTAuY2xlcmsuYWNjb3VudHMuZGV2JA"
-        src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js">
-        </script>
-
 
 </body>
 

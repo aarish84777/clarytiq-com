@@ -51,7 +51,7 @@
 
       // Global helper to open Clerk sign-in
       window.showSignInOverlay = function (e) {
-        e?.stopPropagation();   // <-- ADD THIS
+        e?.stopPropagation();
 
         window.showSignInOverlay = function (e) {
           e?.stopPropagation();
@@ -61,7 +61,7 @@
           // 1. Show instantly
           signInOverlay.style.display = "block";
 
-          // 2. THEN animate (important)
+          // 2. THEN animate
           setTimeout(() => {
             signInOverlay.classList.add("show");
           }, 10);
@@ -73,8 +73,6 @@
           }
         };
 
-
-
         if (window.Clerk && signInBox && !signInBox.hasChildNodes()) {
           window.Clerk.mountSignIn(signInBox, {
             appearance: { baseTheme: "light" }
@@ -84,7 +82,7 @@
 
       if (openSignInBtn) {
         openSignInBtn.addEventListener("click", (e) => {
-          e.stopPropagation();  // <-- ADD THIS
+          e.stopPropagation();
           window.showSignInOverlay();
         });
 
@@ -128,23 +126,20 @@
   <!-- CSS -->
   <style>
     /* --------------------------------------------------
-   FUTURE GLASS THEME (APP) - REFINED (High Visibility)
-   -------------------------------------------------- */
+       BLACK MINIMALISTIC THEME (APP)
+       -------------------------------------------------- */
     :root {
-      --bg-deep: #020617;
-      --accent-cyan: #22d3ee;
-      --accent-violet: #8b5cf6;
+      --bg-deep: #000000;
+      --bg-surface: #0a0a0a;
+      --border-light: #27272a;
+      /* Zinc 800 */
       --text-primary: #ffffff;
-      --text-secondary: #cbd5e1;
-      --glass-bg: rgba(30, 41, 59, 0.4);
-      --glass-panel: rgba(30, 41, 59, 0.6);
-      --glass-border: rgba(255, 255, 255, 0.15);
-      --glass-highlight: rgba(255, 255, 255, 0.05);
-      --glow: 0 0 25px rgba(34, 211, 238, 0.25);
+      --text-secondary: #a1a1aa;
+      /* Zinc 400 */
+      --accent-white: #ffffff;
+      --font-sans: "Inter", sans-serif;
       --danger: #ef4444;
       --success: #22c55e;
-      --font-sans: "Inter", sans-serif;
-      --shadow-btn: 0 0 25px rgba(34, 211, 238, 0.3);
     }
 
     * {
@@ -157,24 +152,13 @@
       padding: 0;
       background-color: var(--bg-deep);
       color: var(--text-primary);
-      background-image:
-        radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.2), transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(34, 211, 238, 0.2), transparent 40%);
       min-height: 100vh;
       overflow-x: hidden;
     }
 
-    /* Aurora Overlay */
+    /* Removed Aurora Overlay */
     body::before {
-      content: "";
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(2, 6, 23, 0.8) 100%);
-      pointer-events: none;
-      z-index: -2;
+      display: none;
     }
 
     /* NAVBAR */
@@ -183,60 +167,50 @@
       justify-content: space-between;
       align-items: center;
       padding: 1rem 2rem;
-      background: rgba(15, 23, 42, 0.7);
-      border-radius: 16px;
-      margin: 1.5rem auto;
-      max-width: 1120px;
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.8);
+      border-bottom: 1px solid var(--border-light);
       position: sticky;
-      top: 1rem;
+      top: 0;
       z-index: 1000;
+      backdrop-filter: blur(12px);
     }
 
     .nav h1,
     .nav div:first-child {
       font-weight: 800 !important;
-      font-size: 1.3rem !important;
-      background: linear-gradient(to right, white, #94a3b8);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      font-size: 1.2rem !important;
+      color: var(--text-primary);
       letter-spacing: -0.02em;
     }
 
     #openSignIn {
       padding: 0.6rem 1.4rem;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid var(--glass-border);
-      color: white;
+      border-radius: 6px;
+      background: var(--text-primary);
+      color: var(--bg-deep);
       font-weight: 600;
+      border: 1px solid var(--text-primary);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      transition: all 0.3s;
+      transition: all 0.2s;
     }
 
     #openSignIn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+      background: transparent;
+      color: var(--text-primary);
     }
 
     /* MAIN TOOL LAYOUT */
     .main-card {
-      max-width: 1120px;
+      max-width: 1200px;
       margin: 3rem auto;
       background: transparent;
       padding: 0 1rem;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 2.5rem;
-      position: relative;
-      z-index: 10;
+      gap: 3rem;
     }
 
     @media (max-width: 900px) {
@@ -246,45 +220,43 @@
     }
 
     .panel {
-      background: var(--glass-panel);
+      background: var(--bg-surface);
       padding: 2rem;
-      border-radius: 1.5rem;
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(20px);
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      border: 1px solid var(--border-light);
     }
 
     .textarea {
       width: 100%;
       min-height: 240px;
-      border-radius: 1rem;
+      border-radius: 8px;
       padding: 1.2rem;
-      border: 1px solid var(--glass-border);
+      border: 1px solid var(--border-light);
       font-size: 1.05rem;
       resize: vertical;
       outline: none;
-      background: rgba(2, 6, 23, 0.4);
-      color: white;
+      background: #000;
+      color: var(--text-primary);
       font-family: inherit;
       line-height: 1.6;
       transition: border-color 0.2s;
     }
 
     .textarea:focus {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.3);
+      border-color: var(--text-primary);
     }
 
     .textarea::placeholder {
-      color: rgba(255, 255, 255, 0.4);
+      color: #52525b;
+      /* Zinc 600 */
     }
 
     .preset-btn {
       width: 100%;
-      border-radius: 12px;
-      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      border: 1px solid var(--border-light);
       padding: 1rem 1.2rem;
-      background: rgba(255, 255, 255, 0.03);
+      background: #000;
       color: var(--text-secondary);
       display: flex;
       justify-content: space-between;
@@ -293,35 +265,36 @@
       cursor: pointer;
       gap: 0.4rem;
       transition: all 0.2s;
+      margin-bottom: 0px;
     }
 
     .preset-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: white;
-      border-color: rgba(255, 255, 255, 0.3);
+      background: #18181b;
+      /* Zinc 900 */
+      color: var(--text-primary);
+      border-color: var(--text-secondary);
     }
 
     .preset-btn.selected {
-      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
-      color: #020617;
+      background: var(--text-primary);
+      color: var(--bg-deep);
       font-weight: 700;
-      border: 1px solid transparent;
-      box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
+      border: 1px solid var(--text-primary);
     }
 
     .preset-pro-pill {
       font-size: 0.7rem;
       padding: 0.2rem 0.6rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: white;
-      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      border: 1px solid var(--border-light);
+      color: var(--text-secondary);
+      background: #18181b;
       font-weight: 700;
       letter-spacing: 0.5px;
     }
 
     .preset-btn.selected .preset-pro-pill {
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.8);
       color: white;
       border: none;
     }
@@ -330,27 +303,24 @@
     #humanizeBtn {
       margin-top: 1.5rem;
       width: 100%;
-      border-radius: 1rem;
+      border-radius: 8px;
       padding: 1.1rem;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 700;
-      background: linear-gradient(135deg, #22d3ee, #8b5cf6);
-      color: #020617;
-      border: none;
+      background: var(--text-primary);
+      color: var(--bg-deep);
+      border: 1px solid var(--text-primary);
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.6rem;
-      box-shadow: 0 0 25px rgba(34, 211, 238, 0.3);
-      transition: all 0.3s;
-      position: relative;
-      z-index: 20;
+      transition: all 0.2s;
     }
 
     #humanizeBtn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 50px rgba(34, 211, 238, 0.5);
+      background: transparent;
+      color: var(--text-primary);
     }
 
     #humanizeCounterRow {
@@ -363,10 +333,10 @@
     /* OUTPUT */
     .output-box {
       min-height: 240px;
-      background: rgba(2, 6, 23, 0.4);
-      border-radius: 1rem;
+      background: #000;
+      border-radius: 8px;
       padding: 1.2rem;
-      border: 1px solid var(--glass-border);
+      border: 1px solid var(--border-light);
       overflow-y: auto;
       font-size: 1.05rem;
       line-height: 1.6;
@@ -377,23 +347,21 @@
     .pro-modal-overlay {
       position: fixed !important;
       inset: 0 !important;
-      background: rgba(0, 0, 0, 0.8) !important;
-      backdrop-filter: blur(12px) !important;
+      background: rgba(0, 0, 0, 0.9) !important;
+      backdrop-filter: blur(5px) !important;
       display: none;
       align-items: center !important;
       justify-content: center !important;
       z-index: 999999 !important;
     }
 
-
     .pro-modal {
-      background: #0f172a !important;
-      border: 1px solid var(--glass-border) !important;
+      background: #0a0a0a !important;
+      border: 1px solid var(--border-light) !important;
       padding: 2.5rem !important;
-      border-radius: 1.5rem !important;
+      border-radius: 12px !important;
       max-width: 500px !important;
       width: 90% !important;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6) !important;
       position: relative !important;
       z-index: 9999999 !important;
       color: white !important;
@@ -403,22 +371,20 @@
       color: white;
     }
 
-
     /* TOAST */
     #toast {
       position: fixed;
       right: 1.5rem;
       bottom: 1.5rem;
       padding: 1rem 1.5rem;
-      background: var(--success);
-      color: white;
-      border-radius: 999px;
+      background: var(--text-primary);
+      color: var(--bg-deep);
+      border-radius: 6px;
       opacity: 0;
       pointer-events: none;
       transition: 0.25s;
-      font-size: 1rem;
+      font-size: 0.9rem;
       font-weight: 600;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       z-index: 99999;
     }
 
@@ -439,7 +405,6 @@
     @media (max-width: 480px) {
       .nav {
         padding: 0.8rem 1rem;
-        margin: 1rem;
       }
 
       .main-card {
@@ -458,14 +423,13 @@
 
       #humanizeBtn {
         padding: 1rem;
-        font-size: 1.1rem;
+        font-size: 1rem;
       }
     }
   </style>
 
   <script defer data-domain="clarytiq.com" src="https://plausible.io/js/script.js">
   </script>
-
 
 </head>
 
@@ -476,8 +440,8 @@
     display:none;
     position: fixed;
     inset: 0;
-    background: rgba(15,23,42,0.45);
-    backdrop-filter: blur(6px);
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(4px);
     z-index: 9999;
     padding-top: 4rem;
   ">
@@ -488,7 +452,7 @@
   <header class="nav">
     <div style="font-weight:800; font-size:1.1rem;">Clarytiq AI</div>
     <div style="display:flex; align-items:center; gap:0.8rem;">
-      <button id="openSignIn">Sign In ⚡</button>
+      <button id="openSignIn">Sign In</button>
       <div id="clerk-user-button" style="display:none;"></div>
     </div>
   </header>
@@ -498,11 +462,11 @@
     <h1 style="
       font-size:clamp(2.5rem,5vw,3.5rem);
       font-weight:800;
-      margin-bottom:0.5rem;
+      margin-bottom:0.8rem;
       color:white;
-      text-shadow: 0 0 30px rgba(34, 211, 238, 0.4);
     ">
-      Turn robotic notes into <span style="color:var(--accent-cyan);">human text.</span>
+      Turn robotic notes into <span style="text-decoration: underline; text-decoration-color: #52525b;">human
+        text.</span>
     </h1>
 
     <p style="color:var(--text-secondary); font-size:1.1rem; max-width:580px; margin:1rem auto 0; line-height:1.6;">
@@ -516,7 +480,7 @@
     <!-- LEFT PANEL -->
     <section class="panel">
       <h3
-        style="margin:0 0 1rem 0; font-size:0.9rem; color:var(--text-secondary); font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">
+        style="margin:0 0 1rem 0; font-size:0.85rem; color:var(--text-secondary); font-weight:600; text-transform:uppercase; letter-spacing:0.05em;">
         Paste your text</h3>
       <textarea id="inputText" class="textarea" placeholder="Paste AI-generated or class notes here…"
         maxlength="2000"></textarea>
@@ -530,7 +494,7 @@
       <!-- PRESETS -->
       <div style="margin-top:1.5rem;">
         <h4
-          style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:0.8rem; font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">
+          style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:0.8rem; font-weight:600; text-transform:uppercase; letter-spacing:0.05em;">
           Choose mode</h4>
 
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8rem;">
@@ -567,10 +531,10 @@
       <div id="presetPreview" style="
         margin-top:1rem;
         padding:1rem;
-        border-radius:0.8rem;
+        border-radius:8px;
         font-size:0.9rem;
-        background:rgba(255,255,255,0.05);
-        border:1px solid var(--glass-border);
+        background:#18181b;
+        border:1px solid var(--border-light);
         color:var(--text-secondary);
         display:none;
       "></div>
@@ -582,18 +546,18 @@
 
       <!-- HUMANIZE BUTTON -->
       <button id="humanizeBtn">
-        ✨ Humanize Notes
+        HUMANIZE NOTES
       </button>
     </section>
 
     <!-- RIGHT PANEL -->
     <section class="panel">
       <h3
-        style="margin:0 0 1rem 0; font-size:0.9rem; color:var(--text-secondary); font-weight:600; text-transform:uppercase; letter-spacing:0.04em;">
+        style="margin:0 0 1rem 0; font-size:0.85rem; color:var(--text-secondary); font-weight:600; text-transform:uppercase; letter-spacing:0.05em;">
         Result</h3>
 
       <div id="outputBox" class="output-box">
-        <div style="color:rgba(255,255,255,0.4);">Your humanized notes will appear here…</div>
+        <div style="color:#52525b;">Your humanized notes will appear here…</div>
       </div>
 
       <div id="outputError" style="color:var(--danger); font-size:0.8rem; margin-top:0.5rem;"></div>
@@ -605,16 +569,16 @@
         flex-wrap:wrap;
         gap:0.8rem;
       ">
-        <button id="copyBtn" class="preset-btn" style="flex:1; justify-content:center;">📋 Copy</button>
-        <button id="downloadBtn" class="preset-btn" style="flex:1; justify-content:center;">⬇️ Download</button>
+        <button id="copyBtn" class="preset-btn" style="flex:1; justify-content:center;">Copy</button>
+        <button id="downloadBtn" class="preset-btn" style="flex:1; justify-content:center;">Download</button>
       </div>
 
       <div style="margin-top:1rem; font-size:0.85rem; color:var(--text-secondary);">
         Mode used:
         <span id="modeUsed" style="
           padding:0.2rem 0.6rem;
-          border-radius:999px;
-          background:rgba(255,255,255,0.1);
+          border-radius:4px;
+          background:#18181b;
           font-weight:600;
           color:white;
         ">SIMPLE</span>
@@ -639,17 +603,15 @@
       <a href="/pricing.html" style="
     display:inline-block;
     padding:1rem 2.5rem;
-    background:linear-gradient(135deg, #0ea5e9, #22c55e);
-    color:white;
-    border-radius:999px;
+    background: var(--text-primary);
+    color: var(--bg-deep);
+    border-radius: 6px;
     font-size:1.15rem;
     font-weight:700;
     text-decoration:none;
-    box-shadow:0 10px 30px rgba(14,165,233,0.35);
-    transition:transform 0.15s ease, box-shadow 0.15s ease;
-  " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 14px 35px rgba(14,165,233,0.45)';"
-        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(14,165,233,0.35)';">
-        🚀 Upgrade to PRO
+    transition: all 0.2s;
+  " onmouseover="this.style.opacity='0.9';" onmouseout="this.style.opacity='1';">
+        Upgrade to PRO
       </a>
 
       <p style="margin-top:1rem; color:var(--text-secondary); font-size:0.95rem;">
@@ -662,15 +624,15 @@
   <!-- PRO EXAMPLE MODAL -->
   <div id="proExampleModal" class="pro-modal-overlay">
     <div class="pro-modal">
-      <h2 style="margin-bottom:0.4rem;">PRO Rewrite Example 🔒</h2>
+      <h2 style="margin-bottom:0.4rem;">PRO Rewrite Example</h2>
       <p style="font-size:0.9rem; color:var(--text-secondary);">Here’s how PRO transforms your notes:</p>
 
       <div id="exampleInput" style="
         margin-top:1.2rem;
         padding:1.2rem;
-        background:rgba(255,255,255,0.05);
-        border:1px solid var(--glass-border);
-        border-radius:0.8rem;
+        background:#18181b;
+        border:1px solid var(--border-light);
+        border-radius:8px;
         white-space:pre-wrap;
         font-size:0.95rem;
         color:var(--text-secondary);
@@ -679,12 +641,11 @@
       <div id="exampleOutput" style="
         margin-top:1.2rem;
         padding:1.2rem;
-        background:rgba(34, 211, 238, 0.05);
-        border:1px solid var(--glass-border);
-        border-left: 3px solid var(--accent-cyan);
-        border-radius:0.8rem;
+        background:#000;
+        border:1px solid var(--border-light);
+        border-left: 3px solid var(--text-primary);
+        border-radius:8px;
         white-space:pre-wrap;
-        box-shadow:0 6px 20px rgba(0,0,0,0.2);
         font-size:0.95rem;
         color:white;
       "></div>
@@ -693,9 +654,9 @@
         margin-top:1.5rem;
         width:100%;
         padding:0.9rem;
-        background:linear-gradient(135deg,#0ea5e9,#22c55e);
-        color:white;
-        border-radius:999px;
+        background: var(--text-primary);
+        color: var(--bg-deep);
+        border-radius: 6px;
         font-weight:700;
         border:none;
         cursor:pointer;
@@ -709,16 +670,16 @@
         width:100%;
         padding:0.8rem;
         background:transparent;
-        border:1px solid var(--glass-border);
+        border:1px solid var(--border-light);
         color:var(--text-secondary);
-        border-radius:999px;
+        border-radius: 6px;
         cursor:pointer;
       ">
         Close
       </button>
 
       <p style="margin-top:0.8rem; font-size:0.85rem; color:var(--text-secondary); text-align:center;">
-        or <a href="/pricing.html" style="color:var(--accent-cyan); font-weight:600;">open pricing page</a> in a new
+        or <a href="/pricing.html" style="color:var(--text-primary); font-weight:600;">open pricing page</a> in a new
         tab.
       </p>
     </div>
@@ -976,9 +937,9 @@
         // Loading skeleton
         outputBox.innerHTML = `
         <div style="display:flex; flex-direction:column; gap:0.4rem;">
-          <div style="height:0.75rem; background:#e2e8f0; border-radius:999px;"></div>
-          <div style="height:0.75rem; background:#e2e8f0; border-radius:999px; width:90%;"></div>
-          <div style="height:0.75rem; background:#e2e8f0; border-radius:999px; width:80%;"></div>
+          <div style="height:0.75rem; background:#27272a; border-radius:999px;"></div>
+          <div style="height:0.75rem; background:#27272a; border-radius:999px; width:90%;"></div>
+          <div style="height:0.75rem; background:#27272a; border-radius:999px; width:80%;"></div>
         </div>
       `;
 
