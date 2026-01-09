@@ -1,524 +1,590 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <title>Clarytiq — Transform Notes into Clear Understanding</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8" />
+<title>Clarytiq — Transform Notes into Clear Text</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- FONTS -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet" />
+<!-- FONTS -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-    <style>
-        /* --------------------------------------------------
-       BLACK MINIMALISTIC THEME (INDEX)
-       -------------------------------------------------- */
-        :root {
-            --bg-deep: #000000;
-            --bg-surface: #0a0a0a;
-            --border-light: #27272a;
-            --text-primary: #ffffff;
-            --text-secondary: #a1a1aa;
-            --accent-white: #ffffff;
-            --font-sans: "Inter", sans-serif;
-        }
+<style>
+/* --------------------------------------------------
+   ROOT VARIABLES & PREMIUM COLOURS
+-------------------------------------------------- */
+:root {
+    --cobalt: #0066ff;
+    --aqua: #00eaff;
+    --glow: rgba(0, 180, 255, 0.28); 
+    --glass-dark: rgba(0, 25, 50, 0.35);
+    --border-light: rgba(0, 140, 255, 0.25);
+    --max-width: 1120px;
+}
 
-        * {
-            box-sizing: border-box;
-        }
+/* --------------------------------------------------
+   BASE
+-------------------------------------------------- */
+body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    overflow-x: hidden;
+    background: radial-gradient(circle at 20% 10%, #031b3f 0%, #020617 45%, #000000 100%);
+    color: white;
+    scroll-behavior: smooth;
+}
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: var(--font-sans);
-            background-color: var(--bg-deep);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            line-height: 1.5;
-        }
+/* --------------------------------------------------
+   PARALLAX BACKGROUND
+-------------------------------------------------- */
+.parallax-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -12;
+    pointer-events: none;
+    background: radial-gradient(circle at 25% 10%, #052a60 0%, #020617 50%, #000 100%);
+    transition: transform 0.1s ease-out;
+}
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+/* --------------------------------------------------
+   FLOATING PARTICLES
+-------------------------------------------------- */
+.particle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: var(--aqua);
+    border-radius: 50%;
+    opacity: 0.45;
+    filter: blur(3px);
+    animation: floatParticle 14s infinite linear;
+    z-index: -5;
+}
 
-        /* NAVBAR */
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.2rem 2rem;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid var(--border-light);
-        }
+@keyframes floatParticle {
+    0% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-80px) scale(1.4); }
+    100% { transform: translateY(0) scale(1); }
+}
 
-        .brand {
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: var(--text-primary);
-            letter-spacing: -0.03em;
-        }
+/* --------------------------------------------------
+   ORBIT ANIMATION BEHIND HERO
+-------------------------------------------------- */
+.orbit-container {
+    position: absolute;
+    left: 50%;
+    top: 54%;
+    transform: translate(-50%, -50%);
+    width: 460px;
+    height: 460px;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.25;
+}
 
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
+.orbit {
+    position: absolute;
+    inset: 0;
+    border: 2px dashed rgba(0, 200, 255, 0.35);
+    border-radius: 50%;
+    animation: orbitSpin 18s linear infinite;
+}
 
-        .nav-right a {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            transition: color 0.2s;
-        }
+@keyframes orbitSpin {
+    from { transform: rotate(0); }
+    to { transform: rotate(360deg); }
+}
 
-        .nav-right a:hover {
-            color: var(--text-primary);
-        }
+/* --------------------------------------------------
+   NAVBAR
 
-        .signin-btn {
-            padding: 0.6rem 1.2rem;
-            background: var(--text-primary);
-            color: var(--bg-deep);
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
+   -------------------------------------------------- */
+.big-brand {
+    font-family: "Bradley Hand ITC", "Bradley Hand", cursive;
+    font-size: 4rem;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: white;
+}
 
-        .signin-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
+   .nav {
+    max-width: var(--max-width);
+    margin: 1.4rem auto;
+    padding: 1rem 1.6rem;
+    border-radius: 1rem;
+    background: rgba(0, 25, 50, 0.35);
+    border: 1px solid var(--border-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(18px);
+}
 
-        /* HERO SECTION */
-        .hero {
-            position: relative;
-            max-width: 1200px;
-            margin: 6rem auto 4rem auto;
-            padding: 0 2rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
+.brand {
+    font-size: 1.7rem;
+    font-weight: 900;
+    background: linear-gradient(90deg, var(--aqua), #4d9fff);
+    -webkit-background-clip: text;
+    color: transparent;
+    letter-spacing: -0.5px;
+}
 
-        .hero-left h1 {
-            font-size: 3.5rem;
-            line-height: 1.1;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
-            letter-spacing: -0.04em;
-        }
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+}
 
-        .hero-left p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            max-width: 500px;
-        }
+.nav-right a {
+    text-decoration: none;
+    color: #c7d8ff;
+    font-weight: 500;
+    font-size: 1rem;
+}
 
-        .cta-row {
-            display: flex;
-            gap: 1rem;
-        }
+.signin-btn {
+    padding: 0.55rem 1.2rem;
+    background: linear-gradient(135deg, #003a80, #0056c9);
+    border: none;
+    border-radius: 0.8rem;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
 
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 1.6rem;
-            background: var(--text-primary);
-            color: var(--bg-deep);
-            font-weight: 600;
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid var(--text-primary);
-        }
+/* --------------------------------------------------
+   HERO
+-------------------------------------------------- */
+.hero {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    position: relative;
 
-        .btn:hover {
-            background: transparent;
-            color: var(--text-primary);
-            transform: translateY(-2px);
-        }
+    /* SHIFT HERO RIGHT BY 2 CM */
+    margin-right: 2cm;
+}
 
-        .hero-right {
-            display: flex;
-            justify-content: center;
-        }
 
-        .hero-right img {
-            width: 100%;
-            max-width: 500px;
-            border-radius: 12px;
-            border: 1px solid var(--border-light);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            filter: grayscale(100%);
-            transition: filter 0.5s ease, transform 0.5s ease;
-        }
+.hero-left h1 {
+    font-size: clamp(2.4rem, 6vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.15;
+}
 
-        .hero-right img:hover {
-            filter: grayscale(0%);
-            transform: scale(1.02);
-        }
+.hero-left p {
+    margin-top: 1rem;
+    color: #b8c9d9;
+    font-size: 1.2rem;
+    max-width: 520px;
+}
 
-        /* GLASS SECTIONS */
-        .glass-section {
-            padding: 6rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+.cta-row {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+}
 
-        .section-title {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 3rem;
-            text-align: center;
-            color: var(--text-primary);
-            letter-spacing: -0.03em;
-        }
+.btn {
+    padding: 1.2rem 2.4rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 1rem;
+    border: none;
+    cursor: pointer;
+    color: white;
+    background: linear-gradient(145deg, #00214d, #003a80);
+}
 
-        /* GRID */
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
+.btn:hover {
+    transform: translateY(-3px);
+}
 
-        .card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-light);
-            padding: 2rem;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-        }
+.hero-right img {
+    width: 480px;
+    border-radius: 1rem;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 6px 12px var(--glow);
+}
 
-        .card:hover {
-            border-color: var(--text-secondary);
-            transform: translateY(-4px);
-            background: #111;
-        }
+/* --------------------------------------------------
+   GLASS SECTIONS
+-------------------------------------------------- */
+.glass-section {
+    max-width: var(--max-width);
+    margin: 4rem auto;
+    padding: 2rem 2.4rem;
+    border-radius: 1.3rem;
+    background: var(--glass-dark);
+    border: 1px solid var(--border-light);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 8px 14px rgba(0,0,0,0.35);
+}
 
-        .card strong {
-            display: block;
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
+.section-title {
+    text-align: center;
+    font-size: 2.1rem;
+    margin-bottom: 2rem;
+    font-weight: 800;
+}
 
-        .card p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+    gap: 1.6rem;
+}
 
-        /* FAQ */
-        .faq-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
+.card {
+    background: rgba(0,0,0,0.20);
+    padding: 1.6rem;
+    border-radius: 1.1rem;
+    border: 1px solid rgba(0,150,255,0.15);
+    transition: 0.4s ease;
+    font-size: 1.05rem;
+}
 
-        .faq-item {
-            border-bottom: 1px solid var(--border-light);
-            margin-bottom: 0;
-            background: transparent;
-        }
+.card:hover {
+    transform: translateY(-6px);
+    border-color: var(--aqua);
+}
 
-        .faq-item:first-child {
-            border-top: 1px solid var(--border-light);
-        }
+/* --------------------------------------------------
+   FAQ
+-------------------------------------------------- */
+.faq-item {
+    margin-bottom: 1rem;
+    background: rgba(0,0,0,0.25);
+    border-radius: 0.8rem;
+    border: 1px solid var(--border-light);
+}
 
-        .faq-question {
-            width: 100%;
-            text-align: left;
-            background: none;
-            border: none;
-            padding: 1.5rem 0;
-            font-size: 1.1rem;
-            font-weight: 500;
-            color: var(--text-primary);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: color 0.2s;
-        }
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
 
-        .faq-question:hover {
-            color: #ddd;
-        }
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s ease;
+    padding: 0 1rem;
+    font-size: 1rem;
+    color: #c7d8ff;
+}
 
-        .chevron {
-            transition: transform 0.3s;
-            opacity: 0.5;
-            color: var(--text-primary);
-        }
+.faq-item.open .faq-answer {
+    max-height: 300px;
+    padding-bottom: 1rem;
+}
 
-        .faq-item.open .chevron {
-            transform: rotate(180deg);
-            opacity: 1;
-        }
+.chevron {
+    transition: transform .3s;
+}
 
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            color: var(--text-secondary);
-            line-height: 1.6;
-            padding: 0 0;
-        }
+.faq-item.open .chevron {
+    transform: rotate(90deg);
+}
 
-        .faq-item.open .faq-answer {
-            max-height: 200px;
-            padding-bottom: 1.5rem;
-        }
-
-        /* ANIMATIONS (PREMIUM FEEL) */
-        @keyframes fadeInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(30px);
-                filter: blur(10px);
-            }
-
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-                filter: blur(0);
-            }
-        }
-
-        /* Utility Classes for Animation */
-        .animate-in {
-            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            opacity: 0;
-            /* Hidden by default */
-        }
-
-        .delay-100 {
-            animation-delay: 0.1s;
-        }
-
-        .delay-200 {
-            animation-delay: 0.2s;
-        }
-
-        .delay-300 {
-            animation-delay: 0.3s;
-        }
-
-        .delay-400 {
-            animation-delay: 0.4s;
-        }
-
-        .delay-500 {
-            animation-delay: 0.5s;
-        }
-
-        /* Scroll Animation Classes */
-        .scroll-animate {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            filter: blur(4px);
-        }
-
-        .scroll-animate.visible {
-            opacity: 1;
-            transform: translateY(0);
-            filter: blur(0);
-        }
-
-        /* FOOTER */
-        footer {
-            border-top: 1px solid var(--border-light);
-            padding: 4rem 2rem;
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            background: var(--bg-deep);
-        }
-
-        footer a {
-            text-decoration: underline;
-        }
-
-        /* MOBILE */
-        @media (max-width: 768px) {
-            .hero {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 2rem;
-                margin-top: 3rem;
-            }
-
-            .hero-left h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero-left p {
-                margin: 0 auto 2rem auto;
-            }
-
-            .cta-row {
-                justify-content: center;
-            }
-
-            .nav {
-                flex-direction: column;
-                gap: 1rem;
-            }
-        }
-    </style>
-
-    <script defer data-domain="clarytiq.com" src="https://plausible.io/js/script.js"></script>
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H3R688R326"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-H3R688R326');
-    </script>
-
-    <script>
-        // FAQ Logic
-        document.addEventListener("DOMContentLoaded", () => {
-            const items = document.querySelectorAll('.faq-item');
-            items.forEach(item => {
-                const question = item.querySelector('.faq-question');
-                question.addEventListener('click', () => {
-                    items.forEach(other => {
-                        if (other !== item) other.classList.remove('open');
-                    });
-                    item.classList.toggle('open');
-                });
-            });
-
-            // Intersection Observer for Scroll Animations
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: "0px 0px -50px 0px"
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, observerOptions);
-
-            // Observe elements
-            document.querySelectorAll('.scroll-animate').forEach(el => {
-                observer.observe(el);
-            });
-        });
-    </script>
+/* --------------------------------------------------
+   FOOTER
+-------------------------------------------------- */
+footer {
+    text-align: center;
+    padding: 2rem;
+    color: #7a8ca1;
+    font-size: 1rem;
+}
+</style>
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
-    <nav class="nav animate-in">
-        <div class="brand">Clarytiq AI</div>
-        <div class="nav-right">
-            <a href="/app.html">App</a>
-            <a href="/pricing.html">Pricing</a>
-            <a href="/notes-humanizer.html">Notes Humanizer</a>
-            <a href="/login.html" class="signin-btn">Sign In</a>
-        </div>
-    </nav>
+<!-- BACKGROUND -->
+<div class="parallax-bg"></div>
 
-    <!-- HERO -->
-    <section class="hero">
-        <div class="hero-left">
-            <h1 class="animate-in delay-100">Turn robotic notes into <span
-                    style="background: linear-gradient(to right, #999, #fff); -webkit-background-clip:text; color: transparent;">human
-                    text.</span></h1>
-            <p class="animate-in delay-200">
-                AI notes are useful but obvious. Clarytiq rewrites them to sound natural, clear, and exam-ready.
-                Undetectable by AI checkers.
-            </p>
-            <div class="cta-row animate-in delay-300">
-                <a href="/app.html" class="btn">Try for Free</a>
-            </div>
-        </div>
-        <div class="hero-right animate-in delay-400">
-            <!-- You can put a screenshot here or a minimalist placeholder -->
-            <img src="preview.png" alt="App Preview" />
-        </div>
-    </section>
+<!-- FLOATING PARTICLES -->
+<script>
+for (let i = 0; i < 14; i++) {
+    const p = document.createElement("div");
+    p.classList.add("particle");
+    p.style.left = Math.random()*100 + "vw";
+    p.style.top = Math.random()*100 + "vh";
+    p.style.animationDelay = Math.random()*8 + "s";
+    document.body.appendChild(p);
+}
+</script>
 
-    <!-- FEATURES -->
-    <section class="glass-section scroll-animate">
-        <h2 class="section-title">Why Clarytiq?</h2>
-        <div class="grid-3">
-            <div class="card">
-                <strong>⚡ Instant Humanization</strong>
-                <p>One click transforms stiff AI text into natural, flowing study material.</p>
-            </div>
-            <div class="card">
-                <strong>🎓 Exam Styles</strong>
-                <p>Choose "Exam Ready", "Simple Explainer", or "Gen-Z" modes.</p>
-            </div>
-            <div class="card">
-                <strong>🛡️ AI Bypass</strong>
-                <p>Rewritten content passes AI detection tools, making it safe for submissions.</p>
-            </div>
-        </div>
-    </section>
+<!-- NAVBAR -->
+ <div class="big-brand">Clarytiq</div>
 
-    <!-- FAQ -->
-    <section class="glass-section scroll-animate">
-        <h2 class="section-title">Frequently Asked Questions</h2>
-        <div class="faq-container">
-            <div class="faq-item">
-                <button class="faq-question">
-                    Is it free to use?
-                    <span class="chevron">▼</span>
-                </button>
-                <div class="faq-answer">
-                    Yes! You get free credits daily without login. For more, you can upgrade to Pro.
-                </div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question">
-                    Does it work for essays?
-                    <span class="chevron">▼</span>
-                </button>
-                <div class="faq-answer">
-                    Absolutely. While optimized for notes, it handles essays and summaries perfectly.
-                </div>
-            </div>
-            <div class="faq-item">
-                <button class="faq-question">
-                    What is "Gen-Z Mode"?
-                    <span class="chevron">▼</span>
-                </button>
-                <div class="faq-answer">
-                    A fun mode that rewrites content with slang, emojis, and a casual tone. Perfect for quick reading.
-                </div>
-            </div>
-        </div>
-    </section>
+<header class="nav">
+    <div class="nav-right">
+        <a href="/pricing.html">Pricing</a>
+        <a href="/legal.html">Legal</a>
+        <a href="/support.html">Support</a>
+        <button class="signin-btn" id="openSignIn">Sign In</button>
+        <span id="clerk-user-button"></span>
 
-    <footer>
-        <p>© 2026 Clarytiq. All rights reserved.</p>
-        <p style="margin-top:0.5rem;"><a href="/legal.html">Privacy & Terms</a></p>
-    </footer>
+    </div>
+</header>
+
+<!-- SIGN-IN OVERLAY -->
+<div id="sign-in" style="
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(12px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity .35s ease;
+">
+    <div id="clerk-sign-in" style="width:400px; max-width:90%;"></div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="orbit-container"><div class="orbit"></div></div>
+
+    <div class="hero-left">
+        <h1> Transform boring text into usable and interesting notes.
+</h1>
+        <p>
+            Clarytiq makes boring notes and lectures into fun Gen Z explanations, logical cause-effect breakdowns, and easy-worded (like you're 10) answers — plus exam-ready rewrites.
+            
+        </p>
+        <div class="cta-row">
+            <a href="/app.html"><button class="btn">✨ Try Free</button></a>
+            <button class="btn" id="openSignIn2">Sign In</button>
+        </div>
+        <p style="margin-top:1rem; color:#b0c0d0;">No fluff. No noise. Just clean understanding.</p>
+    </div>
+
+<div class="hero-right"></div>
+
+</section>
+
+<!-- VALUE PROP -->
+<section class="glass-section">
+    <h2 class="section-title">Why students choose Clarytiq</h2>
+
+    <div class="grid-3">
+        <div class="card">🌐 <strong>Precision Rewriting</strong><br>Turn raw robotic text into smooth human notes.</div>
+        <div class="card">⚡ <strong>Ultra-Fast Understanding</strong><br>Summaries rewritten into high-clarity explanations.</div>
+        <div class="card">🎯 <strong>Designed for Focus</strong><br>Reduces confusion. Improves clarity instantly.</div>
+    </div>
+</section>
+
+<!-- MODES -->
+<section class="glass-section">
+    <h2 class="section-title">Modes built for every need</h2>
+
+    <div class="grid-3">
+        <div class="card">✔ Simple Humanizer</div>
+        <div class="card">✔ Easy Words</div>
+        <div class="card">🔒 Exam Ready (PRO)</div>
+        <div class="card">🔒 Gen-Z Mode (PRO)</div>
+        <div class="card">🔒 Cause → Effect (PRO)</div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="glass-section">
+    <h2 class="section-title">How it works</h2>
+
+    <div class="grid-3">
+        <div class="card">1️⃣ Paste your text.</div>
+        <div class="card">2️⃣ Choose a mode.</div>
+        <div class="card">3️⃣ Get clean, beautifully structured notes.</div>
+    </div>
+
+    <p style="text-align:center; margin-top:1rem; color:#a9bdd2;">
+        Built for students. Optimized for clarity.
+    </p>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="glass-section">
+    <h2 class="section-title">What students say</h2>
+
+    <div class="grid-3">
+        <div class="card">“Finally, notes that actually make sense.”<br><br><small>Student — Delhi</small></div>
+        <div class="card">“Cleaner than anything I’ve ever written.”<br><br><small>Student — Mumbai</small></div>
+        <div class="card">“Exam Ready mode is ridiculously good.”<br><br><small>Student — Bangalore</small></div>
+    </div>
+</section>
+
+<!-- PRICING -->
+<section class="glass-section">
+    <h2 class="section-title">Simple, transparent pricing</h2>
+
+    <div class="grid-3">
+        <div class="card"><h3>$4.99 / Monthly</h3><p>Unlimited rewrites • All PRO modes</p><a href="/pricing.html"><button class="btn">Get Monthly</button></a></div>
+        <div class="card"><h3>$29.99 / Yearly</h3><p>Save more • All PRO features</p><a href="/pricing.html"><button class="btn">Get Yearly</button></a></div>
+        <div class="card"><h3>$49 Lifetime</h3><p>One-time payment • Full access forever</p><a href="/pricing.html"><button class="btn">Get Lifetime</button></a></div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="glass-section">
+    <h2 class="section-title">FAQ</h2>
+
+    <div class="faq-item">
+        <div class="faq-question">How many free rewrites do I get per day?<span class="chevron">›</span></div>
+        <div class="faq-answer">You get daily free credits. PRO unlocks unlimited rewrites.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">What’s included in PRO?<span class="chevron">›</span></div>
+        <div class="faq-answer">PRO includes Exam Ready, Gen-Z Mode, Cause → Effect, unlimited rewrites, and faster output.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">Do you store my notes?<span class="chevron">›</span></div>
+        <div class="faq-answer">Clarytiq does not store your personal notes by default. See the legal page for details.</div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question">How do I upgrade?<span class="chevron">›</span></div>
+        <div class="faq-answer">Visit <a href="/pricing.html">pricing</a> to upgrade instantly.</div>
+    </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="glass-section">
+    <h2 class="section-title">Upgrade your learning experience</h2>
+
+    <div style="text-align:center;">
+        <a href="/app.html"><button class="btn">Try Free</button></a>
+        <a href="/pricing.html"><button class="btn" style="margin-left:1rem;">See Pricing</button></a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    © 2025 Clarytiq — Powered by Vercel • Clerk
+</footer>
+
+
+<!-- SCRIPT: PARALLAX + FAQ + SIGN-IN -->
+<script>
+/* PARALLAX */
+const parallax = document.querySelector(".parallax-bg");
+document.addEventListener("mousemove", (e) => {
+    const x = (e.clientX / window.innerWidth - 0.5) * 16;
+    const y = (e.clientY / window.innerHeight - 0.5) * 16;
+    parallax.style.transform = `translate(${x}px, ${y}px)`;
+});
+
+/* FAQ ACCORDION */
+document.querySelectorAll(".faq-item").forEach(item => {
+    item.addEventListener("click", () => {
+        item.classList.toggle("open");
+    });
+});
+
+/* SIGN-IN POPUP */
+const overlay = document.getElementById("sign-in");
+const signInBox = document.getElementById("clerk-sign-in");
+
+function openOverlay() {
+    overlay.style.display = "flex";
+    setTimeout(() => overlay.style.opacity = "1", 20);
+
+    if (window.Clerk && !signInBox.hasChildNodes()) {
+window.Clerk.mountSignIn(signInBox, {
+  afterSignInUrl: window.location.href,
+  afterSignUpUrl: window.location.href,
+  appearance: { baseTheme: "light" }
+});
+
+    }
+}
+
+document.getElementById("openSignIn").addEventListener("click", openOverlay);
+document.getElementById("openSignIn2").addEventListener("click", openOverlay);
+
+/* CLOSE ONLY IF CLICK OUTSIDE */
+overlay.addEventListener("click", (e) => {
+    if (!signInBox.contains(e.target)) {
+        overlay.style.opacity = "0";
+        setTimeout(() => overlay.style.display = "none", 300);
+    }
+});
+
+/* LOAD CLERK */
+window.addEventListener("load", async () => {
+    try {
+        await window.Clerk.load();
+    } catch (err) {
+        console.error("Clerk load error:", err);
+    }
+});
+
+/* AUTH STATE UI -------------------------------------------------- */
+window.addEventListener("load", async () => {
+    try {
+        await window.Clerk.load();
+
+        const signInBtn = document.getElementById("openSignIn");
+        const signInBtn2 = document.getElementById("openSignIn2");
+        const userButtonContainer = document.getElementById("clerk-user-button");
+
+        function updateUI() {
+            const user = window.Clerk.user;
+
+            if (user) {
+                // User is logged in → hide Sign In buttons
+                if (signInBtn) signInBtn.style.display = "none";
+                if (signInBtn2) signInBtn2.style.display = "none";
+
+                // Show Clerk user button
+window.Clerk.mountUserButton(userButtonContainer, {
+  afterSignInUrl: window.location.href,
+  afterSignUpUrl: window.location.href,
+  afterSignOutUrl: window.location.href,
+  appearance: { baseTheme: "light" }
+});
+
+            } else {
+                // User logged out → show Sign In buttons
+                if (signInBtn) signInBtn.style.display = "inline-block";
+                if (signInBtn2) signInBtn2.style.display = "inline-block";
+
+                // Clear user button slot
+                userButtonContainer.innerHTML = "";
+            }
+        }
+
+        updateUI();
+
+        // Re-run UI update whenever auth state changes
+        window.Clerk.addListener(updateUI);
+
+    } catch (err) {
+        console.error("Clerk load error:", err);
+    }
+});
+
+
+</script>
+
+<!-- CLERK SDK -->
+<script async crossorigin="anonymous"
+    data-clerk-publishable-key="pk_test_cHJvdmVuLW1ha28tNTAuY2xlcmsuYWNjb3VudHMuZGV2JA"
+    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js">
+</script>
 
 </body>
-
 </html>

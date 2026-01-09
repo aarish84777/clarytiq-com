@@ -111,14 +111,6 @@
       transform: translateY(-2px);
     }
   </style>
-
-<script
-  defer
-  data-domain="clarytiq.com"
-  src="https://plausible.io/js/script.js">
-</script>
-
-
 </head>
 
 <body>
@@ -127,6 +119,15 @@
   <header class="nav">
     <div style="font-weight:800; font-size:1.1rem;">Clarytiq</div>
     <div style="display:flex; align-items:center; gap:0.8rem;">
+      <button id="openSignIn" style="
+        padding:0.45rem 1rem;
+        border-radius:999px;
+        background:linear-gradient(135deg, var(--accent-blue), var(--accent-green));
+        color:white;
+        border:none;
+        font-weight:600;
+        cursor:pointer;
+      ">Sign In ⚡</button>
 
       <div id="clerk-user-button" style="display:none;"></div>
     </div>
@@ -157,8 +158,7 @@
         <li>✔ Priority Access</li>
       </ul>
 
-<a href="/pro.html"><button class="cta-btn">Get Monthly</button></a>
-
+      <button class="cta-btn" onclick="upgrade('monthly')">Get Monthly</button>
     </div>
 
     <!-- YEARLY -->
@@ -174,8 +174,7 @@
         <li>✔ Early Access Features</li>
       </ul>
 
-<a href="/pro.html"><button class="cta-btn">Get Yearly</button></a>
-
+      <button class="cta-btn" onclick="upgrade('yearly')">Get Yearly</button>
     </div>
 
     <!-- LIFETIME -->
@@ -190,11 +189,37 @@
         <li>✔ No Subscriptions Ever</li>
       </ul>
 
-<a href="/pro.html"><button class="cta-btn">Get Lifetime</button></a>
-
+      <button class="cta-btn" onclick="upgrade('lifetime')">Get Lifetime</button>
     </div>
   </section>
 
+  <script>
+    // Upgrade handler
+    async function upgrade(plan) {
+      if (!window.isUserLoggedIn) {
+        // force sign-in overlay
+        if (window.showSignInOverlay) {
+          return window.showSignInOverlay();
+        }
+        return;
+      }
+
+      // After login → redirect to Stripe/checkout
+      alert("Redirecting to checkout for: " + plan);
+      // Replace alert with real checkout URL later
+    }
+
+    // Clerk wiring (same as your main page)
+    document.addEventListener("DOMContentLoaded", () => {
+      const openBtn = document.getElementById("openSignIn");
+      if (openBtn) {
+        openBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          window.showSignInOverlay();
+        });
+      }
+    });
+  </script>
 
 </body>
 </html>
